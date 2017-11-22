@@ -1,0 +1,721 @@
+fileFormatVersion: 2
+guid: 097488eca7322ae429d83987e002c06b
+timeCreated: 1511306605
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: DemonChair_spritesheet_0
+    21300002: DemonChair_spritesheet_1
+    21300004: DemonChair_spritesheet_2
+    21300006: DemonChair_spritesheet_3
+    21300008: DemonChair_spritesheet_4
+    21300010: DemonChair_spritesheet_5
+    21300012: DemonChair_spritesheet_6
+    21300014: DemonChair_spritesheet_7
+    21300016: DemonChair_spritesheet_8
+    21300018: DemonChair_spritesheet_9
+    21300020: DemonChair_spritesheet_10
+    21300022: DemonChair_spritesheet_11
+    21300024: DemonChair_spritesheet_12
+    21300026: DemonChair_spritesheet_13
+    21300028: DemonChair_spritesheet_14
+    21300030: DemonChair_spritesheet_15
+    21300032: DemonChair_spritesheet_16
+    21300034: DemonChair_spritesheet_17
+    21300036: DemonChair_spritesheet_18
+    21300038: DemonChair_spritesheet_19
+    21300040: DemonChair_spritesheet_20
+    21300042: DemonChair_spritesheet_21
+    21300044: DemonChair_spritesheet_22
+    21300046: DemonChair_spritesheet_23
+    21300048: DemonChair_spritesheet_24
+    21300050: DemonChair_spritesheet_25
+    21300052: DemonChair_spritesheet_26
+    21300054: DemonChair_spritesheet_27
+    21300056: DemonChair_spritesheet_28
+    21300058: DemonChair_spritesheet_29
+    21300060: DemonChair_spritesheet_30
+    21300062: DemonChair_spritesheet_31
+    21300064: DemonChair_spritesheet_32
+    21300066: DemonChair_spritesheet_33
+    21300068: DemonChair_spritesheet_34
+    21300070: DemonChair_spritesheet_36
+    21300072: DemonChair_spritesheet_37
+    21300074: DemonChair_spritesheet_38
+    21300076: DemonChair_spritesheet_39
+    21300078: DemonChair_spritesheet_40
+  externalObjects: {}
+  serializedVersion: 4
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: -1
+    aniso: -1
+    mipBias: -1
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  - buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  - buildTarget: iPhone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  - buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  - buildTarget: Windows Store Apps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  - buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: DemonChair_spritesheet_0
+      rect:
+        serializedVersion: 2
+        x: 20
+        y: 845
+        width: 108
+        height: 167
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: DemonChair_spritesheet_1
+      rect:
+        serializedVersion: 2
+        x: 146
+        y: 845
+        width: 107
+        height: 165
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: DemonChair_spritesheet_2
+      rect:
+        serializedVersion: 2
+        x: 272
+        y: 845
+        width: 107
+        height: 165
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: DemonChair_spritesheet_3
+      rect:
+        serializedVersion: 2
+        x: 392
+        y: 845
+        width: 108
+        height: 165
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: DemonChair_spritesheet_4
+      rect:
+        serializedVersion: 2
+        x: 515
+        y: 845
+        width: 109
+        height: 165
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: DemonChair_spritesheet_5
+      rect:
+        serializedVersion: 2
+        x: 642
+        y: 846
+        width: 107
+        height: 164
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: DemonChair_spritesheet_6
+      rect:
+        serializedVersion: 2
+        x: 771
+        y: 844
+        width: 109
+        height: 166
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: DemonChair_spritesheet_7
+      rect:
+        serializedVersion: 2
+        x: 895
+        y: 850
+        width: 111
+        height: 155
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: DemonChair_spritesheet_8
+      rect:
+        serializedVersion: 2
+        x: 10
+        y: 658
+        width: 102
+        height: 168
+      alignment: 9
+      pivot: {x: 0.49999982, y: 0.4520816}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: DemonChair_spritesheet_9
+      rect:
+        serializedVersion: 2
+        x: 141
+        y: 654
+        width: 112
+        height: 178
+      alignment: 9
+      pivot: {x: 0.4880201, y: 0.31155637}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: DemonChair_spritesheet_10
+      rect:
+        serializedVersion: 2
+        x: 261
+        y: 656
+        width: 110
+        height: 171
+      alignment: 9
+      pivot: {x: 0.5, y: 0.39015135}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: DemonChair_spritesheet_11
+      rect:
+        serializedVersion: 2
+        x: 392
+        y: 665
+        width: 108
+        height: 157
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: DemonChair_spritesheet_12
+      rect:
+        serializedVersion: 2
+        x: 514
+        y: 680
+        width: 107
+        height: 140
+      alignment: 9
+      pivot: {x: 0.51253957, y: 0.5862536}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: DemonChair_spritesheet_13
+      rect:
+        serializedVersion: 2
+        x: 631
+        y: 689
+        width: 105
+        height: 135
+      alignment: 9
+      pivot: {x: 0.52555686, y: 0.64908}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: DemonChair_spritesheet_14
+      rect:
+        serializedVersion: 2
+        x: 749
+        y: 674
+        width: 104
+        height: 146
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: DemonChair_spritesheet_15
+      rect:
+        serializedVersion: 2
+        x: 877
+        y: 674
+        width: 105
+        height: 146
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: DemonChair_spritesheet_16
+      rect:
+        serializedVersion: 2
+        x: 29
+        y: 494
+        width: 95
+        height: 147
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: DemonChair_spritesheet_17
+      rect:
+        serializedVersion: 2
+        x: 155
+        y: 496
+        width: 94
+        height: 145
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: DemonChair_spritesheet_18
+      rect:
+        serializedVersion: 2
+        x: 276
+        y: 496
+        width: 94
+        height: 148
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: DemonChair_spritesheet_19
+      rect:
+        serializedVersion: 2
+        x: 406
+        y: 498
+        width: 96
+        height: 147
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: DemonChair_spritesheet_20
+      rect:
+        serializedVersion: 2
+        x: 528
+        y: 500
+        width: 98
+        height: 146
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: DemonChair_spritesheet_21
+      rect:
+        serializedVersion: 2
+        x: 644
+        y: 500
+        width: 104
+        height: 146
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: DemonChair_spritesheet_22
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 499
+        width: 96
+        height: 147
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: DemonChair_spritesheet_23
+      rect:
+        serializedVersion: 2
+        x: 890
+        y: 502
+        width: 95
+        height: 146
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: DemonChair_spritesheet_24
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 328
+        width: 94
+        height: 145
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: DemonChair_spritesheet_25
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 326
+        width: 97
+        height: 147
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: DemonChair_spritesheet_26
+      rect:
+        serializedVersion: 2
+        x: 248
+        y: 326
+        width: 97
+        height: 147
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: DemonChair_spritesheet_27
+      rect:
+        serializedVersion: 2
+        x: 360
+        y: 327
+        width: 105
+        height: 149
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: DemonChair_spritesheet_28
+      rect:
+        serializedVersion: 2
+        x: 479
+        y: 326
+        width: 103
+        height: 149
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: DemonChair_spritesheet_29
+      rect:
+        serializedVersion: 2
+        x: 601
+        y: 328
+        width: 96
+        height: 137
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: DemonChair_spritesheet_30
+      rect:
+        serializedVersion: 2
+        x: 720
+        y: 326
+        width: 97
+        height: 142
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: DemonChair_spritesheet_31
+      rect:
+        serializedVersion: 2
+        x: 840
+        y: 323
+        width: 112
+        height: 152
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: DemonChair_spritesheet_32
+      rect:
+        serializedVersion: 2
+        x: 10
+        y: 162
+        width: 128
+        height: 149
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: DemonChair_spritesheet_33
+      rect:
+        serializedVersion: 2
+        x: 170
+        y: 168
+        width: 127
+        height: 138
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: DemonChair_spritesheet_34
+      rect:
+        serializedVersion: 2
+        x: 329
+        y: 171
+        width: 141
+        height: 137
+      alignment: 9
+      pivot: {x: 0.461937, y: 0.5293805}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: DemonChair_spritesheet_36
+      rect:
+        serializedVersion: 2
+        x: 500
+        y: 181
+        width: 170
+        height: 111
+      alignment: 9
+      pivot: {x: 0.48421523, y: 0.645051}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: DemonChair_spritesheet_37
+      rect:
+        serializedVersion: 2
+        x: 720
+        y: 180
+        width: 196
+        height: 97
+      alignment: 9
+      pivot: {x: 0.534227, y: 0.79047513}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: DemonChair_spritesheet_38
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 60
+        width: 209
+        height: 84
+      alignment: 9
+      pivot: {x: 0.5962956, y: 0.883348}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: DemonChair_spritesheet_39
+      rect:
+        serializedVersion: 2
+        x: 293
+        y: 60
+        width: 207
+        height: 75
+      alignment: 9
+      pivot: {x: 0.60370755, y: 0.983019}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: DemonChair_spritesheet_40
+      rect:
+        serializedVersion: 2
+        x: 578
+        y: 72
+        width: 206
+        height: 69
+      alignment: 9
+      pivot: {x: 0.5781585, y: 1.0444661}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    outline: []
+    physicsShape: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
