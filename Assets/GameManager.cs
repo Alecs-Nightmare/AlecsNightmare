@@ -31,16 +31,14 @@ public class GameManager : MonoBehaviour
 
         // Sets this to not be destroyed when reloading scene
         DontDestroyOnLoad(this.gameObject);
-
-        // Call the InitGame function to initialize the first level
-        // If we have a stating menu, we should stop right here!
-        InitLevel(level);
     }
 
     // Use this for initialization
     void Start()
     {
-
+        // Call the InitGame function to initialize the first level
+        // If we have a stating menu, we should stop right here!
+        InitLevel(level);
     }
 
     // Update is called every frame
@@ -72,15 +70,19 @@ public class GameManager : MonoBehaviour
     {
         level = lvl;    // Thus we can load an arbitrary level and start the routine from it
         string scene = string.Concat("Scene", lvl.ToString());
+        print("Searching " + scene + "...");
 
         // Checks if it exists the next scene and loads it
         List<string> scenesInBuild = new List<string>();
+
         for (int i = 1; i < SceneManager.sceneCountInBuildSettings; i++)
         {
             string scenePath = SceneUtility.GetScenePathByBuildIndex(i);
             int lastSlash = scenePath.LastIndexOf("/");
             scenesInBuild.Add(scenePath.Substring(lastSlash + 1, scenePath.LastIndexOf(".") - lastSlash - 1));
+            print("Added: " + scenePath.Substring(lastSlash + 1, scenePath.LastIndexOf(".") - lastSlash - 1));
         }
+
         if (scenesInBuild.Contains(scene))
         {
             // Loads the next level
