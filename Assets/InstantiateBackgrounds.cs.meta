@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 97a5d7d34bdb32147acfd74251061d25
+timeCreated: 1511713819
+licenseType: Free
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - frontBackground: {fileID: 1575729269137562, guid: a421045fee6728947a1aa93a8021ca40,
+      type: 2}
+  - unionObject: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

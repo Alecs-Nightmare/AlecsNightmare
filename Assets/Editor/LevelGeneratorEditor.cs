@@ -23,7 +23,13 @@ public class LevelGeneratorEditor : Editor
 
         if (GUILayout.Button("Clear Level"))
         {
-            EditorSceneManager.OpenScene("Assets/_Scenes/NO DEFINITIVO/LevelGenerator.unity");
+            GameObject[] trash = GameObject.FindGameObjectsWithTag("Environment");
+
+            if (trash != null)
+            {
+                foreach (var gameObject in trash)
+                    DestroyImmediate(gameObject);
+            }
         }
 
         if (GUILayout.Button("Save As Prefab"))

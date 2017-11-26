@@ -13,7 +13,7 @@ public class LevelGenerator : MonoBehaviour {
     }
 
     public Texture2D colorMap;
-    public String prefabName;
+    public String prefabName = "customLevelPrefab";
     public float ratio = 3;
     [SerializeField]List<EntitySpawnData> entitiesToSpawn = new List<EntitySpawnData>();
     GameObject parent;
