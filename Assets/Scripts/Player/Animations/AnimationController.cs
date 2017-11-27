@@ -16,7 +16,7 @@ public class AnimationController : MonoBehaviour {
 	
 	
 	void Update () {
-        float horizontal = Input.GetAxis("Horizontal");
+        float horizontal = Input.GetAxisRaw("Horizontal");
         stateinfo = anim.GetCurrentAnimatorStateInfo(0);
         
         if (horizontal != 0)//Si el personaje se mueve horizontalmente

@@ -4,8 +4,7 @@ using UnityEngine;
 
 [RequireComponent (typeof (Controller2D))]
 public class Player : MonoBehaviour {
-
-    public GameObject umbrella;
+    
     public Vector2 wallJumpClimb;
     public Vector2 wallJumpOff;
     public Vector2 wallLeap;
@@ -106,7 +105,7 @@ public class Player : MonoBehaviour {
                 if (Input.GetKeyDown(KeyCode.Space) && canEnableUmbrella)//modified
                 {
                     velocity.y = 0;
-                    umbrella.SetActive(true);
+                 
                     //activar animacion paraguas
                     anim.SetBool("planeando", true);
                     anim.SetBool("corriendo", false);
@@ -136,11 +135,11 @@ public class Player : MonoBehaviour {
 
         if (controller.collisions.isPlanning)
         {
-            umbrella.SetActive(true);
+            
 
             if (controller.collisions.below || controller.collisions.left || controller.collisions.right || Input.GetKeyDown(KeyCode.Space))
             {
-                umbrella.SetActive(false);
+                
                 canEnableUmbrella = false;
                 
                 controller.collisions.isPlanning = false;
@@ -162,7 +161,7 @@ public class Player : MonoBehaviour {
         {
 
             gravity = saveGravity;
-            //umbrella.SetActive(false);
+           
             if (controller.collisions.below ||controller.collisions.left ||controller.collisions.right)
             {
                 //gravity = saveGravity;
@@ -269,7 +268,7 @@ public class Player : MonoBehaviour {
                 anim.SetBool("corriendo", false);
                 anim.SetBool("Salto", false);
 
-                umbrella.SetActive(true);
+               
                 controller.collisions.isPlanning = true;
                 gravity = gravityWhilePlanning;
                 currentJumps = 0f;
