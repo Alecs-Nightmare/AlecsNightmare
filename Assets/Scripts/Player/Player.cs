@@ -40,6 +40,18 @@ public class Player : MonoBehaviour {
     Controller2D controller;
     SpriteRenderer spriteRenderer;
 
+    Animator anim;
+    AnimatorStateInfo stateinfo;
+    int idleStateHash = Animator.StringToHash("Base Layer.Idle");
+    int correrDesarmadoStateHash = Animator.StringToHash("Base Layer.Correr Desarmado");
+    int saltoStateHash = Animator.StringToHash("Base Layer.Salto");
+
+    int idleArmadoStateHash = Animator.StringToHash("Base Layer.Idle Armado");
+    int saltoArmadoStateHash = Animator.StringToHash("Base Layer.Salto Armado");
+    int correrArmadoStateHash = Animator.StringToHash("Base Layer.Correr Armado");
+    int cayendoArmadoStateHash = Animator.StringToHash("Base Layer.cayendo Armado");
+    int planeandoStateHash = Animator.StringToHash("Base Layer.Alec planeo");
+
 
     //esto es provisional
     private int sanityPoints;
@@ -63,6 +75,8 @@ public class Player : MonoBehaviour {
         minJumpVelocity = Mathf.Sqrt(2 * Mathf.Abs(gravity) * minJumpHeight);
         print("Gravity: " + gravity + " Jump Velocity: " + maxJumpVelocity);
         saveGravity = gravity;
+
+        anim = this.GetComponent<Animator>();
     }
 	
 	// Update is called once per frame
@@ -93,13 +107,29 @@ public class Player : MonoBehaviour {
                 {
                     velocity.y = 0;
                     umbrella.SetActive(true);
-                   
+                    //activar animacion paraguas
+                    anim.SetBool("planeando", true);
+                    anim.SetBool("corriendo", false);
+                    anim.SetBool("Salto", false);
+                    anim.SetBool("cayendo", false);
+
                     gravity = gravityWhilePlanning;
-                    
+
                     currentJumps = 0f;
                     //print("activado");
                     controller.collisions.isPlanning = true;
                     return;
+                }
+                //else si no está saltando activar animacion caida
+                else {
+                    stateinfo = anim.GetCurrentAnimatorStateInfo(0);
+                    if (stateinfo.fullPathHash != saltoArmadoStateHash) {
+                        anim.SetBool("cayendo", true);
+                        anim.SetBool("planeando", false);
+                        anim.SetBool("Salto", false);
+                        anim.SetBool("corriendo", false);
+                    }
+                    
                 }
             }
         }
@@ -114,6 +144,18 @@ public class Player : MonoBehaviour {
                 canEnableUmbrella = false;
                 
                 controller.collisions.isPlanning = false;
+                //activar animación caída
+
+                if (controller.collisions.below)
+                {
+                    anim.SetBool("cayendo", false);
+                    anim.SetBool("planeando", false);
+                }
+                else {
+                    anim.SetBool("planeando", false);
+                    anim.SetBool("cayendo", true);
+                }
+                
             }
         }
         else //if not planning
@@ -128,13 +170,30 @@ public class Player : MonoBehaviour {
                 canEnableUmbrella = true;
             }
         }
-        
+
 
         if (input.x != 0)
         {
             aimDirection = Mathf.Sign(input.x) == 1 ? Vector3.right : Vector3.left;//constantly check which direction is the player looking at
+            //si está tocando suelo activar animación corriendo
+            if (controller.collisions.below)
+            {
+                anim.SetBool("corriendo", true);
+                anim.SetBool("cayendo", false);
+                anim.SetBool("Salto", false);
+            }
+            else {
+                anim.SetBool("corriendo", false);
+            }
+
         }
-        
+        //si no activar animación idle
+        else if (controller.collisions.below) {
+            anim.SetBool("corriendo", false);
+            anim.SetBool("cayendo", false);
+            anim.SetBool("Salto", false);
+            anim.SetBool("planeando", false);
+        }
 
         bool wallSliding = false;
         
@@ -204,6 +263,12 @@ public class Player : MonoBehaviour {
 
             if (currentJumps == jumpsToPlane && canEnableUmbrella)
             {
+                //activar animación paraguas
+                anim.SetBool("planeando", true);
+                anim.SetBool("cayendo", false);
+                anim.SetBool("corriendo", false);
+                anim.SetBool("Salto", false);
+
                 umbrella.SetActive(true);
                 controller.collisions.isPlanning = true;
                 gravity = gravityWhilePlanning;
@@ -234,6 +299,11 @@ public class Player : MonoBehaviour {
             if (controller.collisions.below)
             {
                 velocity.y = maxJumpVelocity;
+                //activar animación salto
+                anim.SetBool("Salto", true);
+                anim.SetBool("cayendo", false);
+                anim.SetBool("planeando", false);
+                anim.SetBool("corriendo", false);
             }
             
 
