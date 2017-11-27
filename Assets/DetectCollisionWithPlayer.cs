@@ -5,7 +5,7 @@ using UnityEngine;
 public class DetectCollisionWithPlayer : MonoBehaviour {
 
 
-    public InstantiateBackgrounds refInstantiateBackgroundsClass;
+    //public GameObject backgroundRef;
 	// Use this for initialization
 	void Start () {
 		
@@ -21,8 +21,8 @@ public class DetectCollisionWithPlayer : MonoBehaviour {
         if (collision.gameObject.tag == "Player")
         {
 
-            refInstantiateBackgroundsClass.changeFrontBackgrounds();
-
+            
+            GameObject.FindGameObjectWithTag("Background").GetComponent<InstantiateBackgrounds>().changeBackgrounds(this.gameObject.tag);
 
         }
     }
