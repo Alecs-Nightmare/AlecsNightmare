@@ -1,23 +1,23 @@
 fileFormatVersion: 2
-guid: a4cb89b6800216644987ce9211874388
-timeCreated: 1511796632
+guid: b0a555e95fa13bb41a8b764594d28aab
+timeCreated: 1511881804
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: spritesheet_0
-    21300002: spritesheet_1
-    21300004: spritesheet_2
-    21300006: spritesheet_3
-    21300008: spritesheet_4
-    21300010: spritesheet_5
-    21300012: spritesheet_6
-    21300014: spritesheet_7
-    21300016: spritesheet_8
-    21300018: spritesheet_9
-    21300020: spritesheet_10
-    21300022: spritesheet_11
-    21300024: spritesheet_12
-    21300026: spritesheet_13
+    21300000: spritesheet175_0
+    21300002: spritesheet175_1
+    21300004: spritesheet175_2
+    21300006: spritesheet175_3
+    21300008: spritesheet175_4
+    21300010: spritesheet175_5
+    21300012: spritesheet175_6
+    21300014: spritesheet175_7
+    21300016: spritesheet175_8
+    21300018: spritesheet175_9
+    21300020: spritesheet175_10
+    21300022: spritesheet175_11
+    21300024: spritesheet175_12
+    21300026: spritesheet175_13
   externalObjects: {}
   serializedVersion: 4
   mipmaps:
@@ -92,13 +92,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: spritesheet_0
+      name: spritesheet175_0
       rect:
         serializedVersion: 2
-        x: 56
-        y: 711
-        width: 240
-        height: 266
+        x: 98
+        y: 1243
+        width: 421
+        height: 469
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -106,13 +106,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: spritesheet_1
+      name: spritesheet175_1
       rect:
         serializedVersion: 2
-        x: 332
-        y: 709
-        width: 219
-        height: 284
+        x: 578
+        y: 1240
+        width: 388
+        height: 498
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -120,13 +120,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: spritesheet_2
+      name: spritesheet175_2
       rect:
         serializedVersion: 2
-        x: 597
-        y: 708
-        width: 197
-        height: 304
+        x: 1043
+        y: 1234
+        width: 349
+        height: 537
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -134,13 +134,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: spritesheet_3
+      name: spritesheet175_3
       rect:
         serializedVersion: 2
-        x: 824
-        y: 705
-        width: 185
-        height: 319
+        x: 1437
+        y: 1233
+        width: 331
+        height: 559
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -148,13 +148,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: spritesheet_4
+      name: spritesheet175_4
       rect:
         serializedVersion: 2
-        x: 1064
-        y: 709
-        width: 186
-        height: 335
+        x: 1861
+        y: 1239
+        width: 328
+        height: 592
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -162,13 +162,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: spritesheet_5
+      name: spritesheet175_5
       rect:
         serializedVersion: 2
-        x: 1282
-        y: 706
-        width: 179
-        height: 348
+        x: 2242
+        y: 1233
+        width: 317
+        height: 612
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -176,13 +176,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: spritesheet_6
+      name: spritesheet175_6
       rect:
         serializedVersion: 2
-        x: 1551
-        y: 703
-        width: 176
-        height: 342
+        x: 2710
+        y: 1227
+        width: 314
+        height: 603
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -190,13 +190,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: spritesheet_7
+      name: spritesheet175_7
       rect:
         serializedVersion: 2
-        x: 58
-        y: 203
-        width: 186
-        height: 329
+        x: 101
+        y: 354
+        width: 328
+        height: 579
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -204,13 +204,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: spritesheet_8
+      name: spritesheet175_8
       rect:
         serializedVersion: 2
-        x: 323
-        y: 201
-        width: 184
-        height: 328
+        x: 564
+        y: 350
+        width: 324
+        height: 578
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -218,13 +218,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: spritesheet_9
+      name: spritesheet175_9
       rect:
         serializedVersion: 2
-        x: 560
-        y: 205
-        width: 197
-        height: 318
+        x: 978
+        y: 358
+        width: 348
+        height: 560
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -232,13 +232,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: spritesheet_10
+      name: spritesheet175_10
       rect:
         serializedVersion: 2
-        x: 792
-        y: 230
-        width: 220
-        height: 294
+        x: 1386
+        y: 403
+        width: 383
+        height: 515
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -246,13 +246,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: spritesheet_11
+      name: spritesheet175_11
       rect:
         serializedVersion: 2
-        x: 1045
-        y: 218
-        width: 243
-        height: 286
+        x: 1828
+        y: 380
+        width: 427
+        height: 503
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -260,13 +260,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: spritesheet_12
+      name: spritesheet175_12
       rect:
         serializedVersion: 2
-        x: 1345
-        y: 211
-        width: 239
-        height: 293
+        x: 2352
+        y: 367
+        width: 424
+        height: 519
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -274,13 +274,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: spritesheet_13
+      name: spritesheet175_13
       rect:
         serializedVersion: 2
-        x: 1648
-        y: 209
-        width: 238
-        height: 288
+        x: 2881
+        y: 361
+        width: 421
+        height: 512
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
