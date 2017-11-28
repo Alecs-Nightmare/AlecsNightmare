@@ -5,7 +5,7 @@ using ProjectAI;
 
 namespace ProjectAI
 {
-    [CreateAssetMenu(menuName = "AI/Decision/Detecting Entity Decision")]
+    [CreateAssetMenu(menuName = "AI/Decisions/Detecting Entity Decision")]
     public class DetectingEntityDecision : Decision
     {
         RaycastHit2D[] hits;
