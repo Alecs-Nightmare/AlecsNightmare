@@ -83,11 +83,11 @@ public class Player : MonoBehaviour {
         stateinfo = anim.GetCurrentAnimatorStateInfo(0);
         if (stateinfo.fullPathHash == saltoArmadoStateHash)
         {
-            print("saltando");
+            //print("saltando");
         }
         else
         {
-            print("no saltando");
+            //print("no saltando");
         }
 
         Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
@@ -133,7 +133,7 @@ public class Player : MonoBehaviour {
                     stateinfo = anim.GetCurrentAnimatorStateInfo(0);
                     if (stateinfo.fullPathHash == saltoArmadoStateHash)
                     {
-                        print("salto");
+                        //print("salto");
                         //anim.SetBool("Salto", true);
                     }
                     else { //si no está saltando (simplemente cae)
