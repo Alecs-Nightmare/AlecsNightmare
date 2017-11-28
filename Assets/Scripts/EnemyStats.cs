@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class EnemyStats : MonoBehaviour {
 
+    [SerializeField]
+    private int attackPower = 10;
+    [SerializeField]
+    private int hitPoints = 100;
+
     // Set up references
     void Awake()
     {
@@ -26,9 +31,14 @@ public class EnemyStats : MonoBehaviour {
     {
         if (col.gameObject.tag == "Player")
         {
-            print("Hit!");
+            //print("Hit!");
             // opposite force pull?
             // -apply repulsion force on the player-
         }
+    }
+
+    public int GetAttackPower()
+    {
+        return attackPower;
     }
 }
