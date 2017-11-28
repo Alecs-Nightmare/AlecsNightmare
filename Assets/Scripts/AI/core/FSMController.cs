@@ -19,7 +19,6 @@ namespace ProjectAI
         [SerializeField] bool m_isEntityInRange;
 
         [SerializeField] Transform chosenTarget;
-        [SerializeField] Material m_material;
         [SerializeField] RaycastHit2D[] m_collisions;
 
         public State Current
@@ -40,19 +39,6 @@ namespace ProjectAI
             get
             {
                 return m_isEntityInRange;
-            }
-        }
-
-        public Material Material
-        {
-            get
-            {
-                return m_material;
-            }
-
-            set
-            {
-                m_material = value;
             }
         }
 
@@ -91,10 +77,6 @@ namespace ProjectAI
             m_isAIActive = true;
         }
 
-        private void Start()
-        {
-            m_material = GetComponent<Renderer>().material;
-        }
 
         public void InitializeAI(bool init)
         {

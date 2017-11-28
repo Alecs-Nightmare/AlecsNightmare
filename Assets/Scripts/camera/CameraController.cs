@@ -28,7 +28,8 @@ public class CameraController : MonoBehaviour {
 
     private void Start()
     {
-        focusArea = new FocusArea(target.m_collider.bounds, focusAreaSize);
+        if(target!= null)
+            focusArea = new FocusArea(target.m_collider.bounds, focusAreaSize);
     }
 
     struct FocusArea {

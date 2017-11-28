@@ -80,7 +80,16 @@ public class Player : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-       
+        stateinfo = anim.GetCurrentAnimatorStateInfo(0);
+        if (stateinfo.fullPathHash == saltoArmadoStateHash)
+        {
+            print("saltando");
+        }
+        else
+        {
+            print("no saltando");
+        }
+
         Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
         int wallDirX = (controller.collisions.left) ? -1 : 1;
 
@@ -100,17 +109,17 @@ public class Player : MonoBehaviour {
         {
             
 
-            if (!controller.collisions.isPlanning && velocity.y<0)
+            if (!controller.collisions.isPlanning && velocity.y<0) //si está en el aire (sin planear)
             {
-                if (Input.GetKeyDown(KeyCode.Space) && canEnableUmbrella)//modified
+                if (Input.GetKeyDown(KeyCode.Space) && canEnableUmbrella)//y se pulsa espacio y puede usar el paraguas
                 {
                     velocity.y = 0;
                  
-                    //activar animacion paraguas
+                    //activar animacion paraguas (planeo)
                     anim.SetBool("planeando", true);
                     anim.SetBool("corriendo", false);
                     anim.SetBool("Salto", false);
-                    anim.SetBool("cayendo", false);
+                    anim.SetBool("en tierra", false);
 
                     gravity = gravityWhilePlanning;
 
@@ -119,11 +128,16 @@ public class Player : MonoBehaviour {
                     controller.collisions.isPlanning = true;
                     return;
                 }
-                //else si no está saltando activar animacion caida
+                //si no pulsa espacio o no se puede usar el paraguas
                 else {
                     stateinfo = anim.GetCurrentAnimatorStateInfo(0);
-                    if (stateinfo.fullPathHash != saltoArmadoStateHash) {
-                        anim.SetBool("cayendo", true);
+                    if (stateinfo.fullPathHash == saltoArmadoStateHash)
+                    {
+                        print("salto");
+                        //anim.SetBool("Salto", true);
+                    }
+                    else { //si no está saltando (simplemente cae)
+                        anim.SetBool("en tierra", false);
                         anim.SetBool("planeando", false);
                         anim.SetBool("Salto", false);
                         anim.SetBool("corriendo", false);
@@ -133,31 +147,31 @@ public class Player : MonoBehaviour {
             }
         }
 
-        if (controller.collisions.isPlanning)
+        if (controller.collisions.isPlanning)//si  está planeando
         {
             
 
-            if (controller.collisions.below || controller.collisions.left || controller.collisions.right || Input.GetKeyDown(KeyCode.Space))
+            if (controller.collisions.below || controller.collisions.left || controller.collisions.right || Input.GetKeyDown(KeyCode.Space))//si colisiona en cualquier dirección o se pulsa espacio
             {
                 
                 canEnableUmbrella = false;
                 
                 controller.collisions.isPlanning = false;
-                //activar animación caída
 
-                if (controller.collisions.below)
+                if (controller.collisions.below)//si toca el suelo
                 {
-                    anim.SetBool("cayendo", false);
+                    anim.SetBool("en tierra", true);
                     anim.SetBool("planeando", false);
                 }
-                else {
+                else {//si toca lateralmente o se ha pulsado espacio
+                    //activar animación caída
                     anim.SetBool("planeando", false);
-                    anim.SetBool("cayendo", true);
+                    anim.SetBool("en tierra", false);
                 }
                 
             }
         }
-        else //if not planning
+        else //if no está planeando
         {
 
             gravity = saveGravity;
@@ -167,31 +181,45 @@ public class Player : MonoBehaviour {
                 //gravity = saveGravity;
                 currentJumps = 0f;
                 canEnableUmbrella = true;
+
+                if (controller.collisions.below)//si toca el suelo
+                {
+                    anim.SetBool("en tierra", true);
+                    anim.SetBool("Salto", false);
+                    anim.SetBool("planeando", false);
+                }
             }
         }
 
 
-        if (input.x != 0)
+        if (input.x != 0)//si se mueve horizontalmente
         {
-            aimDirection = Mathf.Sign(input.x) == 1 ? Vector3.right : Vector3.left;//constantly check which direction is the player looking at
-            //si está tocando suelo activar animación corriendo
-            if (controller.collisions.below)
+            aimDirection = Mathf.Sign(input.x) == 1 ? Vector3.right : Vector3.left;//constantly check which direction is the player looking at          
+
+            if (controller.collisions.below)//si está tocando suelo activar animación corriendo
             {
                 anim.SetBool("corriendo", true);
-                anim.SetBool("cayendo", false);
+                anim.SetBool("en tierra", true);
                 anim.SetBool("Salto", false);
             }
-            else {
+            else {//si no está tocando suelo
                 anim.SetBool("corriendo", false);
+                anim.SetBool("en tierra", false);
             }
 
         }
-        //si no activar animación idle
-        else if (controller.collisions.below) {
-            anim.SetBool("corriendo", false);
-            anim.SetBool("cayendo", false);
-            anim.SetBool("Salto", false);
-            anim.SetBool("planeando", false);
+        else {//si no se mueve horizontalmente y está tocando
+            if (controller.collisions.below)//si está tocando suelo activar animación idle
+            {
+                anim.SetBool("corriendo", false);
+                anim.SetBool("en tierra", true);
+                anim.SetBool("Salto", false);
+                anim.SetBool("planeando", false);
+            }
+
+            else {//si no toca suelo
+                anim.SetBool("en tierra", false);
+            }
         }
 
         bool wallSliding = false;
@@ -256,15 +284,15 @@ public class Player : MonoBehaviour {
         }
 
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space))//si pulsa espacio
         {           
              currentJumps++;
 
-            if (currentJumps == jumpsToPlane && canEnableUmbrella)
+            if (currentJumps == jumpsToPlane && canEnableUmbrella) //si puede planear: planea
             {
                 //activar animación paraguas
                 anim.SetBool("planeando", true);
-                anim.SetBool("cayendo", false);
+                anim.SetBool("en tierra", false);
                 anim.SetBool("corriendo", false);
                 anim.SetBool("Salto", false);
 
@@ -295,12 +323,12 @@ public class Player : MonoBehaviour {
                     velocity.y = wallLeap.y;
                 }
             }
-            if (controller.collisions.below)
+            if (controller.collisions.below)//si estaba en tierra: salta
             {
                 velocity.y = maxJumpVelocity;
                 //activar animación salto
                 anim.SetBool("Salto", true);
-                anim.SetBool("cayendo", false);
+                anim.SetBool("en tierra", false);
                 anim.SetBool("planeando", false);
                 anim.SetBool("corriendo", false);
             }

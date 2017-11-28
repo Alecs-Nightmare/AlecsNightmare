@@ -1,6 +1,11 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:Assets/Prefabs/Levels/need_fix.prefab.meta
 guid: af8bf52d56e9be549bbec7ec6d363319
 timeCreated: 1511860510
+=======
+guid: 47c63dc8e1302e74c9fc645eab7ecf3d
+timeCreated: 1511823552
+>>>>>>> d7d778a35f31a6ee4abf9407c67b153b5b1bcc74:Assets/Prefabs/Levels/TUTORIAL.prefab.meta
 licenseType: Free
 NativeFormatImporter:
   externalObjects: {}
