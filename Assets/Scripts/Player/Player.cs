@@ -80,15 +80,6 @@ public class Player : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        stateinfo = anim.GetCurrentAnimatorStateInfo(0);
-        if (stateinfo.fullPathHash == saltoArmadoStateHash)
-        {
-            print("saltando");
-        }
-        else
-        {
-            print("no saltando");
-        }
 
         Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
         int wallDirX = (controller.collisions.left) ? -1 : 1;
@@ -131,16 +122,12 @@ public class Player : MonoBehaviour {
                 //si no pulsa espacio o no se puede usar el paraguas
                 else {
                     stateinfo = anim.GetCurrentAnimatorStateInfo(0);
-                    if (stateinfo.fullPathHash == saltoArmadoStateHash)
+					if (stateinfo.fullPathHash != saltoArmadoStateHash)//si no está saltando (simplemente cae)
                     {
-                        print("salto");
-                        //anim.SetBool("Salto", true);
-                    }
-                    else { //si no está saltando (simplemente cae)
-                        anim.SetBool("en tierra", false);
-                        anim.SetBool("planeando", false);
-                        anim.SetBool("Salto", false);
-                        anim.SetBool("corriendo", false);
+						anim.SetBool("en tierra", false);
+						anim.SetBool("planeando", false);
+						anim.SetBool("Salto", false);
+						anim.SetBool("corriendo", false);
                     }
                     
                 }
