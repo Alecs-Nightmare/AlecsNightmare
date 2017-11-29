@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 189d9fc481f63dd49b9ff05b443f91bf
-timeCreated: 1510997993
+timeCreated: 1511972334
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -176,10 +176,10 @@ TextureImporter:
       name: atlasDefinitivoGlassweather_6
       rect:
         serializedVersion: 2
-        x: 485
-        y: 85
-        width: 308
-        height: 349
+        x: 483
+        y: 83
+        width: 312
+        height: 353
       alignment: 9
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -245,6 +245,6 @@ TextureImporter:
     outline: []
     physicsShape: []
   spritePackingTag: 
-  userData: 99024763556127
+  userData: 99088603309860
   assetBundleName: 
   assetBundleVariant: 
