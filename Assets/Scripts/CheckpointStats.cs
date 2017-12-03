@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class CheckpointStats : MonoBehaviour {
 
-    //[SerializeField]
-    public int number;
+    [SerializeField]
+    private int number;
 
 
     // Set up references
@@ -33,5 +33,10 @@ public class CheckpointStats : MonoBehaviour {
             print("Check: " + number + "!");
             GameManager.instance.UpdateCurrentCheckNum(number);
         }
+    }
+
+    public int GetNumber()
+    {
+        return number;
     }
 }
