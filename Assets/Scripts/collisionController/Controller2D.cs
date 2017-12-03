@@ -332,7 +332,7 @@ public class Controller2D : RaycastController {
     public struct CollisionInfo
     {
         public string TouchAWall;
-
+        public bool WallSliding;
         public bool above, below;
         public bool left, right;
 
@@ -365,6 +365,7 @@ public class Controller2D : RaycastController {
             slopeAngleOld = slopeAngle;
             slopeAngle = 0;
             TouchAWall = "";
+            WallSliding = false;
         }
     }
 }

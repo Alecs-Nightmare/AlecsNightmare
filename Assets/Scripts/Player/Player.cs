@@ -19,6 +19,8 @@ public class Player : MonoBehaviour {
     public float gravityWhilePlanning = -20f;
     public float constantvelocityYFalling = -2.5f;
     public float moveSpeed;
+    public Vector2 input;
+    public bool wallSliding;
 
     float maxJumpVelocity;
     float minJumpVelocity;
@@ -34,6 +36,7 @@ public class Player : MonoBehaviour {
     float accelRatePerSec;
     float saveVelocityY;
     bool canEnableUmbrella = true;
+    bool umbrellaUnlocked = false;
     Vector3 aimDirection;
     Vector3 velocity;
     Controller2D controller;
@@ -42,6 +45,20 @@ public class Player : MonoBehaviour {
 
     //esto es provisional
     private int sanityPoints;
+
+    public bool UmbrellaUnlocked
+    {
+        get
+        {
+            return umbrellaUnlocked;
+        }
+
+        set
+        {
+            umbrellaUnlocked = value;
+        }
+    }
+
     //esto es provisional
 
 
@@ -65,8 +82,10 @@ public class Player : MonoBehaviour {
     }
 	
 	// Update is called once per frame
-	void Update () {
-        Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+	void Update () 
+    {
+
+        input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
         int wallDirX = (controller.collisions.left) ? -1 : 1;
 
         float targetVelocityX = input.x * moveSpeed;
@@ -136,7 +155,7 @@ public class Player : MonoBehaviour {
 
         }
         
-        bool wallSliding = false;
+        wallSliding = false;
         
         if ((controller.collisions.left || controller.collisions.right) && !controller.collisions.below && velocity.y < 0){
             if (controller.getHitTag() != "Through")//PARA QUE NO FRENE SI ES PLATAFORMA Q SE MEUVE
@@ -272,6 +291,15 @@ public class Player : MonoBehaviour {
         if (controller.collisions.above || controller.collisions.below)
         {
             velocity.y = 0;
+        }
+
+        if (input.x == 0)
+        {
+            velocity.x = 0;
+        }
+        if (!UmbrellaUnlocked)
+        {
+            canEnableUmbrella = false;
         }
     }
 
