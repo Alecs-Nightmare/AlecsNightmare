@@ -24,7 +24,7 @@ public class PlayerStats : MonoBehaviour {
     // Use this for initialization
     void Start ()
     {
-        Respawn();
+        ResetStats();
 	}
 	
 	// Update is called once per frame
@@ -39,7 +39,7 @@ public class PlayerStats : MonoBehaviour {
                 if (time >= cooldown)
                 {
                     time = 0;
-                    Respawn();  // -for the moment we manage this here-
+                    ResetStats();  // -for the moment we manage this here-
                 }
                 break;
 
@@ -79,7 +79,7 @@ public class PlayerStats : MonoBehaviour {
     }
 
     // Resets and respawns the player
-    public void Respawn()
+    public void ResetStats()
     {
         // -here we should play some sound effect, particles, etc-
         // --this part only works when loaded with the Loader--

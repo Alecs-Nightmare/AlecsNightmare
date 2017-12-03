@@ -64,7 +64,7 @@ public class AnimationController : MonoBehaviour {
 
                     }
                     else {
-                        print("salta");
+                        //print("salta");
                         anim.SetBool(parameters.getSaltar(), true);
                     }
 
@@ -193,7 +193,7 @@ public class AnimationController : MonoBehaviour {
 
             if (player.getCurrentJump() == player.getJumpsToPlane() && player.getCanEnableUmbrella()) //si puede planear: planea
             {
-                print("planea");
+                //print("planea");
                 //activar animación paraguas
                 anim.SetBool(parameters.getPlanear(), true);
                 anim.SetBool(parameters.getEnTierra(), false);
