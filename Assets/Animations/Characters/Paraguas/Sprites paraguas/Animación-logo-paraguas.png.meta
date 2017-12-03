@@ -1,0 +1,310 @@
+fileFormatVersion: 2
+guid: 40452f4f95a682f438355b8678d3bc26
+timeCreated: 1512316029
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: "Animaci\xF3n-logo-paraguas_0"
+    21300002: "Animaci\xF3n-logo-paraguas_1"
+    21300004: "Animaci\xF3n-logo-paraguas_2"
+    21300006: "Animaci\xF3n-logo-paraguas_3"
+    21300008: "Animaci\xF3n-logo-paraguas_4"
+    21300010: "Animaci\xF3n-logo-paraguas_5"
+    21300012: "Animaci\xF3n-logo-paraguas_6"
+    21300014: "Animaci\xF3n-logo-paraguas_7"
+    21300016: "Animaci\xF3n-logo-paraguas_8"
+    21300018: "Animaci\xF3n-logo-paraguas_9"
+    21300020: "Animaci\xF3n-logo-paraguas_10"
+    21300022: "Animaci\xF3n-logo-paraguas_11"
+    21300024: "Animaci\xF3n-logo-paraguas_12"
+    21300026: "Animaci\xF3n-logo-paraguas_13"
+    21300028: "Animaci\xF3n-logo-paraguas_14"
+  externalObjects: {}
+  serializedVersion: 4
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: -1
+    aniso: -1
+    mipBias: -1
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  - buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: "Animaci\xF3n-logo-paraguas_0"
+      rect:
+        serializedVersion: 2
+        x: 71
+        y: 810
+        width: 117
+        height: 364
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: "Animaci\xF3n-logo-paraguas_1"
+      rect:
+        serializedVersion: 2
+        x: 205
+        y: 810
+        width: 123
+        height: 364
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: "Animaci\xF3n-logo-paraguas_2"
+      rect:
+        serializedVersion: 2
+        x: 361
+        y: 810
+        width: 120
+        height: 364
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: "Animaci\xF3n-logo-paraguas_3"
+      rect:
+        serializedVersion: 2
+        x: 511
+        y: 812
+        width: 120
+        height: 364
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: "Animaci\xF3n-logo-paraguas_4"
+      rect:
+        serializedVersion: 2
+        x: 660
+        y: 815
+        width: 120
+        height: 364
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: "Animaci\xF3n-logo-paraguas_5"
+      rect:
+        serializedVersion: 2
+        x: 65
+        y: 407
+        width: 122
+        height: 364
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: "Animaci\xF3n-logo-paraguas_6"
+      rect:
+        serializedVersion: 2
+        x: 209
+        y: 407
+        width: 122
+        height: 364
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: "Animaci\xF3n-logo-paraguas_7"
+      rect:
+        serializedVersion: 2
+        x: 364
+        y: 413
+        width: 117
+        height: 364
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: "Animaci\xF3n-logo-paraguas_8"
+      rect:
+        serializedVersion: 2
+        x: 518
+        y: 409
+        width: 118
+        height: 366
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: "Animaci\xF3n-logo-paraguas_9"
+      rect:
+        serializedVersion: 2
+        x: 669
+        y: 406
+        width: 117
+        height: 364
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: "Animaci\xF3n-logo-paraguas_10"
+      rect:
+        serializedVersion: 2
+        x: 62
+        y: 12
+        width: 122
+        height: 364
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: "Animaci\xF3n-logo-paraguas_11"
+      rect:
+        serializedVersion: 2
+        x: 209
+        y: 12
+        width: 123
+        height: 364
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: "Animaci\xF3n-logo-paraguas_12"
+      rect:
+        serializedVersion: 2
+        x: 358
+        y: 15
+        width: 122
+        height: 364
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: "Animaci\xF3n-logo-paraguas_13"
+      rect:
+        serializedVersion: 2
+        x: 516
+        y: 16
+        width: 123
+        height: 363
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: "Animaci\xF3n-logo-paraguas_14"
+      rect:
+        serializedVersion: 2
+        x: 667
+        y: 13
+        width: 122
+        height: 364
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    outline: []
+    physicsShape: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

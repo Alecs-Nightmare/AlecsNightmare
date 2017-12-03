@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
 {
 
     public static GameManager instance = null;              // Static instance of GameManager which allows it to be accessed by any other script
+    public GameObject playerPrefab;                         // Reference to the player's prefab
     [SerializeField]
     private int level = 0;                                  // Current level number (scene)
     [SerializeField]
@@ -58,11 +59,8 @@ public class GameManager : MonoBehaviour
                 ResetCheckpoints();
 
                 // Spawn the player
-#if UNITY_EDITOR
-                Object prefab = AssetDatabase.LoadAssetAtPath("Assets/Prefabs/CharacterPrefabs/Player.prefab", typeof(GameObject));
-                GameObject player = Instantiate(prefab, Vector3.zero, Quaternion.identity) as GameObject;
+                GameObject player = Instantiate(playerPrefab, Vector3.zero, Quaternion.identity) as GameObject;
                 player.transform.position = GetRespawnTransform().position;
-#endif
                 print("Player has been spawned!");
 
                 loading = false;
@@ -81,6 +79,15 @@ public class GameManager : MonoBehaviour
         // Checks if it exists the next scene and starts loading coroutine
         if (scenesInBuild.Contains(scene))
         {
+            // Stops everything on current scene
+            foreach (GameObject obj in Object.FindObjectsOfType<GameObject>())
+            {
+                if (obj.tag != "Manager")
+                {
+                    obj.SetActive(false);
+                }
+            }
+
             // Prepares to load next level
             string current = SceneManager.GetActiveScene().name;
             print("Loading " + scene + "...");
