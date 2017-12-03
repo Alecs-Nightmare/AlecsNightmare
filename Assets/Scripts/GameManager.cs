@@ -59,6 +59,7 @@ public class GameManager : MonoBehaviour
 
                 // Spawn the player
 #if UNITY_EDITOR
+                Object prefab = AssetDatabase.LoadAssetAtPath("Assets/Prefabs/CharacterPrefabs/Player.prefab", typeof(GameObject));
                 GameObject player = Instantiate(prefab, Vector3.zero, Quaternion.identity) as GameObject;
                 player.transform.position = GetRespawnTransform().position;
 #endif
