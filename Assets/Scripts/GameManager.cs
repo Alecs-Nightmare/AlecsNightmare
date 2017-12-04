@@ -11,11 +11,14 @@ public class GameManager : MonoBehaviour
 
     public static GameManager instance = null;              // Static instance of GameManager which allows it to be accessed by any other script
     public GameObject playerPrefab;                         // Reference to the player's prefab
+    public int gameState;                                   // 1 --> Running / 0 --> Pause / -1 --> End
+    public int lifes = 3;
     [SerializeField]
     private int level = 0;                                  // Current level number (scene)
     [SerializeField]
     private int checkpoint = 0;                             // Active checkpoint
     private GameObject[] checkpointList;                    // References to all the checkpoints of the active level
+    private GameObject[] levelAgentsList;
     private List<string> scenesInBuild = new List<string>();
     private AsyncOperation m_AsyncLoaderCoroutine;
     private bool loading;
@@ -42,29 +45,55 @@ public class GameManager : MonoBehaviour
     {
         BuildSceneList();
         StartLevelLoadingRoutine(level);
+        gameState = 1;
     }
 
     // Update is called every frame
     void Update()
     {
-        if (loading && m_AsyncLoaderCoroutine != null)
+        if (loading)
         {
-            if (m_AsyncLoaderCoroutine.progress >= 0.9f)    // Scene almost loaded! (set allowSceneActivation to true when done to automatically switch scenes)
+            if (m_AsyncLoaderCoroutine != null)
             {
-                m_AsyncLoaderCoroutine.allowSceneActivation = true;
+                if (m_AsyncLoaderCoroutine.progress >= 0.9f)    // Scene almost loaded! (set allowSceneActivation to true when done to automatically switch scenes)
+                {
+                    m_AsyncLoaderCoroutine.allowSceneActivation = true;
+                }
+                if (m_AsyncLoaderCoroutine.isDone)              // Scene completely loaded! Start level routines...
+                {
+                    // Reset checkpoint references
+                    ResetCheckpoints();
+
+                    // Spawn the player
+                    GameObject player = Instantiate(playerPrefab, Vector3.zero, Quaternion.identity) as GameObject;
+                    player.transform.position = GetRespawnTransform().position;
+                    print("Player has been spawned!");
+
+                    levelAgentsList = FindObjectsOfType<GameObject>();
+                    loading = false;
+                    print(SceneManager.GetActiveScene().name + " is ready!");
+                }
             }
-            if (m_AsyncLoaderCoroutine.isDone)              // Scene completely loaded! Start level routines...
+        }
+        else if (Input.GetKeyDown("return"))
+        {
+            switch (gameState)
             {
-                // Reset checkpoint references
-                ResetCheckpoints();
+                case 1:     // Pause game
+                    PauseGame(true);
+                    gameState = 0;
+                    print("Game paused!");
+                    break;
 
-                // Spawn the player
-                GameObject player = Instantiate(playerPrefab, Vector3.zero, Quaternion.identity) as GameObject;
-                player.transform.position = GetRespawnTransform().position;
-                print("Player has been spawned!");
+                case 0:     // Resume game
+                    PauseGame(false);
+                    gameState = 1;
+                    print("Game resumed!");
+                    break;
 
-                loading = false;
-                print(SceneManager.GetActiveScene().name + " is ready!");
+                case -1:    // Reset game
+                    //
+                    break;
             }
         }
     }
@@ -80,13 +109,7 @@ public class GameManager : MonoBehaviour
         if (scenesInBuild.Contains(scene))
         {
             // Stops everything on current scene
-            foreach (GameObject obj in Object.FindObjectsOfType<GameObject>())
-            {
-                if (obj.tag != "Manager")
-                {
-                    obj.SetActive(false);
-                }
-            }
+            PauseGame(true);
 
             // Prepares to load next level
             string current = SceneManager.GetActiveScene().name;
@@ -138,6 +161,20 @@ public class GameManager : MonoBehaviour
         m_AsyncLoaderCoroutine = SceneManager.LoadSceneAsync(scene);
         m_AsyncLoaderCoroutine.allowSceneActivation = false;
         yield return m_AsyncLoaderCoroutine;
+    }
+
+    void PauseGame(bool stop)
+    {
+        if (levelAgentsList != null)
+        {
+            foreach (GameObject obj in levelAgentsList)
+            {
+                if (obj.layer != this.gameObject.layer)     // Pauses everything which is not in the layer of who calls for this function
+                {
+                    obj.SetActive(!stop);
+                }
+            }
+        }
     }
 
     public void UpdateCurrentCheckNum(int num)
