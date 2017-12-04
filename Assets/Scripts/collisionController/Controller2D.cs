@@ -7,7 +7,7 @@ public class Controller2D : RaycastController {
     public float maxClimbAngle = 80f;
     public float maxDescendAngle = 75f;
     public CollisionInfo collisions;
-
+    public GameEvent OnPickUpCollectable;
     private Vector2 playerInput;
     private string hitTag;
     public Player refPlayer;
@@ -126,12 +126,13 @@ public class Controller2D : RaycastController {
                if (hit.collider.CompareTag("collectable"))
                 {
                     refPlayer.setSanityPoints(+3);
-                    print(refPlayer.getSanityPoints());
+
+                    if (OnPickUpCollectable != null)
+                        OnPickUpCollectable.Raise();
+
                     Destroy(hit.collider.gameObject);
                     continue;
                 }
-
-                //print(hitTag);
                 if (hit.distance == 0)
                 {
                    
