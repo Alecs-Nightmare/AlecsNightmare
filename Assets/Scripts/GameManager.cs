@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour
     public Object creditsScene;                             // Reference to the Credits scene
     public Object returnScene;                              // Reference to the scene to reset the game at
     public GameObject playerPrefab;                         // Reference to the player's prefab
-    public int gameState;                                   // 1 --> Running / 0 --> Pause / -1 --> End
+    public int gameState;                                   // 1 --> Running / 0 --> Pause / -1 --> End / -2 --> Resetting...
     public int lifes = 3;                                   // Chances the player has to respawn before Game Over
     [SerializeField]
     private int level = 0;                                  // Current level number (scene)
@@ -46,7 +46,9 @@ public class GameManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        BuildSceneList();
         ResetStats();
+        StartLevelLoadingRoutine(level);
     }
 
     // Update is called every frame
@@ -82,6 +84,11 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
+        else if (!loading && gameState == -2)
+        {
+            ResetStats();
+            StartLevelLoadingRoutine(level);
+        }
         else if (Input.GetKeyDown("return"))    // if not loading then handle the input...
         {
             switch (gameState)
@@ -99,9 +106,8 @@ public class GameManager : MonoBehaviour
                     break;
 
                 case -1:    // Resets the game
+                    gameState = -2;
                     LoadSpecificScene(returnScene.name);
-                    gameState = 0;
-                    //Destroy(this.gameObject);
                     print("Resetting the game...");
                     break;
             }
@@ -111,8 +117,8 @@ public class GameManager : MonoBehaviour
     // Resets the Game Manager attributes   --CHANGE THEM HERE TO MAKE IT PERMANENT--
     void ResetStats()
     {
-        BuildSceneList();
-        StartLevelLoadingRoutine(level);
+        level = 0;
+        lifes = 3;
         gameState = 1;
     }
 
