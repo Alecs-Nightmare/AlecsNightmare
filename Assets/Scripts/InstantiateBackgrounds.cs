@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 public class InstantiateBackgrounds : MonoBehaviour {
-    private float sizeBackgroundFront = 34.15f;
+    private float sizeBackgroundFront = 100f;
 
     public GameObject frontBackground;
     public GameObject middleBackground;
@@ -149,8 +149,8 @@ public class InstantiateBackgrounds : MonoBehaviour {
             Instantiate(aux, new Vector3(20 + i * sizeBackgroundFront, -3, 0), aux.transform.rotation);
             FrontBackgrounds[i] = aux;
             */
-            FrontBackgrounds[i] = Instantiate(frontBackground, new Vector3(20 + i * sizeBackgroundFront, -4, 0), frontBackground.transform.rotation, children[1]);
-            MiddleBackgrounds[i] = Instantiate(middleBackground, new Vector3(30 + i * sizeBackgroundFront, -3, 0), middleBackground.transform.rotation, children[2]);
+            FrontBackgrounds[i] = Instantiate(frontBackground, new Vector3(20 + i * sizeBackgroundFront, Random.Range(10,20), 0), frontBackground.transform.rotation, children[1]);
+            MiddleBackgrounds[i] = Instantiate(middleBackground, new Vector3(30 + i * sizeBackgroundFront, 0, 0), middleBackground.transform.rotation, children[2]);
             BackBackgrounds[i] = Instantiate(backBackground, new Vector3(40 + i * sizeBackgroundFront, -2, 0), backBackground.transform.rotation, children[3]);
 
         }
