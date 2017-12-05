@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour
     public Object creditsScene;                             // Reference to the Credits scene
     public Object returnScene;                              // Reference to the scene to reset the game at
     public GameObject playerPrefab;                         // Reference to the player's prefab
-    public int gameState;                                   // 1 --> Running / 0 --> Pause / -1 --> End
+    public int gameState;                                   // 1 --> Running / 0 --> Pause / -1 --> End / -2 --> Resetting...
     public int lifes = 3;                                   // Chances the player has to respawn before Game Over
     [SerializeField]
     private int level = 0;                                  // Current level number (scene)
@@ -47,8 +47,8 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         BuildSceneList();
+        ResetStats();
         StartLevelLoadingRoutine(level);
-        gameState = 1;
     }
 
     // Update is called every frame
@@ -84,6 +84,11 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
+        else if (!loading && gameState == -2)
+        {
+            ResetStats();
+            StartLevelLoadingRoutine(level);
+        }
         else if (Input.GetKeyDown("return"))    // if not loading then handle the input...
         {
             switch (gameState)
@@ -100,11 +105,21 @@ public class GameManager : MonoBehaviour
                     print("Game resumed!");
                     break;
 
-                case -1:    // Reset game
-                    // --do stuff--
+                case -1:    // Resets the game
+                    gameState = -2;
+                    LoadSpecificScene(returnScene.name);
+                    print("Resetting the game...");
                     break;
             }
         }
+    }
+
+    // Resets the Game Manager attributes   --CHANGE THEM HERE TO MAKE IT PERMANENT--
+    void ResetStats()
+    {
+        level = 0;
+        lifes = 3;
+        gameState = 1;
     }
 
     // Starts the next level loading coroutine
@@ -130,14 +145,23 @@ public class GameManager : MonoBehaviour
             print(scene + " has not been found on the Scene Array.");
 
             // Finish the game
-            PauseGame(true);
-#if UNITY_EDITOR
-            EditorApplication.isPaused = true;
-#endif
+            LoadSpecificScene(creditsScene.name);
             gameState = -1;
-            StartCoroutine(LoadSceneAsync(creditsScene.name));
             print("Thanks for playing!");
         }
+    }
+
+    // Loads a specifid scene out of the level loop
+    void LoadSpecificScene(string name)
+    {
+        // Pauses the current scene
+        PauseGame(true);
+
+        // Pauses the emulation on the editor
+#if UNITY_EDITOR
+        //EditorApplication.isPaused = true;
+#endif
+        StartCoroutine(LoadSceneAsync(name));
     }
 
     // Rebuilds the checkpoint array and sets the initial one as active
