@@ -8,6 +8,8 @@ public class EnemyStats : MonoBehaviour {
     private int attackPower = 10;
     [SerializeField]
     private int hitPoints = 100;
+    [SerializeField]
+    private bool isLethal;
 
     // Set up references
     void Awake()
@@ -40,5 +42,10 @@ public class EnemyStats : MonoBehaviour {
     public int GetAttackPower()
     {
         return attackPower;
+    }
+
+    public bool AskForLethal()
+    {
+        return isLethal;
     }
 }

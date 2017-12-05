@@ -4,13 +4,19 @@ using UnityEngine;
 
 public class PlayerStats : MonoBehaviour {
 
-    public int MaxSanity = 100;      // This is the main resource
+    GameObject manager;
+    GameManager gameManager;        // Reference to the Game Manager
+    Player player;                  // Reference to character's Player class
+
+    public int MaxSanity = 100;     // This is the main resource
     [SerializeField]
-    private int currentSanity;              // We separate current and maxim values because it can be increased during the game
+    private int currentSanity;      // We separate current and maxim values because it can be increased during the game
     [SerializeField]
     private int currentState;
     [SerializeField]
-    private float cooldown = 3f;             // Cooldown time to respawn (damage cooldown is a fraction of this)
+    private float deathCooldown = 3f;   // Cooldown time to respawn
+    [SerializeField]
+    private float hitCooldown = 1f;     // Cooldown time to get hurt
     private float time;
     private float fraction = 3f;
 
@@ -18,7 +24,9 @@ public class PlayerStats : MonoBehaviour {
     // Set up references
     void Awake()
     {
-
+        manager = GameObject.FindGameObjectWithTag("Manager");
+        gameManager = manager.GetComponent<GameManager>();
+        player = GetComponentInParent<Player>();
     }
 
     // Use this for initialization
@@ -36,20 +44,22 @@ public class PlayerStats : MonoBehaviour {
 
                 time += Time.smoothDeltaTime;
                 // -deactivate player's movement controller class after refactoring-
-                if (time >= cooldown)
+                if (time >= deathCooldown)
                 {
                     time = 0;
                     ResetStats();  // -for the moment we manage this here-
+                    player.StopPlayer(false);
                 }
                 break;
 
             case 0:         // Damage cooldown (otherwise it'd get continuos damage)
 
                 time += Time.smoothDeltaTime;
-                if (time >= cooldown/fraction)
+                if (time >= hitCooldown)
                 {
                     time = 0;
                     currentState = 1;
+                    player.StopPlayer(false);
                 }
                 break;
 
@@ -64,7 +74,14 @@ public class PlayerStats : MonoBehaviour {
         if (currentState == 1 && col.gameObject.tag == "Enemy")
         {
             EnemyStats enemy = col.gameObject.GetComponent<EnemyStats>();
-            currentSanity -= enemy.GetAttackPower();
+            if (enemy.AskForLethal())
+            {
+                currentSanity = 0;
+            }
+            else
+            {
+                currentSanity -= enemy.GetAttackPower();
+            }
             if (currentSanity <= 0)
             {
                 currentState = -1;
@@ -75,17 +92,19 @@ public class PlayerStats : MonoBehaviour {
                 currentState = 0;
                 print("Hit!");
             }
+            player.StopPlayer(true);
         }
     }
 
     // Resets and respawns the player
     public void ResetStats()
     {
-        // -here we should play some sound effect, particles, etc-
-        // --this part only works when loaded with the Loader--
-        //this.transform.position = GameManager.instance.Respawn().position;
-        //print("Respawned at " + GameManager.instance.Respawn().position);
-        // --
+        /* here we should play some sound effect, particles, etc-
+        this part only works when loaded with the Loader
+        this.transform.position = GameManager.instance.Respawn().position;
+        print("Respawned at " + GameManager.instance.Respawn().position);
+        */
+        this.transform.position = gameManager.GetRespawnTransform().position;
         currentSanity = MaxSanity;
         currentState = 1;
     }
