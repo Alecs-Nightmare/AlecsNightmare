@@ -46,9 +46,7 @@ public class GameManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        BuildSceneList();
-        StartLevelLoadingRoutine(level);
-        gameState = 1;
+        ResetStats();
     }
 
     // Update is called every frame
@@ -100,11 +98,22 @@ public class GameManager : MonoBehaviour
                     print("Game resumed!");
                     break;
 
-                case -1:    // Reset game
-                    // --do stuff--
+                case -1:    // Resets the game
+                    LoadSpecificScene(returnScene.name);
+                    gameState = 0;
+                    //Destroy(this.gameObject);
+                    print("Resetting the game...");
                     break;
             }
         }
+    }
+
+    // Resets the Game Manager attributes   --CHANGE THEM HERE TO MAKE IT PERMANENT--
+    void ResetStats()
+    {
+        BuildSceneList();
+        StartLevelLoadingRoutine(level);
+        gameState = 1;
     }
 
     // Starts the next level loading coroutine
@@ -130,14 +139,23 @@ public class GameManager : MonoBehaviour
             print(scene + " has not been found on the Scene Array.");
 
             // Finish the game
-            PauseGame(true);
-#if UNITY_EDITOR
-            EditorApplication.isPaused = true;
-#endif
+            LoadSpecificScene(creditsScene.name);
             gameState = -1;
-            StartCoroutine(LoadSceneAsync(creditsScene.name));
             print("Thanks for playing!");
         }
+    }
+
+    // Loads a specifid scene out of the level loop
+    void LoadSpecificScene(string name)
+    {
+        // Pauses the current scene
+        PauseGame(true);
+
+        // Pauses the emulation on the editor
+#if UNITY_EDITOR
+        //EditorApplication.isPaused = true;
+#endif
+        StartCoroutine(LoadSceneAsync(name));
     }
 
     // Rebuilds the checkpoint array and sets the initial one as active
