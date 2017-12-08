@@ -5,6 +5,7 @@ using UnityEngine;
 [RequireComponent (typeof (Controller2D))]
 public class Player : MonoBehaviour {
     
+    #region Member Variables
     public Vector2 wallJumpClimb;
     public Vector2 wallJumpOff;
     public Vector2 wallLeap;
@@ -30,34 +31,28 @@ public class Player : MonoBehaviour {
     float saveGravity;
     float gravity = -20f;
     float timeToWallUnstick;
-    float jumpsToPlane = 2f;
-    float currentJumps;
+    float jumpsToSoar = 2f;
+    float currentJumps = 0.0f;
     float currentDashTime;
     float accelRatePerSec;
     float saveVelocityY;
     bool canEnableUmbrella = true;
     bool umbrellaUnlocked = false;
-    [SerializeField] bool active = true;
+    bool active = true;
     Vector3 aimDirection;
     Vector3 velocity;
     Controller2D controller;
     SpriteRenderer spriteRenderer;
+    int sanityPoints;   //esto es provisional
+    #endregion
 
-    private int sanityPoints;   //esto es provisional
-
-    //esto es provisional
-    public bool UmbrellaUnlocked
-    {
-        get
-        {
-            return umbrellaUnlocked;
-        }
-
-        set
-        {
-            umbrellaUnlocked = value;
-        }
-    }
+    #region Public Properties
+    public bool UmbrellaUnlocked { get {return umbrellaUnlocked;} set {umbrellaUnlocked = value;}}
+    public Vector3 Velocity { get {return velocity; } }
+    public float CurrentJumps { get { return currentJumps; } }
+    public bool CanEnableUmbrella { get {return canEnableUmbrella;}}
+    public float JumpsToSoar { get {return jumpsToSoar;}}
+    #endregion
 
     private void Awake()
     {
@@ -68,14 +63,11 @@ public class Player : MonoBehaviour {
     // Use this for initialization
     void Start ()
     {
-        currentJumps = 0f;
-        jumpsToPlane = 2f;
         aimDirection = Vector3.right;
         currentDashTime = maxDashTime;
         gravity = -(2 * maxJumpHeight) / Mathf.Pow(timeToJumpApex, 2);
         maxJumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;
         minJumpVelocity = Mathf.Sqrt(2 * Mathf.Abs(gravity) * minJumpHeight);
-        print("Gravity: " + gravity + " Jump Velocity: " + maxJumpVelocity);
         saveGravity = gravity;
     }
 	
@@ -103,7 +95,7 @@ public class Player : MonoBehaviour {
             {
 
 
-                if (!controller.collisions.isPlanning && velocity.y < 0) //si está en el aire (sin planear)
+                if (!controller.collisions.isSoaring && velocity.y < 0) //si está en el aire (sin planear)
                 {
                     if (Input.GetKeyDown(KeyCode.Space) && canEnableUmbrella)//y se pulsa espacio y puede usar el paraguas
                     {
@@ -113,7 +105,7 @@ public class Player : MonoBehaviour {
 
                         currentJumps = 0f;
                         //print("activado");
-                        controller.collisions.isPlanning = true;
+                        controller.collisions.isSoaring = true;
                         return;
                     }
                     //si no pulsa espacio o no se puede usar el paraguas
@@ -121,7 +113,7 @@ public class Player : MonoBehaviour {
                 }
             }
 
-            if (controller.collisions.isPlanning)//si  está planeando
+            if (controller.collisions.isSoaring)//si  está planeando
             {
 
 
@@ -130,7 +122,7 @@ public class Player : MonoBehaviour {
 
                     canEnableUmbrella = false;
 
-                    controller.collisions.isPlanning = false;
+                    controller.collisions.isSoaring = false;
 
                 }
             }
@@ -158,7 +150,7 @@ public class Player : MonoBehaviour {
 
             if ((controller.collisions.left || controller.collisions.right) && !controller.collisions.below && velocity.y < 0)
             {
-                if (controller.getHitTag() != "Through")//PARA QUE NO FRENE SI ES PLATAFORMA Q SE MEUVE
+				if (controller.HitTag != "Through")//PARA QUE NO FRENE SI ES PLATAFORMA Q SE MEUVE
                 {
                     wallSliding = true;
                     if (velocity.y < -wallSlideSpeedMax)
@@ -221,15 +213,15 @@ public class Player : MonoBehaviour {
             {
                 currentJumps++;
 
-                if (currentJumps == jumpsToPlane && canEnableUmbrella) //si puede planear: planea
+                if (currentJumps == jumpsToSoar && canEnableUmbrella) //si puede planear: planea
                 {
-                    controller.collisions.isPlanning = true;
+                    controller.collisions.isSoaring = true;
                     gravity = gravityWhilePlanning;
                     currentJumps = 0f;
                 }
 
 
-                if (wallSliding && controller.getHitTag() != "Through")
+				if (wallSliding && controller.HitTag != "Through")
                 {
 
                     if (wallDirX == input.x)
@@ -268,7 +260,7 @@ public class Player : MonoBehaviour {
             if (!controller.collisions.isDashing)
             {
 
-                if (controller.collisions.isPlanning) //added
+                if (controller.collisions.isSoaring) //added
                 {
                     if (controller.collisions.descending)
                     {
@@ -305,38 +297,17 @@ public class Player : MonoBehaviour {
         }
     }
 
-    public Vector3 getVelocity() {
-        return velocity;
-    }
-    public float getCurrentJump()
-    {
-        return currentJumps;
-    }
-    public bool getCanEnableUmbrella()
-    {
-        return canEnableUmbrella;
-    }
-    public float getJumpsToPlane()
-    {
-        return jumpsToPlane;
-    }
-
     public void SetJumpBetweenWalls(string type)
     {
 
         if (type == "Climbable")
         {
-
-            //print("LOL2");
-
             wallJumpClimb.x = 5;
             wallJumpClimb.y = 17;
         }
         
         else
         {
-            //print("LOL");
-            //changing properties...
             wallJumpClimb.x = 4;
             wallJumpClimb.y = 10;
         }
@@ -346,13 +317,11 @@ public class Player : MonoBehaviour {
     //provisional
     public void setSanityPoints(int amount)
     {
-
         sanityPoints += amount;
-
     }
+
     public int getSanityPoints()
     {
-
         return sanityPoints;
     }
     //provisional

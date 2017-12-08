@@ -25,7 +25,7 @@ public class PlayerStats : MonoBehaviour {
     void Awake()
     {
         manager = GameObject.FindGameObjectWithTag("Manager");
-        gameManager = manager.GetComponent<GameManager>();
+        gameManager = manager.GetComponent<GameManager>(); // ¿POR QUE EL PLAYER TIENE AL GAME MANAGER?
         player = GetComponentInParent<Player>();
     }
 

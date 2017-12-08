@@ -31,11 +31,11 @@ public class AnimationController : MonoBehaviour {
 
     void Update()
     {
-        if (controller.collisions.isPlanning && player.getCanEnableUmbrella() && anim.GetBool(AnimatorParameters.armado))
+        if (controller.collisions.isSoaring && player.getCanEnableUmbrella() && anim.GetBool(AnimatorParameters.armado))
         {
             anim.SetInteger(AnimatorParameters.estado, (int)PlayerState.planeando);
         }
-        else if(!controller.collisions.isPlanning && player.getVelocity().y < 0)
+        else if(!controller.collisions.isSoaring && player.getVelocity().y < 0)
         {
             anim.SetInteger(AnimatorParameters.estado, (int)PlayerState.cayendo);
         }
