@@ -31,23 +31,23 @@ public class AnimationController : MonoBehaviour {
 
     void Update()
     {
-        if (controller.collisions.isSoaring && player.getCanEnableUmbrella() && anim.GetBool(AnimatorParameters.armado))
+        if (controller.collisions.isSoaring && player.CanEnableUmbrella && anim.GetBool(AnimatorParameters.armado))
         {
             anim.SetInteger(AnimatorParameters.estado, (int)PlayerState.planeando);
         }
-        else if(!controller.collisions.isSoaring && player.getVelocity().y < 0)
+        else if(!controller.collisions.isSoaring && player.Velocity.y < 0)
         {
             anim.SetInteger(AnimatorParameters.estado, (int)PlayerState.cayendo);
         }
-        else if (Mathf.Abs(player.getVelocity().x) > 0 && controller.collisions.below)
+        else if (Mathf.Abs(player.Velocity.x) > 0 && controller.collisions.below)
         {
             anim.SetInteger(AnimatorParameters.estado, (int)PlayerState.andando);
         }
-        else if (player.getVelocity().y > 0)
+        else if (player.Velocity.y > 0)
         {
             anim.SetInteger(AnimatorParameters.estado, (int)PlayerState.saltando);
         }
-        else if(player.input == Vector2.zero && player.getVelocity().x == 0)
+        else if(player.input == Vector2.zero && player.Velocity.x == 0)
         {
             anim.SetInteger(AnimatorParameters.estado, (int)PlayerState.idle);
         }

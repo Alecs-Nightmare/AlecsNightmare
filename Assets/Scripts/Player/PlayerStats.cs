@@ -24,8 +24,6 @@ public class PlayerStats : MonoBehaviour {
     // Set up references
     void Awake()
     {
-        manager = GameObject.FindGameObjectWithTag("Manager");
-        gameManager = manager.GetComponent<GameManager>(); // ¿POR QUE EL PLAYER TIENE AL GAME MANAGER?
         player = GetComponentInParent<Player>();
     }
 
@@ -99,12 +97,6 @@ public class PlayerStats : MonoBehaviour {
     // Resets and respawns the player
     public void ResetStats()
     {
-        /* here we should play some sound effect, particles, etc-
-        this part only works when loaded with the Loader
-        this.transform.position = GameManager.instance.Respawn().position;
-        print("Respawned at " + GameManager.instance.Respawn().position);
-        */
-        this.transform.position = gameManager.GetRespawnTransform().position;
         currentSanity = MaxSanity;
         currentState = 1;
     }
