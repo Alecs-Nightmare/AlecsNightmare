@@ -151,7 +151,7 @@ public class InstantiateBackgrounds : MonoBehaviour {
             */
             FrontBackgrounds[i] = Instantiate(frontBackground, new Vector3(20 + i * sizeBackgroundFront, Random.Range(10,20), 0), frontBackground.transform.rotation, children[1]);
             MiddleBackgrounds[i] = Instantiate(middleBackground, new Vector3(30 + i * sizeBackgroundFront, 0, 0), middleBackground.transform.rotation, children[2]);
-            BackBackgrounds[i] = Instantiate(backBackground, new Vector3(40 + i * sizeBackgroundFront, -2, 0), backBackground.transform.rotation, children[3]);
+            BackBackgrounds[i] = Instantiate(backBackground, new Vector3(40 + i * sizeBackgroundFront, 4, 0), backBackground.transform.rotation, children[3]);
 
         }
         
