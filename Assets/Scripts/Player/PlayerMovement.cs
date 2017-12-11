@@ -131,7 +131,6 @@ public class PlayerMovement : MonoBehaviour {
             }
             if (controller.collisions.below)
             {
-                print("jump");
                 velocity.y = maxJumpVelocity;
             }
         }
