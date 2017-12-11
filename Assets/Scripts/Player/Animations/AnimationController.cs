@@ -34,12 +34,9 @@ public class AnimationController : MonoBehaviour {
 
     void Update()
     {
-        
-
-        Debug.Log(_playerMovement.WallSliding);
-        //Debug.Log(_playerMovement.Velocity.x);
-        if (controller.collisions.isSoaring && _playerMovement.CanEnableUmbrella && anim.GetBool(AnimatorParameters.armado))
+		if (controller.collisions.isSoaring && _playerMovement.CanEnableUmbrella)
         {
+			Debug.Break ();
             anim.SetInteger(AnimatorParameters.estado, (int)PlayerState.planeando);
         }
         else if (_playerMovement.WallSliding)
@@ -54,12 +51,8 @@ public class AnimationController : MonoBehaviour {
         {
             anim.SetInteger(AnimatorParameters.estado, (int)PlayerState.cayendo);
         }
-      
-        
-       
         else if (Mathf.Abs(m_playerInput.DirectionalInput.x) > 0 && controller.collisions.below)
         {
-            Debug.Log("andando");
             anim.SetInteger(AnimatorParameters.estado, (int)PlayerState.andando);
         }
 
@@ -71,7 +64,6 @@ public class AnimationController : MonoBehaviour {
         
         else if (_playerMovement.Velocity.y > 0)
         {
-            Debug.Log("saltando");
             anim.SetInteger(AnimatorParameters.estado, (int)PlayerState.saltando);
         }
 
