@@ -29,6 +29,8 @@ public class PlayerMovement : MonoBehaviour {
     float accelRatePerSec;
     bool canEnableUmbrella = true;
     bool active = true;
+    bool wallSliding = false;
+    int wallDirX;
     Vector2 input;
     Vector3 aimDirection;
     Vector3 velocity;
@@ -49,6 +51,9 @@ public class PlayerMovement : MonoBehaviour {
 
     public Vector3 Velocity { get {return velocity; } }
     public bool CanEnableUmbrella { get {return canEnableUmbrella;}}
+    public bool WallSliding { get { return wallSliding; } }
+    public Vector3 AimDirection { get { return aimDirection; } }
+    public int WallDirX { get { return wallDirX; } }
     #endregion
 
     private void Awake()
@@ -69,7 +74,15 @@ public class PlayerMovement : MonoBehaviour {
         if (active)
         {
             input = playerInput.DirectionalInput;
-            int wallDirX = (controller.collisions.left) ? -1 : 1;
+            wallDirX = (controller.collisions.left) ? -1 : 1;
+
+            /*
+            Debug.Log("input direction" + input.x);
+            Debug.Log("below" + controller.collisions.below);
+            Debug.Log("left" + controller.collisions.left);
+            Debug.Log("right" + controller.collisions.right);
+            Debug.Log("velocity.x" + velocity.x);
+            */
 
             ResetGravity();
 
@@ -88,6 +101,8 @@ public class PlayerMovement : MonoBehaviour {
             HandleJumping(wallDirX);
 
             controller.Move(velocity * Time.deltaTime, input);
+
+            if (playerInput.DirectionalInput.x == 0) velocity.x = 0;
         }
     }
 
@@ -111,7 +126,7 @@ public class PlayerMovement : MonoBehaviour {
     {
         if (playerInput.CaptureJumpInputDown())
         {
-            if (controller.collisions.WallSliding && controller.HitTag != "Through")
+            if (wallSliding && controller.HitTag != "Through")
             {
                 if (wallDirX == input.x)
                 {
@@ -147,11 +162,12 @@ public class PlayerMovement : MonoBehaviour {
 
     private void HandleWallSliding(int wallDirX)
     {
+        wallSliding = false;
         if ((controller.collisions.left || controller.collisions.right) && !controller.collisions.below && velocity.y < 0)
         {
             if (controller.HitTag != "Through") //PARA QUE NO FRENE SI ES PLATAFORMA Q SE MEUVE
             {
-                controller.collisions.WallSliding = true;
+                wallSliding = true;
                 if (velocity.y < -wallSlideSpeedMax)
                 {
                     velocity.y = -wallSlideSpeedMax;
@@ -183,6 +199,9 @@ public class PlayerMovement : MonoBehaviour {
         float targetVelocityX = input.x * moveSpeed;
         velocity.x = Mathf.SmoothDamp(velocity.x, targetVelocityX, ref velocityXSmoothing,
             (controller.collisions.below) ? accelerationTimeGrounded : accelerationTimeAirborne);
+
+        velocity.y += gravity * Time.deltaTime;
+
 
         if (input.x != 0)//si se mueve horizontalmente
         {

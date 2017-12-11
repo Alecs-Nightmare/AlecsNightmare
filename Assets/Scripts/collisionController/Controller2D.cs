@@ -117,7 +117,7 @@ public class Controller2D : RaycastController
                     Destroy(hit.collider.gameObject);
                     continue;
                 }
-
+               
                 if (hit.distance == 0)
                     continue; 
 
@@ -137,6 +137,7 @@ public class Controller2D : RaycastController
                     }
                     ClimbSlope(ref velocity, slopeAngle);
                     velocity.x += distanceToSlopeStart * directionX;
+                    
                 }
                      
                 if (!collisions.climbingSlope || slopeAngle > maxClimbAngle) //wall
@@ -287,7 +288,7 @@ public class Controller2D : RaycastController
     public struct CollisionInfo
     {
         public string TouchAWall;
-        public bool WallSliding;
+    
         public bool above, below;
         public bool left, right;
         public float slopeAngle, slopeAngleOld;
@@ -312,7 +313,7 @@ public class Controller2D : RaycastController
             slopeAngleOld = slopeAngle;
             slopeAngle = 0;
             TouchAWall = "";
-            WallSliding = false;
+            //WallSliding = false;
         }
     }
 }
