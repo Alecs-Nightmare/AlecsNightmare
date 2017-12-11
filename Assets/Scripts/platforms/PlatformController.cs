@@ -42,9 +42,12 @@ public class PlatformController : RaycastController {
         Vector3 velocity = CalculatePlatformMovement();
 
         CalculatePassengerMovement(velocity);
-        MovePassangers(true);
-        transform.Translate(velocity);
         MovePassangers(false);
+        transform.Translate(velocity);
+        MovePassangers(true);
+        
+        
+        
 	}
 
     float Ease(float x)
@@ -92,6 +95,7 @@ public class PlatformController : RaycastController {
     {
         foreach (PassengerMovement passenger in passengerMovement)
         {
+            
             if (!passengerDictionary.ContainsKey(passenger.transform))
             {
                 passengerDictionary.Add(passenger.transform, passenger.transform.GetComponent<Controller2D>());
