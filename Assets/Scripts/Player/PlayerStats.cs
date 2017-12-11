@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,7 +7,7 @@ public class PlayerStats : MonoBehaviour {
 
     GameObject manager;
     GameManager gameManager;        // Reference to the Game Manager
-    Player player;                  // Reference to character's Player class
+    PlayerMovement _playerMovement;                  // Reference to character's PlayerMovement class
 
     public int MaxSanity = 100;     // This is the main resource
     [SerializeField]
@@ -21,12 +22,13 @@ public class PlayerStats : MonoBehaviour {
     private float fraction = 3f;
 
 
+    public int CurrentSanity { get { return currentSanity; }  set { currentSanity = value; } }
+
+
     // Set up references
     void Awake()
     {
-        manager = GameObject.FindGameObjectWithTag("Manager");
-        gameManager = manager.GetComponent<GameManager>();
-        player = GetComponentInParent<Player>();
+        _playerMovement = GetComponentInParent<PlayerMovement>();
     }
 
     // Use this for initialization
@@ -43,12 +45,12 @@ public class PlayerStats : MonoBehaviour {
             case -1:        // Dead (waiting for respawn)
 
                 time += Time.smoothDeltaTime;
-                // -deactivate player's movement controller class after refactoring-
+                // -deactivate _playerMovement's movement controller class after refactoring-
                 if (time >= deathCooldown)
                 {
                     time = 0;
                     ResetStats();  // -for the moment we manage this here-
-                    player.StopPlayer(false);
+                    _playerMovement.StopPlayer(false);
                 }
                 break;
 
@@ -59,11 +61,11 @@ public class PlayerStats : MonoBehaviour {
                 {
                     time = 0;
                     currentState = 1;
-                    player.StopPlayer(false);
+                    _playerMovement.StopPlayer(false);
                 }
                 break;
 
-            case 1:         // Player is active
+            case 1:         // PlayerMovement is active
 
                 break;
         }
@@ -92,19 +94,13 @@ public class PlayerStats : MonoBehaviour {
                 currentState = 0;
                 print("Hit!");
             }
-            player.StopPlayer(true);
+            _playerMovement.StopPlayer(true);
         }
     }
 
-    // Resets and respawns the player
+    // Resets and respawns the _playerMovement
     public void ResetStats()
     {
-        /* here we should play some sound effect, particles, etc-
-        this part only works when loaded with the Loader
-        this.transform.position = GameManager.instance.Respawn().position;
-        print("Respawned at " + GameManager.instance.Respawn().position);
-        */
-        this.transform.position = gameManager.GetRespawnTransform().position;
         currentSanity = MaxSanity;
         currentState = 1;
     }

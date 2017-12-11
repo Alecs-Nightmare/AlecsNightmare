@@ -176,7 +176,7 @@ namespace TriangleNet.IO
 
                 if (invertices < 3)
                 {
-                    throw new Exception("Input must have at least three input vertices.");
+                    throw new Exception("DirectionalInput must have at least three input vertices.");
                 }
 
                 if (line.Length > 1)

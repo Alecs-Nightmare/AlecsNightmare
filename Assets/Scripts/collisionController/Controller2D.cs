@@ -1,28 +1,44 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-[RequireComponent (typeof(BoxCollider2D))]
-public class Controller2D : RaycastController {
 
+[RequireComponent (typeof(BoxCollider2D))]
+public class Controller2D : RaycastController 
+{
+	#region member variables
+	[Header("Controller Options")]
     public float maxClimbAngle = 80f;
     public float maxDescendAngle = 75f;
-    public CollisionInfo collisions;
-    public GameEvent OnPickUpCollectable;
-    private Vector2 playerInput;
-    private string hitTag;
-    public Player refPlayer;
-    public Vector2 PlayerInput { get { return playerInput; } }
+    public int sanityToAdd = 3;
 
+    private PlayerStats playerStats;
 
-    // Use this for initialization
+	[HideInInspector]public PlayerMovement RefPlayerMovement;
+	[HideInInspector]public CollisionInfo collisions;
+	#endregion
+
+	#region Public Properties
+	public Vector2 PlayerInput { get; private set; }
+    public string HitTag { get; private set; }
+
+    #endregion
+
+    #region MonoBehaviours Messages
+	public override void Awake ()
+	{
+		base.Awake ();
+		RefPlayerMovement = GetComponent<PlayerMovement>();
+	    playerStats = GetComponent<PlayerStats>();
+	}
+
     public override void Start()
     {
-        refPlayer = GetComponent<Player>();
-        
         base.Start();
         collisions.faceDirection = 1;
     }
+    #endregion
 
+    #region Controller Methods
     public void Move(Vector3 velocity, bool standingOnPlatform)
     {
         Move(velocity, Vector2.zero, standingOnPlatform);
@@ -30,75 +46,49 @@ public class Controller2D : RaycastController {
             
     public void Move(Vector3 velocity, Vector2 input, bool standingOnPlatform = false)
     {
-        if (collisions.below)//added
-        {
-            collisions.descending = false;
-            collisions.ascending = false;
-        }
-
-        if (collisions.descending)//added                
-        {
-            //print("descending!!");
-        }
-        if (collisions.ascending)//added
-        {
-            //print("ascending!!");
-        }
-
         UpdateRaycastOrigins();
         collisions.Reset();
 
-        collisions.velocityOld = velocity;
-        playerInput = input;
-
-        if (collisions.below || (!collisions.left && !collisions.right))
-        {
-            hitTag = "";
-            
-        }
-
-        if (velocity.x != 0)
-        {
-            collisions.faceDirection = (int)Mathf.Sign(velocity.x);
-        }
-
-        if (velocity.y < 0 && !standingOnPlatform)//added
-        {
-            collisions.descending = true;
-            DescendSlope(ref velocity);
-        }
-        else if (velocity.y > 0 && !standingOnPlatform)//added
-        {
-            collisions.ascending = true;
-        }
-        
+		UpdateCollisionsInfo (ref velocity, standingOnPlatform,input);
         HorizontalCollisions(ref velocity);
         
-            
         if (velocity.y != 0)
         {
             VerticalCollisions(ref velocity);
         }
             
-        transform.Translate(velocity);
-        if (standingOnPlatform)
-        {
-            collisions.below = true;
-        }
-
-        //check if we are grounded
-
-        /*
-        if (collisions.below)
-        {
-            if (collisions.isPlanning)
-            {
-                collisions.isPlanning = false;
-            }
-        }
-        */
-                         
+        transform.Translate(velocity);               
     }
+
+	void UpdateCollisionsInfo (ref Vector3 velocity, bool standingOnPlatform, Vector2 input)
+	{
+		PlayerInput = input;
+		collisions.velocityOld = velocity;
+
+		if (collisions.below) {
+			collisions.descending = false;
+			collisions.ascending = false;
+		}
+		if (collisions.below || (!collisions.left && !collisions.right)) {
+			HitTag = "";
+		}
+		if (velocity.x != 0) {
+			collisions.faceDirection = (int)Mathf.Sign (velocity.x);
+		}
+		if (velocity.y < 0 && !standingOnPlatform)//added
+		 {
+			collisions.descending = true;
+			CheckIfDescendingSlope (ref velocity);
+		}
+		else
+			if (velocity.y > 0 && !standingOnPlatform)//added
+			 {
+				collisions.ascending = true;
+			}
+		if (standingOnPlatform) {
+			collisions.below = true;
+		}
+	}
 
     void HorizontalCollisions(ref Vector3 velocity)
     {
@@ -119,27 +109,17 @@ public class Controller2D : RaycastController {
 
             if (hit)
             {
-
-
-                hitTag = hit.collider.tag;
+                HitTag = hit.collider.tag;
                 
                if (hit.collider.CompareTag("collectable"))
-                {
-                    refPlayer.setSanityPoints(+3);
-
-                    if (OnPickUpCollectable != null)
-                        OnPickUpCollectable.Raise();
-
+               {
+                    playerStats.CurrentSanity += sanityToAdd;
                     Destroy(hit.collider.gameObject);
                     continue;
                 }
+               
                 if (hit.distance == 0)
-                {
-                   
-                    continue;
-                    
-                    
-                }
+                    continue; 
 
                 float slopeAngle = Vector2.Angle(hit.normal, Vector2.up);
                 if (i == 0 && slopeAngle <= maxClimbAngle)
@@ -157,6 +137,7 @@ public class Controller2D : RaycastController {
                     }
                     ClimbSlope(ref velocity, slopeAngle);
                     velocity.x += distanceToSlopeStart * directionX;
+                    
                 }
                      
                 if (!collisions.climbingSlope || slopeAngle > maxClimbAngle) //wall
@@ -164,9 +145,7 @@ public class Controller2D : RaycastController {
 
                     //change walljumping properties depending which wall we are colliding with
                     collisions.TouchAWall = hit.collider.tag;
-                    refPlayer.SetJumpBetweenWalls(collisions.TouchAWall);
-                    //print(collisions.TouchAWall);                      
-                    //change... end
+                    RefPlayerMovement.SetJumpBetweenWalls(collisions.TouchAWall);
 
                     velocity.x = (hit.distance - skinWidth) * directionX;
                     rayLength = hit.distance; //we gotta change our ray length due to if there is a two different height blocks our object has to be able to collide with bpth
@@ -178,13 +157,9 @@ public class Controller2D : RaycastController {
 
                     collisions.left = directionX == -1;
                     collisions.right = directionX == 1;
-                    
                 }
-                
-
             }
         }
-
     }
 
     void VerticalCollisions(ref Vector3 velocity)
@@ -211,7 +186,7 @@ public class Controller2D : RaycastController {
                     {
                         continue;
                     }
-                    if (playerInput.y == -1)
+                    if (PlayerInput.y == -1)
                     {
                         collisions.fallingThroughPlatform = true;
                         Invoke("ResetFallingThroughPlatform", 0.1f);
@@ -222,8 +197,7 @@ public class Controller2D : RaycastController {
                 }
                 else if (hit.collider.CompareTag("collectable"))
                 {
-                    refPlayer.setSanityPoints(+3);
-                    print(refPlayer.getSanityPoints());
+                    playerStats.CurrentSanity += sanityToAdd;
                     Destroy(hit.collider.gameObject);
                     continue;
                 }
@@ -257,8 +231,6 @@ public class Controller2D : RaycastController {
                     collisions.slopeAngle = slopeAngle;
                 }
             }
-
-
         }
     }
 
@@ -267,8 +239,7 @@ public class Controller2D : RaycastController {
         float moveDistance = Mathf.Abs(velocity.x);
         float climbVelocityY = Mathf.Sin(slopeAngle * Mathf.Deg2Rad) * moveDistance;
 
-        if (velocity.y <= climbVelocityY)
-       
+        if (velocity.y <= climbVelocityY)   
         {
             velocity.y = climbVelocityY;
             velocity.x = Mathf.Cos(slopeAngle * Mathf.Deg2Rad) * moveDistance * Mathf.Sign(velocity.x);
@@ -276,80 +247,57 @@ public class Controller2D : RaycastController {
             collisions.climbingSlope = true;
             collisions.slopeAngle = slopeAngle;
         }
-        
-
     }
 
-   void DescendSlope(ref Vector3 velocity)
+   void CheckIfDescendingSlope(ref Vector3 velocity)
     {
         float directionX = Mathf.Sign(velocity.x);
         Vector2 rayOrigin = (directionX == -1) ? raycastOrigins.bottomRight : raycastOrigins.bottomLeft;
         RaycastHit2D hit = Physics2D.Raycast(rayOrigin, -Vector2.up, Mathf.Infinity, collisionMask);
 
-        if (hit)
-        {
-            
-
-
-            float slopeAngle = Vector2.Angle(hit.normal, Vector2.up);
-            if (slopeAngle!=0 && slopeAngle <= maxDescendAngle)
-            {
-                if (Mathf.Sign(hit.normal.x) == directionX)
-                {
-                    if (hit.distance - skinWidth <= Mathf.Tan(slopeAngle * Mathf.Deg2Rad) * Mathf.Abs(velocity.x))
-                    {
-                        float moveDistance = Mathf.Abs(velocity.x);
-                        float descendVelocityY = Mathf.Sin(slopeAngle * Mathf.Deg2Rad) * moveDistance;
-                        velocity.x = Mathf.Cos(slopeAngle * Mathf.Deg2Rad) * moveDistance * Mathf.Sign(velocity.x);
-                        velocity.y -= descendVelocityY;
-                        collisions.slopeAngle = slopeAngle;
-                        collisions.descendingSlope = true;
-                        collisions.below = true;
-
-                    }
-                }
-                 
-            }
-        }
-
-
-
+        DescendSlope (velocity, directionX, hit);
     }
 
-
- 
-
-
-    public string getHitTag()
-    {
-        return hitTag;
-    }
+	void DescendSlope (Vector3 velocity, float directionX, RaycastHit2D hit)
+	{
+		if (hit) 
+		{
+			float slopeAngle = Vector2.Angle (hit.normal, Vector2.up);
+			if (slopeAngle != 0 && slopeAngle <= maxDescendAngle) {
+				if (Mathf.Sign (hit.normal.x) == directionX) {
+					if (hit.distance - skinWidth <= Mathf.Tan (slopeAngle * Mathf.Deg2Rad) * Mathf.Abs (velocity.x)) {
+						float moveDistance = Mathf.Abs (velocity.x);
+						float descendVelocityY = Mathf.Sin (slopeAngle * Mathf.Deg2Rad) * moveDistance;
+						velocity.x = Mathf.Cos (slopeAngle * Mathf.Deg2Rad) * moveDistance * Mathf.Sign (velocity.x);
+						velocity.y -= descendVelocityY;
+						collisions.slopeAngle = slopeAngle;
+						collisions.descendingSlope = true;
+						collisions.below = true;
+					}
+				}
+			}
+		}
+	}
 
     void ResetFallingThroughPlatform()
     {
         collisions.fallingThroughPlatform = false;
     }
+    #endregion
    
     public struct CollisionInfo
     {
         public string TouchAWall;
-        public bool WallSliding;
+    
         public bool above, below;
         public bool left, right;
-
         public float slopeAngle, slopeAngleOld;
         public bool climbingSlope;
         public bool descendingSlope;
-
         public bool ascending;//added
         public bool descending;//added
-
-
         public bool isDashing;
-
-        public bool isPlanning;
-        //public bool grounded;            
-
+        public bool isSoaring;
         public Vector3 velocityOld;
         public int faceDirection;
         public bool fallingThroughPlatform;
@@ -360,13 +308,12 @@ public class Controller2D : RaycastController {
             left = right = false;
             climbingSlope = false;
             descendingSlope = false;
-            ascending = false;//added
-            descending = false;//added
-            //grounded = false;
+            ascending = false;
+            descending = false;
             slopeAngleOld = slopeAngle;
             slopeAngle = 0;
             TouchAWall = "";
-            WallSliding = false;
+            //WallSliding = false;
         }
     }
 }

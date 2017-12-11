@@ -161,7 +161,7 @@ namespace TriangleNet.Tools
         /// </summary>
         /// <param name="root">the node that defines the connected component. It is used as the starting 
         /// point for the RCM ordering.</param>
-        /// <param name="mask">Input/output, int MASK(NODE_NUM), a mask for the nodes. Only those nodes with 
+        /// <param name="mask">DirectionalInput/output, int MASK(NODE_NUM), a mask for the nodes. Only those nodes with 
         /// nonzero input mask values are considered by the routine. The nodes numbered by RCM will have 
         /// their mask values set to zero.</param>
         /// <param name="perm">Output, int PERM(NODE_NUM), the RCM ordering.</param>
@@ -632,7 +632,7 @@ namespace TriangleNet.Tools
         /// <param name="size">number of entries in the array.</param>
         /// <param name="a">the array to be reversed.</param>
         /// <example>
-        ///   Input:
+        ///   DirectionalInput:
         ///     N = 5,
         ///     A = ( 11, 12, 13, 14, 15 ).
         ///

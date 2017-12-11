@@ -4,8 +4,8 @@ using Random = UnityEngine.Random;
 
 public class GunShoot : MonoBehaviour {
 
-	public float fireRate = 0.25f;										// Number in seconds which controls how often the player can fire
-	public float weaponRange = 20f;										// Distance in Unity units over which the player can fire
+	public float fireRate = 0.25f;										// Number in seconds which controls how often the _playerMovement can fire
+	public float weaponRange = 20f;										// Distance in Unity units over which the _playerMovement can fire
 
 	public Transform gunEnd;
 	public ParticleSystem muzzleFlash;
@@ -19,7 +19,7 @@ public class GunShoot : MonoBehaviour {
 	public GameObject[] fleshHitEffects;
 	public GameObject woodHitEffect;
 
-	private float nextFire;												// Float to store the time the player will be allowed to fire again, after firing
+	private float nextFire;												// Float to store the time the _playerMovement will be allowed to fire again, after firing
 	private Animator anim;
 	private GunAim gunAim;
 
