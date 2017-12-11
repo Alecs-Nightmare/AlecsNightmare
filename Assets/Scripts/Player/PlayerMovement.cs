@@ -48,7 +48,6 @@ public class PlayerMovement : MonoBehaviour {
 
     #region Public Properties
     public bool UmbrellaUnlocked { get; set; }
-
     public Vector3 Velocity { get {return velocity; } }
     public bool CanEnableUmbrella { get {return canEnableUmbrella;}}
     public bool WallSliding { get { return wallSliding; } }
@@ -126,12 +125,12 @@ public class PlayerMovement : MonoBehaviour {
     {
         if (playerInput.CaptureJumpInputDown())
         {
-            if (wallSliding && controller.HitTag != "Through")
+            if (wallSliding && controller.HitTag == "Climbable")
             {
                 if (wallDirX == input.x)
                 {
                     velocity.x = -wallDirX * wallJumpClimb.x;
-                    velocity.y = wallJumpClimb.y;
+                    //velocity.y = wallJumpClimb.y;
                 }
                 else if (input.x == 0)
                 {
@@ -165,7 +164,7 @@ public class PlayerMovement : MonoBehaviour {
         wallSliding = false;
         if ((controller.collisions.left || controller.collisions.right) && !controller.collisions.below && velocity.y < 0)
         {
-            if (controller.HitTag != "Through") //PARA QUE NO FRENE SI ES PLATAFORMA Q SE MEUVE
+            if (controller.HitTag == "Climbable") //PARA QUE NO FRENE SI ES PLATAFORMA Q SE MEUVE
             {
                 wallSliding = true;
                 if (velocity.y < -wallSlideSpeedMax)
