@@ -31,11 +31,11 @@ public class EnemyStats : MonoBehaviour {
 
     void OnCollisionEnter2D(Collision2D col)
     {
-        if (col.gameObject.tag == "Player")
+        if (col.gameObject.tag == "PlayerMovement")
         {
             //print("Hit!");
             // opposite force pull?
-            // -apply repulsion force on the player-
+            // -apply repulsion force on the _playerMovement-
         }
     }
 

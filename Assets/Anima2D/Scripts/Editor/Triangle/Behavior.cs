@@ -170,7 +170,7 @@ namespace TriangleNet
         }
 
         /// <summary>
-        /// Input is a Planar Straight Line Graph.
+        /// DirectionalInput is a Planar Straight Line Graph.
         /// </summary>
         public bool Poly
         {

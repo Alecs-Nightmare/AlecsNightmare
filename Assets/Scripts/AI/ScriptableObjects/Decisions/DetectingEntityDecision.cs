@@ -18,7 +18,7 @@ namespace ProjectAI
             {
                 for (int i = 0; i < hits.Length; i++)
                 {
-                    if (hits[i].transform.CompareTag("Player"))
+                    if (hits[i].transform.CompareTag("PlayerMovement"))
                     {
                         fSMController.ChosenTarget = hits[i].transform;
                         Debug.Log("Detected");

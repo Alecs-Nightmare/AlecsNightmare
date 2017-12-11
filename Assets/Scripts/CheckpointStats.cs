@@ -28,7 +28,7 @@ public class CheckpointStats : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D col)
     {
-        if (col.gameObject.tag == "Player")
+        if (col.gameObject.tag == "PlayerMovement")
         {
             print("Check: " + number + "!");
             GameManager.instance.UpdateCurrentCheckNum(number);

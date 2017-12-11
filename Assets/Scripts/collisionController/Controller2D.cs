@@ -9,24 +9,26 @@ public class Controller2D : RaycastController
 	[Header("Controller Options")]
     public float maxClimbAngle = 80f;
     public float maxDescendAngle = 75f;
-   
-	private Vector2 m_playerInput;
-	private string m_hitTag;
+    public int sanityToAdd = 3;
 
-	[HideInInspector]public Player refPlayer;
+    private PlayerStats playerStats;
+
+	[HideInInspector]public PlayerMovement RefPlayerMovement;
 	[HideInInspector]public CollisionInfo collisions;
 	#endregion
 
 	#region Public Properties
-	public Vector2 PlayerInput { get { return m_playerInput; } }
-	public string HitTag { get { return m_hitTag; } }
-	#endregion
+	public Vector2 PlayerInput { get; private set; }
+    public string HitTag { get; private set; }
+
+    #endregion
 
     #region MonoBehaviours Messages
 	public override void Awake ()
 	{
 		base.Awake ();
-		refPlayer = GetComponent<Player>();
+		RefPlayerMovement = GetComponent<PlayerMovement>();
+	    playerStats = GetComponent<PlayerStats>();
 	}
 
     public override void Start()
@@ -60,7 +62,7 @@ public class Controller2D : RaycastController
 
 	void UpdateCollisionsInfo (ref Vector3 velocity, bool standingOnPlatform, Vector2 input)
 	{
-		m_playerInput = input;
+		PlayerInput = input;
 		collisions.velocityOld = velocity;
 
 		if (collisions.below) {
@@ -68,7 +70,7 @@ public class Controller2D : RaycastController
 			collisions.ascending = false;
 		}
 		if (collisions.below || (!collisions.left && !collisions.right)) {
-			m_hitTag = "";
+			HitTag = "";
 		}
 		if (velocity.x != 0) {
 			collisions.faceDirection = (int)Mathf.Sign (velocity.x);
@@ -107,11 +109,11 @@ public class Controller2D : RaycastController
 
             if (hit)
             {
-                m_hitTag = hit.collider.tag;
+                HitTag = hit.collider.tag;
                 
                if (hit.collider.CompareTag("collectable"))
-                {
-                    refPlayer.setSanityPoints(+3);
+               {
+                    playerStats.CurrentSanity += sanityToAdd;
                     Destroy(hit.collider.gameObject);
                     continue;
                 }
@@ -142,9 +144,7 @@ public class Controller2D : RaycastController
 
                     //change walljumping properties depending which wall we are colliding with
                     collisions.TouchAWall = hit.collider.tag;
-                    refPlayer.SetJumpBetweenWalls(collisions.TouchAWall);
-                    //print(collisions.TouchAWall);                      
-                    //change... end
+                    RefPlayerMovement.SetJumpBetweenWalls(collisions.TouchAWall);
 
                     velocity.x = (hit.distance - skinWidth) * directionX;
                     rayLength = hit.distance; //we gotta change our ray length due to if there is a two different height blocks our object has to be able to collide with bpth
@@ -185,7 +185,7 @@ public class Controller2D : RaycastController
                     {
                         continue;
                     }
-                    if (m_playerInput.y == -1)
+                    if (PlayerInput.y == -1)
                     {
                         collisions.fallingThroughPlatform = true;
                         Invoke("ResetFallingThroughPlatform", 0.1f);
@@ -196,8 +196,7 @@ public class Controller2D : RaycastController
                 }
                 else if (hit.collider.CompareTag("collectable"))
                 {
-                    refPlayer.setSanityPoints(+3);
-                    print(refPlayer.getSanityPoints());
+                    playerStats.CurrentSanity += sanityToAdd;
                     Destroy(hit.collider.gameObject);
                     continue;
                 }

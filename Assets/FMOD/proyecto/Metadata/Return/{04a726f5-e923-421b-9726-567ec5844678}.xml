@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <objects serializationModel="Studio.01.09.00">
     <object class="MixerReturn" id="{04a726f5-e923-421b-9726-567ec5844678}">
-        <property name="overridingInputFormat">
+        <property name="overridingDirectionalInputFormat">
             <value>2</value>
         </property>
         <property name="inputFormatOverridden">

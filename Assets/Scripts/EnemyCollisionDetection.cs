@@ -6,9 +6,9 @@ public class EnemyCollisionDetection : MonoBehaviour {
 
     public void OnTriggerEnter2D(Collider2D col)
     {
-        if (col.gameObject.tag == "Player")
+        if (col.gameObject.tag == "PlayerMovement")
         {
-            Debug.Log(("Hit Player"));
+            Debug.Log(("Hit PlayerMovement"));
         }
     }
 }

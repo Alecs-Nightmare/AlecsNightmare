@@ -574,8 +574,8 @@ namespace TriangleNet.Algorithm
             {
                 if (heapsize == 0)
                 {
-                    SimpleLog.Instance.Error("Input vertices are all identical.", "SweepLine.SweepLineDelaunay()");
-                    throw new Exception("Input vertices are all identical.");
+                    SimpleLog.Instance.Error("DirectionalInput vertices are all identical.", "SweepLine.SweepLineDelaunay()");
+                    throw new Exception("DirectionalInput vertices are all identical.");
                 }
                 secondvertex = eventheap[0].vertexEvent;
                 HeapDelete(eventheap, heapsize, 0);

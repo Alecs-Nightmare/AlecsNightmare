@@ -4,19 +4,21 @@ using UnityEngine;
 
 public class AnimationController : MonoBehaviour {
 
-    Animator anim;
-    Controller2D controller;
-    Player player;
+    private Animator anim;
+    private Controller2D controller;
+    private PlayerMovement _playerMovement;
+    private PlayerInput m_playerInput;
 
     private void Awake()
     {
         controller = GetComponent<Controller2D>();
         anim = this.GetComponent<Animator>();
+        m_playerInput = GetComponent<PlayerInput>();
     }
 
     void Start ()
     {
-        player = this.GetComponent<Player>();
+        _playerMovement = this.GetComponent<PlayerMovement>();
     }
 
     enum PlayerState
@@ -31,34 +33,34 @@ public class AnimationController : MonoBehaviour {
 
     void Update()
     {
-        if (controller.collisions.isSoaring && player.CanEnableUmbrella && anim.GetBool(AnimatorParameters.armado))
+        if (controller.collisions.isSoaring && _playerMovement.CanEnableUmbrella && anim.GetBool(AnimatorParameters.armado))
         {
             anim.SetInteger(AnimatorParameters.estado, (int)PlayerState.planeando);
         }
-        else if(!controller.collisions.isSoaring && player.Velocity.y < 0)
+        else if(!controller.collisions.isSoaring && _playerMovement.Velocity.y < 0)
         {
             anim.SetInteger(AnimatorParameters.estado, (int)PlayerState.cayendo);
         }
-        else if (Mathf.Abs(player.Velocity.x) > 0 && controller.collisions.below)
+        else if (Mathf.Abs(_playerMovement.Velocity.x) > 0 && controller.collisions.below)
         {
             anim.SetInteger(AnimatorParameters.estado, (int)PlayerState.andando);
         }
-        else if (player.Velocity.y > 0)
+        else if (_playerMovement.Velocity.y > 0)
         {
             anim.SetInteger(AnimatorParameters.estado, (int)PlayerState.saltando);
         }
-        else if(player.input == Vector2.zero && player.Velocity.x == 0)
+        else if(m_playerInput.DirectionalInput.x == 0)
         {
             anim.SetInteger(AnimatorParameters.estado, (int)PlayerState.idle);
         }
-        else if(player.wallSliding)
+        else if(controller.collisions.WallSliding)
         {
             anim.SetInteger(AnimatorParameters.estado, (int)PlayerState.escalando);
         }
 
 
         //if umbrella unlocked
-        if (player.UmbrellaUnlocked)
+        if (_playerMovement.UmbrellaUnlocked)
         {
             anim.SetBool(AnimatorParameters.armado, true);
         }
@@ -71,9 +73,7 @@ public class AnimationController : MonoBehaviour {
     [System.Serializable]
     public class AnimatorParameters
     {
-
         public static string estado = "estado";
         public static string armado = "armado";
-
     }
 }

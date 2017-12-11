@@ -711,8 +711,8 @@ namespace TriangleNet
 
             if (this.invertices < 3)
             {
-                logger.Error("Input must have at least three input vertices.", "MeshReader.TransferNodes()");
-                throw new Exception("Input must have at least three input vertices.");
+                logger.Error("DirectionalInput must have at least three input vertices.", "MeshReader.TransferNodes()");
+                throw new Exception("DirectionalInput must have at least three input vertices.");
             }
 
             this.nextras = points[0].attributes == null ? 0 : points[0].attributes.Length;

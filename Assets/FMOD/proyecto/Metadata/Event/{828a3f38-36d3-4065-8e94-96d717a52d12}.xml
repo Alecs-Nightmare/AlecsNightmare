@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <objects serializationModel="Studio.01.09.00">
     <object class="Event" id="{828a3f38-36d3-4065-8e94-96d717a52d12}">
         <property name="name">
@@ -16,7 +16,7 @@
         <relationship name="masterTrack">
             <destination>{c2970fc7-e414-4ae3-8d16-3cd5e2404f0b}</destination>
         </relationship>
-        <relationship name="mixerInput">
+        <relationship name="mixerDirectionalInput">
             <destination>{a2003737-2f0b-4159-8aad-9ba965dd01ce}</destination>
         </relationship>
         <relationship name="automatableProperties">
@@ -45,7 +45,7 @@
             <destination>{92f2ba3f-0816-4fed-85f3-e111e7f8bf20}</destination>
         </relationship>
     </object>
-    <object class="MixerInput" id="{a2003737-2f0b-4159-8aad-9ba965dd01ce}">
+    <object class="MixerDirectionalInput" id="{a2003737-2f0b-4159-8aad-9ba965dd01ce}">
         <relationship name="effectChain">
             <destination>{ef80a8f4-e366-4bfb-930b-f47ab12d894e}</destination>
         </relationship>

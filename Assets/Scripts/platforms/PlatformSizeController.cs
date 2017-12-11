@@ -19,7 +19,7 @@ public class PlatformSizeController : MonoBehaviour
     void Start()
     {
         rend = GetComponent<Renderer>();
-        sizePlayer = GameObject.Find("Player").GetComponent<BoxCollider2D>().bounds.size;
+        sizePlayer = GameObject.Find("PlayerMovement").GetComponent<BoxCollider2D>().bounds.size;
         sizePlatformX = GetComponent<Transform>().localScale.x;
 
         xdis = rend.bounds.size.x;
@@ -46,7 +46,7 @@ public class PlatformSizeController : MonoBehaviour
 
         foreach (RaycastHit2D rayo in arrayRayos) {
             if (rayo.collider != null) {
-                if (rayo.collider.tag == "Player")
+                if (rayo.collider.tag == "PlayerMovement")
                     playerInPlatform = true;
             }
             

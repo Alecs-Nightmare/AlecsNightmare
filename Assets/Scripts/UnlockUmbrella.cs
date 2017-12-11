@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class UnlockUmbrella : MonoBehaviour {
 
-    //public GameObject player;
+    //public GameObject _playerMovement;
 
     // Set up references
     /*
     void Awake()
     {
-        player = GameObject.FindGameObjectWithTag("Player");
+        _playerMovement = GameObject.FindGameObjectWithTag("PlayerMovement");
     }
     */
 
@@ -27,10 +27,10 @@ public class UnlockUmbrella : MonoBehaviour {
 
     private void OnTriggerEnter2D(Collider2D col)
     {
-        if (col.gameObject.tag == "Player")
+        if (col.gameObject.tag == "PlayerMovement")
         {
             
-            col.GetComponent<Player>().UmbrellaUnlocked = true;
+            col.GetComponent<PlayerMovement>().UmbrellaUnlocked = true;
 
         }
     }
