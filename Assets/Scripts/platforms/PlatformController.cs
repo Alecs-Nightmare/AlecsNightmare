@@ -95,17 +95,24 @@ public class PlatformController : RaycastController {
     {
         foreach (PassengerMovement passenger in passengerMovement)
         {
-            
             if (!passengerDictionary.ContainsKey(passenger.transform))
             {
-                passengerDictionary.Add(passenger.transform, passenger.transform.GetComponent<Controller2D>());
+                if (passenger.transform != null && passenger.transform.gameObject.CompareTag("Player") || passenger.transform.gameObject.CompareTag("Enemy")) //comprobemos que no choca con los objetos union
+                {
+                    passengerDictionary.Add(passenger.transform, passenger.transform.GetComponent<Controller2D>());
+                }
+               
             }
-            if (passenger.moveBeforePlatform == beforeMovePlatform)
+            if (passengerDictionary.Count != 0)
             {
-                passengerDictionary[passenger.transform].Move(passenger.velocity, passenger.standingOnPlatform);
+                if (passenger.moveBeforePlatform == beforeMovePlatform)
+                {
+                    passengerDictionary[passenger.transform].Move(passenger.velocity, passenger.standingOnPlatform);
+                }
             }
         }
     }
+
     void CalculatePassengerMovement(Vector3 velocity)
     {
         HashSet<Transform> movedPassengers = new HashSet<Transform>();
@@ -129,7 +136,6 @@ public class PlatformController : RaycastController {
                 if (hit && hit.distance!=0)
                 {
 
-                   
                     if (!movedPassengers.Contains(hit.transform))
                     {
                         movedPassengers.Add(hit.transform);
