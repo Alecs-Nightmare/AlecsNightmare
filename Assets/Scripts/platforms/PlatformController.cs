@@ -37,6 +37,7 @@ public class PlatformController : RaycastController {
 	// Update is called once per frame
 	void Update () {
         
+        
         UpdateRaycastOrigins();
 
         Vector3 velocity = CalculatePlatformMovement();
@@ -45,8 +46,8 @@ public class PlatformController : RaycastController {
         MovePassangers(false);
         transform.Translate(velocity);
         MovePassangers(true);
-        
-        
+
+       
         
 	}
 
@@ -141,8 +142,9 @@ public class PlatformController : RaycastController {
                         movedPassengers.Add(hit.transform);
                         float pushX = (directionY == 1) ? velocity.x : 0;
                         float pushY = velocity.y - (hit.distance - skinWidth) * directionY;
+                        
 
-                        passengerMovement.Add(new PassengerMovement(hit.transform, new Vector3(pushX, pushY), directionY == 1, true));
+                        passengerMovement.Add(new PassengerMovement(hit.transform, new Vector3(pushX, pushY), directionY==1, true));
                     }
 
                     

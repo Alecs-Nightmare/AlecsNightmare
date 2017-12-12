@@ -13,6 +13,9 @@ public class Controller2D : RaycastController
 
     private PlayerStats playerStats;
 
+    [HideInInspector]
+    public bool _standingOnPlatform;
+
 	[HideInInspector]public PlayerMovement RefPlayerMovement;
 	[HideInInspector]public CollisionInfo collisions;
 	#endregion
@@ -41,6 +44,8 @@ public class Controller2D : RaycastController
     #region Controller Methods
     public void Move(Vector3 velocity, bool standingOnPlatform)
     {
+        _standingOnPlatform = standingOnPlatform;
+        //Debug.Log(_standingOnPlatform);
         Move(velocity, Vector2.zero, standingOnPlatform);
     }
             
@@ -77,6 +82,7 @@ public class Controller2D : RaycastController
 		}
 		if (velocity.y < 0 && !standingOnPlatform)//added
 		 {
+ 
 			collisions.descending = true;
 			CheckIfDescendingSlope (ref velocity);
 		}

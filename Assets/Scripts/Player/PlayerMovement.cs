@@ -27,6 +27,7 @@ public class PlayerMovement : MonoBehaviour {
     float gravity = -20f;
     float timeToWallUnstick;
     float accelRatePerSec;
+    [SerializeField]
     bool canEnableUmbrella = true;
     bool active = true;
     bool wallSliding = false;
@@ -38,6 +39,8 @@ public class PlayerMovement : MonoBehaviour {
     SpriteRenderer spriteRenderer;
     PlayerInput playerInput;
     int sanityPoints;   //esto es provisional
+    [SerializeField]
+    bool gotUmbrella;
 
     public PlayerMovement()
     {
@@ -70,7 +73,9 @@ public class PlayerMovement : MonoBehaviour {
 
     void Update () 
     {
-        print(UmbrellaUnlocked);
+
+        Debug.Log(controller.collisions.below);
+        //print(UmbrellaUnlocked);
         if (active)
         {
             input = playerInput.DirectionalInput;

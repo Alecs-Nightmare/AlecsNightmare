@@ -8,6 +8,7 @@ public class AnimationController : MonoBehaviour {
     private Controller2D controller;
     private PlayerMovement _playerMovement;
     private PlayerInput m_playerInput;
+    
 
     private void Awake()
     {
@@ -46,7 +47,7 @@ public class AnimationController : MonoBehaviour {
                 anim.SetInteger(AnimatorParameters.estado, (int)PlayerState.cayendo);
             }
         }
-        else if(!controller.collisions.isSoaring && _playerMovement.Velocity.y < 0 && !controller.collisions.below)
+        else if(!controller.collisions.isSoaring && _playerMovement.Velocity.y < 0 && !controller.collisions.below && !controller._standingOnPlatform)
         {
             anim.SetInteger(AnimatorParameters.estado, (int)PlayerState.cayendo);
         }
