@@ -70,18 +70,11 @@ public class PlayerMovement : MonoBehaviour {
 
     void Update () 
     {
+        print(UmbrellaUnlocked);
         if (active)
         {
             input = playerInput.DirectionalInput;
             wallDirX = (controller.collisions.left) ? -1 : 1;
-
-            /*
-            Debug.Log("input direction" + input.x);
-            Debug.Log("below" + controller.collisions.below);
-            Debug.Log("left" + controller.collisions.left);
-            Debug.Log("right" + controller.collisions.right);
-            Debug.Log("velocity.x" + velocity.x);
-            */
 
             ResetGravity();
 
@@ -213,8 +206,7 @@ public class PlayerMovement : MonoBehaviour {
     {
         if (controller.collisions.isSoaring) //si  está planeando
         {
-            if (controller.collisions.below || controller.collisions.left || controller.collisions.right ||
-                playerInput.CaptureSoarInput()) //si colisiona en cualquier dirección o se pulsa espacio
+            if (controller.collisions.below || controller.collisions.left || controller.collisions.right) //si colisiona en cualquier dirección o se pulsa espacio
             {
                 canEnableUmbrella = false;
 

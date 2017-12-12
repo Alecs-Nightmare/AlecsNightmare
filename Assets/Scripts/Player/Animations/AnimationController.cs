@@ -36,7 +36,6 @@ public class AnimationController : MonoBehaviour {
     {
 		if (controller.collisions.isSoaring && _playerMovement.CanEnableUmbrella)
         {
-			Debug.Break ();
             anim.SetInteger(AnimatorParameters.estado, (int)PlayerState.planeando);
         }
         else if (_playerMovement.WallSliding)

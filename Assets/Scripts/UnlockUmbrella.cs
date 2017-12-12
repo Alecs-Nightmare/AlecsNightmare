@@ -9,7 +9,7 @@ public class UnlockUmbrella : MonoBehaviour {
         if (col.gameObject.tag == "Player")
         {
             col.GetComponent<PlayerMovement>().UmbrellaUnlocked = true;
-            Destroy(this);
+            Destroy(this.gameObject);
         }
     }
 }
