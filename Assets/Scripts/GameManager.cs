@@ -8,7 +8,6 @@ using UnityEditor;                  // Allows to instanciate an asset directly f
 
 public class GameManager : MonoBehaviour
 {
-
     public static GameManager instance = null;              // Static instance of GameManager which allows it to be accessed by any other script
     public Object gameOverScene;                            // Reference to the Game Over scene
     public Object creditsScene;                             // Reference to the Credits scene

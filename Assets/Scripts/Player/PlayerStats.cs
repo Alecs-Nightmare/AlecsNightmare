@@ -14,11 +14,12 @@ public class PlayerStats : MonoBehaviour {
     [SerializeField]
     private int currentState;
     [SerializeField]
-    private float deathCooldown = 3f;   // Cooldown time to respawn
+    private float deathCooldown = 2.66f;   // Cooldown time to respawn
     [SerializeField]
-    private float hitCooldown = 1f;     // Cooldown time to get hurt
+    private float hitCooldown = 0.33f;     // Cooldown time to get hurt
+    [SerializeField]
+    private float repulsionForce = 20f;
     private float time;
-    private float fraction = 3f;
 
 
     // Set up references
@@ -48,7 +49,10 @@ public class PlayerStats : MonoBehaviour {
                 {
                     time = 0;
                     ResetStats();  // -for the moment we manage this here-
-                    player.StopPlayer(false);
+                    //player.StopPlayer(false);
+                    player.enabled = true;
+                    print("Respawned!");
+                    // --INSERT REBIRTH SFX HERE--
                 }
                 break;
 
@@ -59,7 +63,10 @@ public class PlayerStats : MonoBehaviour {
                 {
                     time = 0;
                     currentState = 1;
-                    player.StopPlayer(false);
+                    GetComponent<Rigidbody2D>().velocity = Vector3.zero;
+                    GetComponent<Collider2D>().isTrigger = true;
+                    //player.StopPlayer(false);
+                    player.enabled = true;
                 }
                 break;
 
@@ -74,25 +81,46 @@ public class PlayerStats : MonoBehaviour {
         if (currentState == 1 && col.gameObject.tag == "Enemy")
         {
             EnemyStats enemy = col.gameObject.GetComponent<EnemyStats>();
-            if (enemy.AskForLethal())
+            if (enemy.AskForLethal())   // if enemy object is lethal we shouldn't knock back!
             {
                 currentSanity = 0;
             }
             else
             {
+                // knock back!
+                GetComponent<Rigidbody2D>().AddForce(repulsionForce*(new Vector2 (this.transform.position.x - col.transform.position.x, 1f)), ForceMode2D.Impulse);
+
                 currentSanity -= enemy.GetAttackPower();
             }
             if (currentSanity <= 0)
             {
                 currentState = -1;
+
+                // fall!
+                GetComponent<Rigidbody2D>().gravityScale = 2f;
+
                 print("Death!");
+                // --INSERT DEATH SFX HERE--
             }
             else
             {
                 currentState = 0;
+                GetComponent<Collider2D>().isTrigger = false;
                 print("Hit!");
+                // --INSERT DAMAGE SFX HERE--
             }
-            player.StopPlayer(true);
+            //player.StopPlayer(true);
+            player.enabled = false;
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D col)
+    {
+        if (currentState == 0 && col.gameObject.layer == 9)  // Crashes with the scenario!
+        {
+            time = hitCooldown;
+            print("Crashes with the scenario!");
+            // --INSERT CRASHING SFX HERE--
         }
     }
 
@@ -105,7 +133,10 @@ public class PlayerStats : MonoBehaviour {
         print("Respawned at " + GameManager.instance.Respawn().position);
         */
         this.transform.position = gameManager.GetRespawnTransform().position;
+        GetComponent<Rigidbody2D>().velocity = Vector3.zero;
+        GetComponent<Rigidbody2D>().gravityScale = 0f;
         currentSanity = MaxSanity;
         currentState = 1;
+        GetComponent<Collider2D>().isTrigger = true;
     }
 }
