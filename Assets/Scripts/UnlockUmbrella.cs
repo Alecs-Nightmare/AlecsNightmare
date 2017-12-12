@@ -27,7 +27,7 @@ public class UnlockUmbrella : MonoBehaviour {
 
     private void OnTriggerEnter2D(Collider2D col)
     {
-        if (col.gameObject.tag == "PlayerMovement")
+        if (col.gameObject.tag == "Player")
         {
             
             col.GetComponent<PlayerMovement>().UmbrellaUnlocked = true;
