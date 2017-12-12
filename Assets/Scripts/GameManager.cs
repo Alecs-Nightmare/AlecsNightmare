@@ -152,7 +152,7 @@ public class GameManager : MonoBehaviour
     }
 
     // Loads a specifid scene out of the level loop
-    void LoadSpecificScene(string name)
+    public void LoadSpecificScene(string name)
     {
         // Pauses the current scene
         PauseGame(true);

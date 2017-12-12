@@ -97,7 +97,7 @@ public class PlatformController : RaycastController {
         {
             if (!passengerDictionary.ContainsKey(passenger.transform))
             {
-                if (passenger.transform != null && passenger.transform.gameObject.CompareTag("Player") || passenger.transform.gameObject.CompareTag("Enemy")) //comprobemos que no choca con los objetos union
+                if (passenger.transform != null && passenger.transform.gameObject.CompareTag("Player")) //comprobemos que no choca con los objetos union
                 {
                     passengerDictionary.Add(passenger.transform, passenger.transform.GetComponent<Controller2D>());
                 }
