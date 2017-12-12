@@ -10,6 +10,11 @@ namespace ProjectAI
         public float detectionRadius;
         public LayerMask collisionMask;
         public int maxCollisions;
+        public float maxHeight;
+        public float minHeight;
+        public float moveUpSpeed;
+        public float moveDownSpeed;
+
 
         [SerializeField] State m_current;
         [SerializeField] State m_remainState;
