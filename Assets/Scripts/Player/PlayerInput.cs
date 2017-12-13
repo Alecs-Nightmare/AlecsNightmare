@@ -7,11 +7,14 @@ public class PlayerInput : MonoBehaviour
     public KeyCode SoarKey;
     public KeyCode JumpKey;
 
-    public Vector2 DirectionalInput { get { return new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")); } }
+    public Vector2 DirectionalInput { get { return new Vector2(Input.GetAxisRaw("Horizontal"), 0); } }
 
-    public bool CaptureSoarInput()
+    public bool CaptureSoarInput(string type)
     {
-        return Input.GetKeyDown(SoarKey);
+        if (type == "down")
+            return Input.GetKeyDown(SoarKey);
+
+        return Input.GetKeyUp(SoarKey);
     }
 
     public bool CaptureJumpInputDown()

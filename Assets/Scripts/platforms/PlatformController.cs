@@ -36,8 +36,8 @@ public class PlatformController : RaycastController {
 	
 	// Update is called once per frame
 	void Update () {
-        
-        
+
+   
         UpdateRaycastOrigins();
 
         Vector3 velocity = CalculatePlatformMovement();
@@ -122,9 +122,9 @@ public class PlatformController : RaycastController {
 
         float directionX = Mathf.Sign(velocity.x);
         float directionY = Mathf.Sign(velocity.y);
-
+        
         // Vertically moving platform
-
+        
         if (velocity.y != 0)
         {
             float rayLength = Mathf.Abs(velocity.y) + skinWidth;
@@ -142,8 +142,7 @@ public class PlatformController : RaycastController {
                         movedPassengers.Add(hit.transform);
                         float pushX = (directionY == 1) ? velocity.x : 0;
                         float pushY = velocity.y - (hit.distance - skinWidth) * directionY;
-                        
-
+  
                         passengerMovement.Add(new PassengerMovement(hit.transform, new Vector3(pushX, pushY), directionY==1, true));
                     }
 
@@ -151,9 +150,38 @@ public class PlatformController : RaycastController {
                 }
             }
         }
+        
+        // Passenger on top of a horizontally or downward moving platform
+
+        if (directionY == -1 || (velocity.y == 0 && velocity.x != 0))
+        {
+            float rayLength = skinWidth * 2;
+            for (int i = 0; i < verticalRayCount; i++)
+            {
+                Vector2 rayOrigin = raycastOrigins.topLeft + Vector2.right * (verticalRaySpacing * i);
+
+                RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.up, rayLength, passengerMask);
+
+                if (hit && hit.distance != 0)
+                {
+                    if (!movedPassengers.Contains(hit.transform))
+                    {
+                        movedPassengers.Add(hit.transform);
+                        float pushX = velocity.x;
+                        float pushY = velocity.y;
+
+                        passengerMovement.Add(new PassengerMovement(hit.transform, new Vector3(pushX, pushY), true, false));
+                    }
+
+
+                }
+            }
+        }
+        
 
         //Horizontaly moving platform
 
+        
         if (velocity.x != 0)
         {
             float rayLength = Mathf.Abs(velocity.x) + skinWidth;
@@ -178,32 +206,7 @@ public class PlatformController : RaycastController {
             }
         }
 
-        // Passenger on top of a horizontally or downward moving platform
-
-        if (directionY == -1 || velocity.y == 0 && velocity.x != 0)
-        {
-            float rayLength =  skinWidth * 2;
-            for (int i = 0; i < verticalRayCount; i++)
-            {
-                Vector2 rayOrigin = raycastOrigins.topLeft + Vector2.right * (verticalRaySpacing * i);
-                
-                RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.up, rayLength, passengerMask);
-
-                if (hit && hit.distance != 0)
-                {
-                    if (!movedPassengers.Contains(hit.transform))
-                    {
-                        movedPassengers.Add(hit.transform);
-                        float pushX = velocity.x;
-                        float pushY = velocity.y;
-
-                        passengerMovement.Add(new PassengerMovement(hit.transform, new Vector3(pushX, pushY), true, false));
-                    }
-
-
-                }
-            }
-        }
+        
     }
     
     struct PassengerMovement

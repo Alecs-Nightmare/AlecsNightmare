@@ -39,8 +39,7 @@ public class PlayerMovement : MonoBehaviour {
     SpriteRenderer spriteRenderer;
     PlayerInput playerInput;
     int sanityPoints;   //esto es provisional
-    [SerializeField]
-    bool gotUmbrella;
+
 
     public PlayerMovement()
     {
@@ -73,8 +72,8 @@ public class PlayerMovement : MonoBehaviour {
 
     void Update () 
     {
-
-        Debug.Log(controller.collisions.below);
+        Debug.Log(controller.collisions.isSoaring);
+        //Debug.Log(controller.collisions.below);
         //print(UmbrellaUnlocked);
         if (active)
         {
@@ -197,7 +196,12 @@ public class PlayerMovement : MonoBehaviour {
         velocity.x = Mathf.SmoothDamp(velocity.x, targetVelocityX, ref velocityXSmoothing,
             (controller.collisions.below) ? accelerationTimeGrounded : accelerationTimeAirborne);
 
-        velocity.y += gravity * Time.deltaTime;
+        if (controller.collisions.isSoaring) velocity.y = gravity * Time.deltaTime;
+        else
+        {
+            velocity.y += gravity * Time.deltaTime;
+        }
+        
 
 
         if (input.x != 0)//si se mueve horizontalmente
@@ -211,15 +215,21 @@ public class PlayerMovement : MonoBehaviour {
     {
         if (controller.collisions.isSoaring) //si  está planeando
         {
-            if (controller.collisions.below || controller.collisions.left || controller.collisions.right) //si colisiona en cualquier dirección o se pulsa espacio
+            if (controller.collisions.below || controller.collisions.left || controller.collisions.right || playerInput.CaptureJumpInputDown()) //si colisiona en cualquier dirección o se pulsa espacio
             {
                 canEnableUmbrella = false;
 
                 controller.collisions.isSoaring = false;
             }
+
+            
+
+
+               
         }
         else //if no está planeando
         {
+            Debug.Log("no soaring");
             gravity = saveGravity;
 
             if (controller.collisions.below || controller.collisions.left || controller.collisions.right)
@@ -235,13 +245,15 @@ public class PlayerMovement : MonoBehaviour {
         {
             if (!controller.collisions.isSoaring && velocity.y < 0) //si está en el aire (sin planear)
             {
-                if (playerInput.CaptureSoarInput() && canEnableUmbrella) //y se pulsa espacio y puede usar el paraguas
+                if (playerInput.CaptureSoarInput("down") && canEnableUmbrella) //y se pulsa espacio y puede usar el paraguas
                 {
+                    Debug.Log("soaring");
                     velocity.y = 0;
                     gravity = gravityWhilePlanning;
                     controller.collisions.isSoaring = true;
-                    return;
+                    
                 }
+                
             }
         }
     }

@@ -35,14 +35,14 @@ public class AnimationController : MonoBehaviour {
 
     void Update()
     {
-		if (controller.collisions.isSoaring && _playerMovement.CanEnableUmbrella)
+		if (controller.collisions.isSoaring)
         {
             anim.SetInteger(AnimatorParameters.estado, (int)PlayerState.planeando);
         }
         else if (_playerMovement.WallSliding)
         {
             anim.SetInteger(AnimatorParameters.estado, (int)PlayerState.escalando);
-            if (_playerMovement.AimDirection.x != _playerMovement.WallDirX)
+            if (_playerMovement.AimDirection.x != _playerMovement.WallDirX && !controller.collisions.isSoaring)
             {
                 anim.SetInteger(AnimatorParameters.estado, (int)PlayerState.cayendo);
             }

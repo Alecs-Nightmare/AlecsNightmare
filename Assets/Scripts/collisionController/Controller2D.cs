@@ -42,6 +42,8 @@ public class Controller2D : RaycastController
     #endregion
 
     #region Controller Methods
+
+    
     public void Move(Vector3 velocity, bool standingOnPlatform)
     {
         _standingOnPlatform = standingOnPlatform;
