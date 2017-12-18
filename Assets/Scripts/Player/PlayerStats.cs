@@ -139,4 +139,9 @@ public class PlayerStats : MonoBehaviour {
         currentState = 1;
         GetComponent<Collider2D>().isTrigger = true;
     }
+
+    public int GetState()
+    {
+        return currentState;
+    }
 }

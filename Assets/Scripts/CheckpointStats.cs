@@ -30,8 +30,11 @@ public class CheckpointStats : MonoBehaviour {
     {
         if (col.gameObject.tag == "Player")
         {
-            print("Check: " + number + "!");
-            GameManager.instance.UpdateCurrentCheckNum(number);
+            if (col.GetComponent<PlayerStats>().GetState() >= 0)
+            {
+                print("Check: " + number + "!");
+                GameManager.instance.UpdateCurrentCheckNum(number);
+            }
         }
     }
 
