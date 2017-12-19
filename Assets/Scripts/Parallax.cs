@@ -6,33 +6,58 @@ public class Parallax : MonoBehaviour
 {
     public float smoothing = 1.0f;
 
-    [SerializeField] private Transform[] backgrounds;
-    [SerializeField] private float[] speedFactor;
-    [SerializeField] private Transform cam;
-    [SerializeField] private Vector3 previousCamPos;
+    [SerializeField]
+    private Transform[] backgrounds;
+    [SerializeField]
+    private float[] speedFactor;
+    //[SerializeField]
+    private Transform cameraTransform;
+    //[SerializeField]
+    private Vector3 previousCamPos;
+    private GameObject cam;
 
+    /*
     void Awake()
     {
-        cam = Camera.main.transform;
+        //cameraTransform = Camera.main.transform;
     }
+    */
 
-    private void Start()
+    /*
+    void Start()
     {
-        previousCamPos = cam.position;
+        camera = GameObject.Find("Main Camera");
+        cameraTransform = camera.transform;
+        previousCamPos = cameraTransform.position;
     }
+    */
 
 	void Update ()
     {
-        for (int i = 0; i < backgrounds.Length; i++)
+        if (cam == null)
         {
-            //the movement to do this frame in opposite direction from the camera
-            float deltaMovement = (previousCamPos.x - cam.position.x) * speedFactor[i];
-
-            Vector3 targetPos = new Vector3(deltaMovement + backgrounds[i].transform.position.x, backgrounds[i].transform.position.y, backgrounds[i].transform.position.z);
-
-            backgrounds[i].position = targetPos;
+            ReferenceCamera();
         }
+        else
+        {
+            for (int i = 0; i < backgrounds.Length; i++)
+            {
+                //the movement to do this frame in opposite direction from the camera
+                float deltaMovement = (previousCamPos.x - cameraTransform.position.x) * speedFactor[i];
 
-        previousCamPos = cam.position;
+                Vector3 targetPos = new Vector3(deltaMovement + backgrounds[i].transform.position.x, backgrounds[i].transform.position.y, backgrounds[i].transform.position.z);
+
+                backgrounds[i].position = targetPos;
+            }
+            previousCamPos = cameraTransform.position;
+        }
 	}
+
+    private void ReferenceCamera()
+    {
+        print("Locating camera...");
+        cam = GameObject.Find("Main Camera");
+        cameraTransform = cam.transform;
+        previousCamPos = cameraTransform.position;
+    }
 }

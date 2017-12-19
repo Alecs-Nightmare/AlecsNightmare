@@ -72,7 +72,7 @@ public class PlayerMovement : MonoBehaviour {
 
     void Update () 
     {
-        Debug.Log(controller.collisions.isSoaring);
+        //Debug.Log(controller.collisions.isSoaring);
         //Debug.Log(controller.collisions.below);
         //print(UmbrellaUnlocked);
         if (active)
@@ -229,7 +229,7 @@ public class PlayerMovement : MonoBehaviour {
         }
         else //if no está planeando
         {
-            Debug.Log("no soaring");
+            //Debug.Log("no soaring");
             gravity = saveGravity;
 
             if (controller.collisions.below || controller.collisions.left || controller.collisions.right)
@@ -247,7 +247,7 @@ public class PlayerMovement : MonoBehaviour {
             {
                 if (playerInput.CaptureSoarInput("down") && canEnableUmbrella) //y se pulsa espacio y puede usar el paraguas
                 {
-                    Debug.Log("soaring");
+                    //Debug.Log("soaring");
                     velocity.y = 0;
                     gravity = gravityWhilePlanning;
                     controller.collisions.isSoaring = true;

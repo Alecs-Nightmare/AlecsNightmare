@@ -28,10 +28,13 @@ public class CheckpointStats : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D col)
     {
-        if (col.gameObject.tag == "PlayerMovement")
+        if (col.gameObject.tag == "Player")
         {
-            print("Check: " + number + "!");
-            GameManager.instance.UpdateCurrentCheckNum(number);
+            if (col.GetComponent<PlayerStats>().GetState() >= 0)
+            {
+                print("Check: " + number + "!");
+                GameManager.instance.UpdateCurrentCheckNum(number);
+            }
         }
     }
 

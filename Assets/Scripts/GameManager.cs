@@ -8,14 +8,13 @@ using UnityEditor;                  // Allows to instanciate an asset directly f
 
 public class GameManager : MonoBehaviour
 {
-
     public static GameManager instance = null;              // Static instance of GameManager which allows it to be accessed by any other script
     public Object gameOverScene;                            // Reference to the Game Over scene
     public Object creditsScene;                             // Reference to the Credits scene
     public Object returnScene;                              // Reference to the scene to reset the game at
-    public GameObject playerPrefab;                         // Reference to the _playerMovement's prefab
+    public GameObject playerPrefab;                         // Reference to the player's prefab
     public int gameState;                                   // 1 --> Running / 0 --> Pause / -1 --> End / -2 --> Resetting...
-    public int lifes = 3;                                   // Chances the _playerMovement has to respawn before Game Over
+    public int lifes = 3;                                   // Chances the player has to respawn before Game Over
     [SerializeField]
     private int level = 0;                                  // Current level number (scene)
     [SerializeField]
@@ -69,10 +68,10 @@ public class GameManager : MonoBehaviour
                         // Reset checkpoint references
                         ResetCheckpoints();
 
-                        // Spawn the _playerMovement
+                        // Spawn the player
                         GameObject player = Instantiate(playerPrefab, Vector3.zero, Quaternion.identity) as GameObject;
                         player.transform.position = GetRespawnTransform().position;
-                        print("PlayerMovement has been spawned!");
+                        print("Player has been spawned!");
                     }
 
                     // Rebuild level array
@@ -80,6 +79,7 @@ public class GameManager : MonoBehaviour
 
                     // Loading is complete!
                     loading = false;
+                    PauseGame(false);
                     print(SceneManager.GetActiveScene().name + " is ready!");
                 }
             }
@@ -152,7 +152,7 @@ public class GameManager : MonoBehaviour
     }
 
     // Loads a specifid scene out of the level loop
-    public void LoadSpecificScene(string name)
+    void LoadSpecificScene(string name)
     {
         // Pauses the current scene
         PauseGame(true);
@@ -204,6 +204,15 @@ public class GameManager : MonoBehaviour
     // Pause the scene
     void PauseGame(bool stop)
     {
+        if (stop)
+        {
+            Time.timeScale = 0f;
+        }
+        else
+        {
+            Time.timeScale = 1f;
+        }
+        /*
         if (levelAgentsList != null)
         {
             foreach (GameObject obj in levelAgentsList)
@@ -214,6 +223,7 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
+        */
     }
 
     // Checks a checkpoint and updates it

@@ -121,7 +121,7 @@ public class Controller2D : RaycastController
                 
                if (hit.collider.CompareTag("collectable"))
                {
-                    playerStats.CurrentSanity += sanityToAdd;
+                    //playerStats.CurrentSanity += sanityToAdd;
                     Destroy(hit.collider.gameObject);
                     continue;
                 }
@@ -205,7 +205,7 @@ public class Controller2D : RaycastController
                 }
                 else if (hit.collider.CompareTag("collectable"))
                 {
-                    playerStats.CurrentSanity += sanityToAdd;
+                    //playerStats.CurrentSanity += sanityToAdd;
                     Destroy(hit.collider.gameObject);
                     continue;
                 }
