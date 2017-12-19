@@ -20,6 +20,7 @@ public class PlayerStats : MonoBehaviour {
     [SerializeField]
     private float repulsionForce = 20f;
     private float time;
+    private Vector3 respawnMargin = new Vector3(0f, 2f, 0f);
 
 
     // Set up references
@@ -132,7 +133,7 @@ public class PlayerStats : MonoBehaviour {
         this.transform.position = GameManager.instance.Respawn().position;
         print("Respawned at " + GameManager.instance.Respawn().position);
         */
-        this.transform.position = gameManager.GetRespawnTransform().position;
+        this.transform.position = gameManager.GetRespawnTransform().position + respawnMargin;
         GetComponent<Rigidbody2D>().velocity = Vector3.zero;
         GetComponent<Rigidbody2D>().gravityScale = 0f;
         currentSanity = MaxSanity;
