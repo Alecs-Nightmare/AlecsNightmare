@@ -79,6 +79,7 @@ public class GameManager : MonoBehaviour
 
                     // Loading is complete!
                     loading = false;
+                    PauseGame(false);
                     print(SceneManager.GetActiveScene().name + " is ready!");
                 }
             }
@@ -203,6 +204,15 @@ public class GameManager : MonoBehaviour
     // Pause the scene
     void PauseGame(bool stop)
     {
+        if (stop)
+        {
+            Time.timeScale = 0f;
+        }
+        else
+        {
+            Time.timeScale = 1f;
+        }
+        /*
         if (levelAgentsList != null)
         {
             foreach (GameObject obj in levelAgentsList)
@@ -213,6 +223,7 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
+        */
     }
 
     // Checks a checkpoint and updates it
