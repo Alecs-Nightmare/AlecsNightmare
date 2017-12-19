@@ -106,7 +106,7 @@ public class PlatformController : RaycastController {
             }
             if (passengerDictionary.Count != 0)
             {
-                if (passenger.moveBeforePlatform == beforeMovePlatform)
+                if (passenger.moveBeforePlatform != beforeMovePlatform)
                 {
                     passengerDictionary[passenger.transform].Move(passenger.velocity, passenger.standingOnPlatform);
                 }
