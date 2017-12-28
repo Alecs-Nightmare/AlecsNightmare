@@ -317,10 +317,12 @@ public class GameManager : MonoBehaviour
         {
             // --play live up SFX--
             lifes++;
+            print("Lifes: " + lifes);
         }
         else
         {
             lifes--;
+            print("Lifes: " + lifes);
             if (lifes < 0)
             {
                 // --play GAME OVER SFX--
