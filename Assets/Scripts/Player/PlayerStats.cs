@@ -8,9 +8,9 @@ public class PlayerStats : MonoBehaviour {
     GameManager gameManager;        // Reference to the Game Manager
     PlayerMovement playerMovement;  // Reference to character's Player class
 
-    public int MaxSanity = 100;     // This is the main resource
-    [SerializeField]
-    private int currentSanity;      // We separate current and maxim values because it can be increased during the game
+    //public int MaxSanity = 100;     // This is the main resource
+    //[SerializeField]
+    //private int currentSanity;      // We separate current and maxim values because it can be increased during the game
     [SerializeField]
     private int currentState;
     [SerializeField]
@@ -84,24 +84,23 @@ public class PlayerStats : MonoBehaviour {
             EnemyStats enemy = col.gameObject.GetComponent<EnemyStats>();
             if (enemy.AskForLethal())   // if enemy object is lethal we shouldn't knock back!
             {
-                currentSanity = 0;
+                gameManager.SetCurrentSanity(0);
             }
             else
             {
                 // knock back!
                 GetComponent<Rigidbody2D>().AddForce(repulsionForce*(new Vector2 (this.transform.position.x - col.transform.position.x, 1f)), ForceMode2D.Impulse);
-
-                currentSanity -= enemy.GetAttackPower();
+                gameManager.SetCurrentSanity(gameManager.GetCurrentSanity() - enemy.GetAttackPower());
             }
-            if (currentSanity <= 0)
+            if (gameManager.GetCurrentSanity() <= 0)
             {
+                print("Death!");
+
+                gameManager.AddSubsLife(false);
                 currentState = -1;
 
                 // fall!
                 GetComponent<Rigidbody2D>().gravityScale = 2f;
-
-                print("Death!");
-                // --INSERT DEATH SFX HERE--
             }
             else
             {
@@ -112,6 +111,20 @@ public class PlayerStats : MonoBehaviour {
             }
             //player.StopPlayer(true);
             playerMovement.enabled = false;
+        }
+        else if (currentState >= 0 && col.gameObject.layer == 12)
+        {
+            if (col.gameObject.tag == "Chips")
+            {
+                // --play chips SFX--
+                gameManager.AddChips();
+            }
+            else if (col.gameObject.tag == "Burger")
+            {
+                // --play burger SFX--
+                gameManager.RecoverSanity(0);
+            }
+            col.gameObject.SetActive(false);
         }
     }
 
@@ -133,10 +146,9 @@ public class PlayerStats : MonoBehaviour {
         this.transform.position = GameManager.instance.Respawn().position;
         print("Respawned at " + GameManager.instance.Respawn().position);
         */
-        this.transform.position = gameManager.GetRespawnTransform().position + respawnMargin;
+        this.transform.position = gameManager.ResetPlayer().position + respawnMargin;
         GetComponent<Rigidbody2D>().velocity = Vector3.zero;
         GetComponent<Rigidbody2D>().gravityScale = 0f;
-        currentSanity = MaxSanity;
         currentState = 1;
         GetComponent<Collider2D>().isTrigger = true;
     }
