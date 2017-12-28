@@ -13,8 +13,14 @@ public class GameManager : MonoBehaviour
     public Object creditsScene;                             // Reference to the Credits scene
     public Object returnScene;                              // Reference to the scene to reset the game at
     public GameObject playerPrefab;                         // Reference to the player's prefab
-    public int gameState;                                   // 1 --> Running / 0 --> Pause / -1 --> End / -2 --> Resetting...
-    public int lifes = 3;                                   // Chances the player has to respawn before Game Over
+    [SerializeField]
+    private int currentSanity;                              // We separate current and maxim values because it can be increased during the game
+    private int MaxSanity = 100;                            // This is the main resource
+    [SerializeField]
+    private int lifes;                                  // Chances the player has to respawn before Game Over
+    private int initLifes = 3;
+    [SerializeField]
+    private int chipCounter = 0;
     [SerializeField]
     private int level = 0;                                  // Current level number (scene)
     [SerializeField]
@@ -24,6 +30,7 @@ public class GameManager : MonoBehaviour
     private List<string> scenesInBuild = new List<string>();
     private AsyncOperation m_AsyncLoaderCoroutine;
     private bool loading;
+    private int gameState;                                  // 1 --> Running / 0 --> Pause / -1 --> End / -2 --> Resetting...
 
     // Awake is always called before any Start functions
     void Awake()
@@ -46,7 +53,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         BuildSceneList();
-        ResetStats();
+        ResetManager();
         StartLevelLoadingRoutine(level);
     }
 
@@ -65,12 +72,13 @@ public class GameManager : MonoBehaviour
                 {
                     if (gameState >= 0) // if this is a level...
                     {
-                        // Reset checkpoint references
+                        // Reset the game
                         ResetCheckpoints();
+                        currentSanity = MaxSanity;
 
                         // Spawn the player
                         GameObject player = Instantiate(playerPrefab, Vector3.zero, Quaternion.identity) as GameObject;
-                        player.transform.position = GetRespawnTransform().position;
+                        player.transform.position = ResetPlayer().position;
                         print("Player has been spawned!");
                     }
 
@@ -86,7 +94,7 @@ public class GameManager : MonoBehaviour
         }
         else if (!loading && gameState == -2)
         {
-            ResetStats();
+            ResetManager();
             StartLevelLoadingRoutine(level);
         }
         else if (Input.GetKeyDown("return"))    // if not loading then handle the input...
@@ -115,10 +123,10 @@ public class GameManager : MonoBehaviour
     }
 
     // Resets the Game Manager attributes   --CHANGE THEM HERE TO MAKE IT PERMANENT--
-    void ResetStats()
+    void ResetManager()
     {
+        lifes = initLifes;
         level = 0;
-        lifes = 3;
         gameState = 1;
     }
 
@@ -244,8 +252,10 @@ public class GameManager : MonoBehaviour
     }
 
     // Get a transform.position to respawn at
-    public Transform GetRespawnTransform()  // --still not sure who calls for this funcion upon respawning on death--
+    public Transform ResetPlayer()  // --still not sure who calls for this funcion upon respawning on death--
     {
+        currentSanity = MaxSanity;
+
         GameObject active = checkpointList[0];
         foreach (GameObject checkpt in checkpointList)
         {
@@ -256,5 +266,72 @@ public class GameManager : MonoBehaviour
             }
         }
         return active.transform;
+    }
+
+    public int GetCurrentSanity()
+    {
+        return currentSanity;
+    }
+
+    public void SetCurrentSanity(int sanity)
+    {
+        currentSanity = sanity;
+    }
+
+    // Increases chip counter and adds lifes
+    public void AddChips()
+    {
+        chipCounter++;
+        print("Chips: " + chipCounter);
+        if (chipCounter > 100)
+        {
+            chipCounter -= 100;
+            AddSubsLife(true);
+            print("Chips: " + chipCounter);
+        }
+    }
+
+    // Call to recover sanity
+    // (zero value recovers 50% by default)
+    public void RecoverSanity(int recover)
+    {
+        if (recover > 0)
+        {
+            currentSanity += recover;
+        }
+        else
+        {
+            currentSanity += MaxSanity/2;
+        }
+
+        if (currentSanity > MaxSanity)
+        {
+            currentSanity = MaxSanity;
+        }
+    }
+
+    // Adds (true) or substracts (false) one life
+    public void AddSubsLife(bool adds)
+    {
+        if (adds)
+        {
+            // --play live up SFX--
+            lifes++;
+        }
+        else
+        {
+            lifes--;
+            if (lifes < 0)
+            {
+                // --play GAME OVER SFX--
+                LoadSpecificScene(gameOverScene.name);
+                gameState = -1;
+                print("GAME OVER");
+            }
+            else
+            {
+                // --play death SFX--
+            }
+        }
     }
 }
