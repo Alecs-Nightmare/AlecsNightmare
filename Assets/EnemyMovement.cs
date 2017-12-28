@@ -32,8 +32,13 @@ public class EnemyMovement : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        whereIsThePlayer = target.position.x >= transform.position.x ? "right" : "left";
-        ManageEnemyMovement();
+        
+        if (target != null)
+        {
+            whereIsThePlayer = target.position.x >= transform.position.x ? "right" : "left";
+            ManageEnemyMovement();
+        }
+            
        
 	}
 
@@ -44,7 +49,7 @@ public class EnemyMovement : MonoBehaviour {
             glAnimContr.alertingPlayer = true;
             glAnimContr.ignoringPlayer = false;
             print("follow player");
-            this.transform.position = Vector3.MoveTowards(this.transform.position, new Vector3(target.position.x, this.transform.position.y, 0), enemySpeed * Time.deltaTime);
+                this.transform.position = Vector3.MoveTowards(this.transform.position, new Vector3(target.position.x, this.transform.position.y, 0), enemySpeed * Time.deltaTime);
             if (whereIsThePlayer == "right")
                 this.transform.localScale = new Vector3(localScaleX, this.transform.localScale.y, this.transform.localScale.z);
             else
