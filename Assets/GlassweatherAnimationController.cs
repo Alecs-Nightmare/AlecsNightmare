@@ -53,6 +53,7 @@ public class GlassweatherAnimationController : MonoBehaviour {
         }
 
     }
+
     [System.Serializable]
     public class AnimatorParameters
     {
