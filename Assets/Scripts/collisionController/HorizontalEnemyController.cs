@@ -4,7 +4,10 @@ using UnityEngine;
 
 public class HorizontalEnemyController : RaycastController
 {
+
+
     public LayerMask playerMask;
+
     [HideInInspector] public CollisionInfo collisions;
 
     public override void Awake()
@@ -63,7 +66,7 @@ public class HorizontalEnemyController : RaycastController
             }
         }
     }
-
+    
     void VerticalCollisions(ref Vector3 velocity)
     {
         float directionY = Mathf.Sign(velocity.y);

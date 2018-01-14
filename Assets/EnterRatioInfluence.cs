@@ -5,10 +5,12 @@ using UnityEngine;
 public class EnterRatioInfluence : MonoBehaviour
 {
     private EnemyMovement enemyMovement;
+    private GlassweatherAnimationController glAnimContr;
 
 	// Use this for initialization
 	private void Awake ()
     {
+        glAnimContr = GetComponentInParent<GlassweatherAnimationController>();
         enemyMovement = GetComponentInParent<EnemyMovement>();
 	}
 
@@ -26,6 +28,11 @@ public class EnterRatioInfluence : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             enemyMovement.followPlayer = false;
+            enemyMovement.target = null;
+            glAnimContr.followingPlayer = false;
+            glAnimContr.alertingPlayer = false;
+            glAnimContr.ignoringPlayer = true;
+            
         }
     }
 }

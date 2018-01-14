@@ -55,10 +55,12 @@ public class PlayerMovement : MonoBehaviour {
     public bool WallSliding { get { return wallSliding; } }
     public Vector3 AimDirection { get { return aimDirection; } }
     public int WallDirX { get { return wallDirX; } }
+    public bool debugUmbrella = false;
     #endregion
 
     private void Awake()
     {
+        
         controller = GetComponent<Controller2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         playerInput = GetComponent<PlayerInput>();
@@ -72,6 +74,10 @@ public class PlayerMovement : MonoBehaviour {
 
     void Update () 
     {
+        if (debugUmbrella)
+            UmbrellaUnlocked = true;
+        else if (!debugUmbrella)
+            UmbrellaUnlocked = false;
         //Debug.Log(controller.collisions.isSoaring);
         //Debug.Log(controller.collisions.below);
         //print(UmbrellaUnlocked);
@@ -176,6 +182,8 @@ public class PlayerMovement : MonoBehaviour {
                 velocity.x = 0;
                 if (input.x != wallDirX && input.x != 0)
                 {
+                    Debug.Log("HOLA");
+                    controller.collisions.almostJumping = true;
                     timeToWallUnstick -= Time.deltaTime;
                 }
                 else
@@ -185,6 +193,7 @@ public class PlayerMovement : MonoBehaviour {
             }
             else
             {
+                controller.collisions.almostJumping = false;
                 timeToWallUnstick = wallStickTime;
             }
         }
@@ -234,6 +243,8 @@ public class PlayerMovement : MonoBehaviour {
 
             if (controller.collisions.below || controller.collisions.left || controller.collisions.right)
             {
+                if (controller.collisions.below)
+                    controller.collisions.almostJumping = false;
                 canEnableUmbrella = true;
             }
         }
@@ -243,7 +254,7 @@ public class PlayerMovement : MonoBehaviour {
     {
         if (!controller.collisions.below && !controller.collisions.left && !controller.collisions.right)
         {
-            if (!controller.collisions.isSoaring && velocity.y < 0) //si está en el aire (sin planear)
+            if (!controller.collisions.isSoaring) //si está en el aire (sin planear)
             {
                 if (playerInput.CaptureSoarInput("down") && canEnableUmbrella) //y se pulsa espacio y puede usar el paraguas
                 {

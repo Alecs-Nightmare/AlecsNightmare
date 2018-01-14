@@ -30,7 +30,8 @@ public class AnimationController : MonoBehaviour {
         saltando = 2,
         cayendo = 3,
         escalando = 4,
-        planeando = 5
+        planeando = 5,
+        preparadoSalto = 6
     }
 
     void Update()
@@ -38,6 +39,12 @@ public class AnimationController : MonoBehaviour {
 		if (controller.collisions.isSoaring)
         {
             anim.SetInteger(AnimatorParameters.estado, (int)PlayerState.planeando);
+            if (!controller.collisions.isSoaring)
+                anim.SetInteger(AnimatorParameters.estado, (int)PlayerState.cayendo);
+        }
+        else if (_playerMovement.WallSliding && controller.collisions.almostJumping)
+        {
+            anim.SetInteger(AnimatorParameters.estado, (int)PlayerState.preparadoSalto);
         }
         else if (_playerMovement.WallSliding)
         {

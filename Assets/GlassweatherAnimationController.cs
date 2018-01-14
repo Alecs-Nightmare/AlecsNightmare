@@ -41,7 +41,9 @@ public class GlassweatherAnimationController : MonoBehaviour {
         else if (alertingPlayer)
         {
             anim.SetInteger(AnimatorParameters.estado, (int)EnemyState.alerting);
+            alertingPlayer = false;
             followingPlayer = true;
+            
         }
         else if (dying)
         {
@@ -50,6 +52,7 @@ public class GlassweatherAnimationController : MonoBehaviour {
         else if (ignoringPlayer)
         {
             anim.SetInteger(AnimatorParameters.estado, (int)EnemyState.idle);
+            
         }
 
     }

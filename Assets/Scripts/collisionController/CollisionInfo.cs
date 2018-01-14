@@ -16,6 +16,7 @@ public class CollisionInfo
     public Vector3 velocityOld;
     public int faceDirection;
     public bool fallingThroughPlatform;
+    public bool almostJumping;
 
     public void Reset()
     {
@@ -25,6 +26,7 @@ public class CollisionInfo
         descendingSlope = false;
         ascending = false;
         descending = false;
+        //almostJumping = false;
         slopeAngleOld = slopeAngle;
         slopeAngle = 0;
         TouchAWall = "";
