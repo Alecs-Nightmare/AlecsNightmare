@@ -7,10 +7,13 @@ public class PlayerStats : MonoBehaviour {
     GameObject manager;
     GameManager gameManager;        // Reference to the Game Manager
     PlayerMovement playerMovement;  // Reference to character's Player class
+    Animator animator;              // Reference to the player's animator
 
     //public int MaxSanity = 100;     // This is the main resource
     //[SerializeField]
     //private int currentSanity;      // We separate current and maxim values because it can be increased during the game
+    [SerializeField]
+    private int power = 100;
     [SerializeField]
     private int currentState;
     [SerializeField]
@@ -20,6 +23,8 @@ public class PlayerStats : MonoBehaviour {
     [SerializeField]
     private float repulsionForce = 20f;
     private float time;
+    private float gravity = 9.8f;
+    private bool bouncing = false;
     private Vector3 respawnMargin = new Vector3(0f, 2f, 0f);
 
 
@@ -29,6 +34,7 @@ public class PlayerStats : MonoBehaviour {
         manager = GameObject.FindGameObjectWithTag("Manager");
         gameManager = manager.GetComponent<GameManager>();
         playerMovement = GetComponentInParent<PlayerMovement>();
+        animator = GetComponentInParent<Animator>();
     }
 
     // Use this for initialization
@@ -40,38 +46,49 @@ public class PlayerStats : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
-        switch(currentState)
+        switch (currentState)
         {
-            case -1:        // Dead (waiting for respawn)
+            // DEAD (waiting for respawn)
+            case -1:
 
                 time += Time.smoothDeltaTime;
+                this.transform.Rotate(new Vector3(0f, 0f, 50f) * time);
                 // -deactivate player's movement controller class after refactoring-
                 if (time >= deathCooldown)
                 {
                     time = 0;
                     ResetStats();  // -for the moment we manage this here-
-                    //player.StopPlayer(false);
+                    animator.enabled = true;
                     playerMovement.enabled = true;
                     print("Respawned!");
                     // --INSERT REBIRTH SFX HERE--
                 }
                 break;
 
-            case 0:         // Damage cooldown (otherwise it'd get continuos damage)
+            // DAMAGE COOLDOWN (otherwise it'd get continuos damage every frame)
+            case 0:
 
                 time += Time.smoothDeltaTime;
                 if (time >= hitCooldown)
                 {
                     time = 0;
                     currentState = 1;
-                    GetComponent<Rigidbody2D>().velocity = Vector3.zero;
-                    GetComponent<Collider2D>().isTrigger = true;
-                    //player.StopPlayer(false);
-                    playerMovement.enabled = true;
+                    if (GetComponent<Rigidbody2D>().gravityScale > 0f)
+                    {
+                        GetComponent<Rigidbody2D>().gravityScale = 0f;
+                        GetComponent<Rigidbody2D>().velocity = Vector3.zero;
+                    }
+                    if (!GetComponent<Collider2D>().isTrigger) { GetComponent<Collider2D>().isTrigger = true; }
+                    if (!playerMovement.enabled) { playerMovement.enabled = true; }
+                    print("Movement restaured!");
+                    // Check if we are on an enemy
+                    Collider2D collider = SelectInnerCollider();
+                    if (collider != null) { CheckCollider(collider); }
                 }
                 break;
 
-            case 1:         // Player is active
+            // PLAYER IS ACTIVE
+            case 1:
 
                 break;
         }
@@ -79,78 +96,180 @@ public class PlayerStats : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D col)
     {
-        if (currentState == 1 && col.gameObject.tag == "Enemy")
-        {
-            EnemyStats enemy = col.gameObject.GetComponent<EnemyStats>();
-            if (enemy.AskForLethal())   // if enemy object is lethal we shouldn't knock back!
-            {
-                gameManager.SetCurrentSanity(0);
-            }
-            else
-            {
-                // knock back!
-                GetComponent<Rigidbody2D>().AddForce(repulsionForce*(new Vector2 (this.transform.position.x - col.transform.position.x, 1f)), ForceMode2D.Impulse);
-                gameManager.SetCurrentSanity(gameManager.GetCurrentSanity() - enemy.GetAttackPower());
-            }
-            if (gameManager.GetCurrentSanity() <= 0)
-            {
-                print("Death!");
-
-                gameManager.AddSubsLife(false);
-                currentState = -1;
-
-                // fall!
-                GetComponent<Rigidbody2D>().gravityScale = 2f;
-            }
-            else
-            {
-                currentState = 0;
-                GetComponent<Collider2D>().isTrigger = false;
-                print("Hit!");
-                // --INSERT DAMAGE SFX HERE--
-            }
-            //player.StopPlayer(true);
-            playerMovement.enabled = false;
-        }
-        else if (currentState >= 0 && col.gameObject.layer == 12)
-        {
-            if (col.gameObject.tag == "Chips")
-            {
-                // --play chips SFX--
-                gameManager.AddChips();
-            }
-            else if (col.gameObject.tag == "Burger")
-            {
-                // --play burger SFX--
-                gameManager.RecoverSanity(0);
-            }
-            col.gameObject.SetActive(false);
-        }
+        CheckCollider(col);
     }
 
     private void OnCollisionEnter2D(Collision2D col)
     {
-        if (currentState == 0 && col.gameObject.layer == 9)  // Crashes with the scenario!
+        if (bouncing)
         {
-            time = hitCooldown;
-            print("Crashes with the scenario!");
+            // IF THE COLLIDER IS A COLLECTABLE
+            if (col.gameObject.layer == 12)
+            {
+                if (col.gameObject.tag == "Chips")
+                {
+                    gameManager.AddChips();
+                    // --play chips SFX--
+                    print("Takes a chip!");
+                }
+                else if (col.gameObject.tag == "Burger")
+                {
+                    gameManager.RecoverSanity(-1);
+                    // --play burger SFX--
+                    print("Takes a burger!");
+                }
+                col.gameObject.SetActive(false);
+            }
+
+            // IF COLLIDES WITH THE SCENARIO
+            //else if (currentState == 0 && col.gameObject.layer == 9)
+            else if (col.gameObject.layer == 9)
+            {
+                GetComponent<Rigidbody2D>().gravityScale = 0f;
+                GetComponent<Rigidbody2D>().velocity = Vector3.zero;
+                GetComponent<Collider2D>().isTrigger = true;
+                playerMovement.enabled = true;
+                bouncing = false;
+                // --INSERT CRASHING SFX HERE--
+                print("Crashes with the scenario!");
+            }
+        }
+    }
+
+    private Collider2D SelectInnerCollider()
+    {
+        Collider2D target = null;
+        Collider2D[] withinColliders = Physics2D.OverlapPointAll(this.transform.position);  // --TESTING & ADJUST--
+        foreach (Collider2D col in withinColliders)
+        {
+            if (col.gameObject.tag == "Enemy")
+            {
+                int attack = 0;
+                EnemyStats enemy = col.gameObject.GetComponent<EnemyStats>();
+                if (enemy.AskForLethal())
+                {
+                    return col;
+                } else if (enemy.GetAttackPower() >= attack)
+                {
+                    target = col;
+                }
+            }
+        }
+        return target;
+    }
+
+    private void CheckCollider(Collider2D col)
+    {
+        if (currentState == 1 && col.gameObject.tag == "Enemy")
+        {
+            EnemyStats enemy = col.gameObject.GetComponent<EnemyStats>();
+
+            // JUMPS OVER A TOUCHABLE ENEMY
+            if (enemy.AskIfToucheable() && this.transform.position.y > col.transform.position.y + col.bounds.size.y/3)
+            {
+                // Adds sanity
+                gameManager.RecoverSanity(enemy.Hit(power));
+
+                // Bounce!
+                GetComponent<Rigidbody2D>().AddRelativeForce(new Vector2(0f, repulsionForce*enemy.GetBouncingFactor()), ForceMode2D.Impulse);
+                GetComponent<Rigidbody2D>().gravityScale = gravity;
+                bouncing = true;
+                // --INSERT ENEMY HIT SFX HERE--
+                print("Attack!");
+            }
+
+            // TAKES DAMAGE FROM ENEMY
+            else
+            {
+                // LETHAL ENEMY
+                if (enemy.AskForLethal())   // if enemy object is lethal we shouldn't knock back!
+                {
+                    gameManager.SubstractSanity(gameManager.GetCurrentSanity());
+                    GetComponent<Rigidbody2D>().gravityScale = gravity/8;   // reduced gravity for water!
+                }
+
+                // NON LETHAL ENEMY
+                else
+                {
+                    // Substracts sanity
+                    gameManager.SubstractSanity(enemy.GetAttackPower());
+
+                    // knock back!
+                    GetComponent<Rigidbody2D>().AddForce(repulsionForce * (new Vector2(this.transform.position.x - col.transform.position.x, 1f)), ForceMode2D.Impulse);
+                    GetComponent<Rigidbody2D>().gravityScale = gravity;
+                }
+
+                // Check if Player dies
+                if (gameManager.GetCurrentSanity() <= 0)     // if it is dead, fall!
+                {
+                    currentState = -1;
+                    animator.enabled = false;
+                    Time.timeScale = 0.66f;
+                    // --INSERT DEATH SFX HERE--
+                    // --CALL FADE IN BLACK HERE--
+                    print("Death!");
+                }
+
+                // If Player doesn't die, gets knocked back!
+                else
+                {
+                    GetComponent<Collider2D>().isTrigger = false;
+                    bouncing = true;
+                    currentState = 0;
+                    // --INSERT DAMAGE SFX HERE--
+                    print("Hit!");
+                }
+                playerMovement.enabled = false;
+            }
+        }
+
+        // IF THE COLLIDER IS A COLLECTABLE
+        else if ((currentState == 1 || bouncing) && col.gameObject.layer == 12)
+        {
+            if (col.gameObject.tag == "Chips")
+            {
+                gameManager.AddChips();
+                // --play chips SFX--
+                print("Takes a chip!");
+            }
+            else if (col.gameObject.tag == "Burger")
+            {
+                gameManager.RecoverSanity(-1);
+                // --play burger SFX--
+                print("Takes a burger!");
+            }
+            col.gameObject.SetActive(false);
+        }
+
+        // IF COLLIDES WITH THE SCENARIO
+        else if (bouncing && col.gameObject.layer == 9)
+        {
+            GetComponent<Rigidbody2D>().gravityScale = 0f;
+            GetComponent<Rigidbody2D>().velocity = Vector3.zero;
+            //GetComponent<Collider2D>().isTrigger = true;
+            //playerMovement.enabled = true;
+            bouncing = false;
+
             // --INSERT CRASHING SFX HERE--
+            print("Crashes with the scenario!");
         }
     }
 
     // Resets and respawns the player
     public void ResetStats()
     {
-        /* here we should play some sound effect, particles, etc-
+        /* here we should play some sound effect, particles, etc.
         this part only works when loaded with the Loader
         this.transform.position = GameManager.instance.Respawn().position;
         print("Respawned at " + GameManager.instance.Respawn().position);
         */
         this.transform.position = gameManager.ResetPlayer().position + respawnMargin;
+        this.transform.rotation = Quaternion.identity;
         GetComponent<Rigidbody2D>().velocity = Vector3.zero;
         GetComponent<Rigidbody2D>().gravityScale = 0f;
         currentState = 1;
         GetComponent<Collider2D>().isTrigger = true;
+        Time.timeScale = 1f;
     }
 
     public int GetState()
