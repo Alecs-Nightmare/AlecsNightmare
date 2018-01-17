@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
     private int currentSanity;                              // We separate current and maxim values because it can be increased during the game
     private int MaxSanity = 100;                            // This is the main resource
     [SerializeField]
-    private int lifes;                                  // Chances the player has to respawn before Game Over
+    private int lifes;                                      // Chances the player has to respawn before Game Over
     private int initLifes = 3;
     [SerializeField]
     private int chipCounter = 0;
@@ -234,6 +234,33 @@ public class GameManager : MonoBehaviour
         */
     }
 
+    // Adds (true) or substracts (false) one life
+    private void AddSubsLife(bool adds)
+    {
+        if (adds)
+        {
+            // --play live up SFX--
+            lifes++;
+            print("Lifes: " + lifes);
+        }
+        else
+        {
+            lifes--;
+            print("Lifes: " + lifes);
+            if (lifes < 0)
+            {
+                // --play GAME OVER SFX--
+                LoadSpecificScene(gameOverScene.name);
+                gameState = -1;
+                print("GAME OVER");
+            }
+            else
+            {
+                // --play death SFX--
+            }
+        }
+    }
+
     // Checks a checkpoint and updates it
     public void UpdateCurrentCheckNum(int num)
     {
@@ -292,12 +319,13 @@ public class GameManager : MonoBehaviour
     }
 
     // Call to recover sanity
-    // (zero value recovers 50% by default)
+    // (negative values recovers 50% by default)
     public void RecoverSanity(int recover)
     {
-        if (recover > 0)
+        if (recover >= 0)
         {
             currentSanity += recover;
+            if (currentSanity > MaxSanity) { currentSanity = MaxSanity; }
         }
         else
         {
@@ -310,30 +338,15 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // Adds (true) or substracts (false) one life
-    public void AddSubsLife(bool adds)
+    // Call to substract sanity
+    public void SubstractSanity(int substract)
     {
-        if (adds)
+        currentSanity -= substract;
+        if (currentSanity <= 0)
         {
-            // --play live up SFX--
-            lifes++;
-            print("Lifes: " + lifes);
-        }
-        else
-        {
-            lifes--;
-            print("Lifes: " + lifes);
-            if (lifes < 0)
-            {
-                // --play GAME OVER SFX--
-                LoadSpecificScene(gameOverScene.name);
-                gameState = -1;
-                print("GAME OVER");
-            }
-            else
-            {
-                // --play death SFX--
-            }
+            currentSanity = 0;
+            AddSubsLife(false);
         }
     }
+
 }
