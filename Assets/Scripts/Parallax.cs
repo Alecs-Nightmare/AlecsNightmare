@@ -56,8 +56,11 @@ public class Parallax : MonoBehaviour
     private void ReferenceCamera()
     {
         print("Locating camera...");
-        cam = GameObject.Find("Main Camera");
-        cameraTransform = cam.transform;
-        previousCamPos = cameraTransform.position;
+        cam = GameObject.FindGameObjectWithTag("MainCamera");
+        if (cam != null)
+        {
+            cameraTransform = cam.transform;
+            previousCamPos = cameraTransform.position;
+        }
     }
 }
