@@ -31,6 +31,7 @@ public class GameManager : MonoBehaviour
     private AsyncOperation m_AsyncLoaderCoroutine;
     private bool loading;
     private int gameState;                                  // 1 --> Running / 0 --> Pause / -1 --> End / -2 --> Resetting...
+    public GameObject fade;
 
     // Awake is always called before any Start functions
     void Awake()
@@ -47,6 +48,7 @@ public class GameManager : MonoBehaviour
 
         // Sets this to not be destroyed when reloading scene
         DontDestroyOnLoad(this.gameObject);
+        fade = GameObject.FindGameObjectWithTag("Fade");
     }
 
     // Use this for initialization
@@ -89,6 +91,7 @@ public class GameManager : MonoBehaviour
                     loading = false;
                     PauseGame(false);
                     print(SceneManager.GetActiveScene().name + " is ready!");
+                    fade.GetComponentInChildren<Fade>().FadeToBlack(false, 1.0f);
                 }
             }
         }

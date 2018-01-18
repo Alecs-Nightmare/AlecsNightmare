@@ -7,7 +7,12 @@ public class StartLevel : MonoBehaviour
 {
     public void ButtonClicked()
     {
-        //GameManager.instance.LoadSpecificScene("Scene1");
+        StartCoroutine(wait());
+    }
+
+    IEnumerator wait()
+    {
+        yield return new WaitForSecondsRealtime(0.5f);
         SceneManager.LoadScene("Loader");
     }
     
