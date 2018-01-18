@@ -19,6 +19,7 @@ public class EnterRatioInfluence : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             enemyMovement.followPlayer = true;
+            enemyMovement.patrolling = false;
             enemyMovement.target = collision.gameObject.transform;
         }
     }
@@ -27,7 +28,10 @@ public class EnterRatioInfluence : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
+            enemyMovement.currentTimeToBackPatrol = 0f;
             enemyMovement.followPlayer = false;
+
+
             enemyMovement.target = null;
             glAnimContr.followingPlayer = false;
             glAnimContr.alertingPlayer = false;
