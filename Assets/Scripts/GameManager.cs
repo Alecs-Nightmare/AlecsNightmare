@@ -83,7 +83,8 @@ public class GameManager : MonoBehaviour
                 }
                 if (m_AsyncLoaderCoroutine.isDone)              // Scene completely loaded! Start level routines...
                 {
-                    if (gameState >= 0) // if this is a level...
+                    // if this is a level...
+                    if (gameState >= 0)
                     {
                         // Reset the game
                         ResetCheckpoints();
@@ -93,6 +94,12 @@ public class GameManager : MonoBehaviour
                         GameObject player = Instantiate(playerPrefab, Vector3.zero, Quaternion.identity) as GameObject;
                         player.transform.position = ResetPlayer().position;
                         print("Player has been spawned!");
+                    }
+
+                    // if game has finished...
+                    else if (gameState == -3)
+                    {
+                        Object.Destroy(this.gameObject);
                     }
 
                     // Rebuild level array
