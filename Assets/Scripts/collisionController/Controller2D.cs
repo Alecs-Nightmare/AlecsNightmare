@@ -242,7 +242,7 @@ public class Controller2D : RaycastController
             }
         }
     }
-
+            
    void ClimbSlope(ref Vector3 velocity, float slopeAngle)
     {
         float moveDistance = Mathf.Abs(velocity.x);

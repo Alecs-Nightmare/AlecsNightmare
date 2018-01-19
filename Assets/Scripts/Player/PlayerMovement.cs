@@ -58,6 +58,14 @@ public class PlayerMovement : MonoBehaviour {
     public bool debugUmbrella = false;
     #endregion
 
+
+    public bool countingForAttacking = false;
+    public bool countingForProtecting = false;
+    private float currentTimeA = 0f;
+    private float maxTimeA = 0.5f;
+    private float currentTimeP = 0f;
+    private float maxTimeP = 0.5f;
+
     private void Awake()
     {
         
@@ -74,18 +82,41 @@ public class PlayerMovement : MonoBehaviour {
 
     void Update () 
     {
-        /*
-        if (debugUmbrella)
-            UmbrellaUnlocked = true;
-        else if (!debugUmbrella)
-            UmbrellaUnlocked = false;
-        */
-        //Debug.Log(controller.collisions.isSoaring);
-        //Debug.Log(controller.collisions.below);
-        //print(UmbrellaUnlocked);
+
+        
         if (active)
         {
+
+            if (countingForAttacking && !countingForProtecting)
+            {
+                currentTimeA += Time.deltaTime;
+                if (currentTimeA >= maxTimeA)
+                {
+                    countingForAttacking = false;
+                    currentTimeA = 0f;
+                    controller.collisions.isAttacking = false;
+                }
+            }
+
+            if (countingForProtecting && !countingForAttacking)
+            {
+
+                currentTimeP += Time.deltaTime;
+                if (currentTimeP >= maxTimeP)
+                {
+                    countingForProtecting = false;
+                    currentTimeP = 0f;
+                    controller.collisions.isProtecting = false;
+                }
+
+
+
+            }
             input = playerInput.DirectionalInput;
+
+            Attack();
+            Protect();
+
             wallDirX = (controller.collisions.left) ? -1 : 1;
 
             ResetGravity();
@@ -108,6 +139,32 @@ public class PlayerMovement : MonoBehaviour {
 
             if (playerInput.DirectionalInput.x == 0) velocity.x = 0;
         }
+    }
+
+    public void Attack()
+    {
+        if (playerInput.CaptureMouseLeftClick() && !controller.collisions.isAttacking && !controller.collisions.isProtecting &&UmbrellaUnlocked)
+        {//si no estaba atacando ni protegiendose, ataca.
+            controller.collisions.isAttacking = true;
+            countingForAttacking = true;
+            Debug.Log("attacking");
+
+        }
+
+
+    }
+
+
+    public void Protect()
+    {//si no estaba protegiendose ni atacando, protegese.
+        if (playerInput.CaptureMouseRightClick() && !controller.collisions.isProtecting && !controller.collisions.isAttacking && UmbrellaUnlocked)
+        {
+            controller.collisions.isProtecting = true;
+            Debug.Log("protecting");
+            countingForProtecting = true;
+            
+        }
+
     }
 
     private void CheckIfUnlockedUmbrella()

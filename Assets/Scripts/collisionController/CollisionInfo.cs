@@ -4,6 +4,8 @@ public class CollisionInfo
 {
     public string TouchAWall;
 
+    public bool isAttacking;
+    public bool isProtecting;
     public bool above, below;
     public bool left, right;
     public float slopeAngle, slopeAngleOld;

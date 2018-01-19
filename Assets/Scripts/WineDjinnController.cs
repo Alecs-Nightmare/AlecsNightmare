@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class WineDjinnController : MonoBehaviour {
 
+
     public WineDjinnAnimationController WDAnimController;
     public Vector3 aimDirection;
     public bool playerRight;
@@ -26,6 +27,7 @@ public class WineDjinnController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        //Debug.Log(aimDirection);
         //CheckWhereIsPlayer();
         setAimDirection();
         ManageDjinnWine();
@@ -46,14 +48,14 @@ public class WineDjinnController : MonoBehaviour {
     {
         if (playerRight)
         {
-            print("AIM TO THE RIGHT");
+            
             aimDirection = Vector3.right;
             transform.localScale = new Vector3(localScaleX, transform.localScale.y, transform.localScale.z);
         }
 
         else
         {
-            print("AIM TO THE LEFT");
+    
             aimDirection = Vector3.left;
             transform.localScale = new Vector3(invLocalScaleX, transform.localScale.y, transform.localScale.z);
         }
@@ -73,7 +75,7 @@ public class WineDjinnController : MonoBehaviour {
             //if (WDAnimController.shooting && !WDAnimController.melee)
             if (currentTimeCadency >= TimeCadency)
             {
-                ShootTarget();
+                Shoot();
                 currentTimeCadency = 0f;
             }
             else
@@ -83,13 +85,32 @@ public class WineDjinnController : MonoBehaviour {
                 
         }
     }
-    public void ShootTarget()
+    public void Shoot()
     {
         
-        Instantiate(bullet, new Vector3(this.transform.position.x + 1f, this.transform.position.y - 1f, this.transform.position.z), this.transform.rotation);
-        
+        GameObject aux;
+        Instantiate(aux = bullet, this.transform.position, Quaternion.identity);
+        aux.GetComponent<MoveProjectile>().moveDirection = aimDirection;
+
+
+
+        Instantiate(aux = bullet, 
+            aimDirection == Vector3.right ? 
+            new Vector3(this.transform.position.x - 1f, this.transform.position.y - 0.5f, this.transform.position.z) :
+            new Vector3(this.transform.position.x + 1f, this.transform.position.y - 0.5f, this.transform.position.z)
+            , Quaternion.identity);
+        aux.GetComponent<MoveProjectile>().moveDirection = aimDirection;
+
+        /*
+        Instantiate(bullet, new Vector3(this.transform.position.x + 0f, this.transform.position.y + 0f, 
+            this.transform.position.z), aimDirection == Vector3.left ? Quaternion.Euler(Vector3.zero) : Quaternion.Euler(0f, 180f, 0f));
+        /*
+        Instantiate(bullet, new Vector3(this.transform.position.x + 1f, this.transform.position.y -0.5f,
+            this.transform.position.z), aimDirection == Vector3.left ? Quaternion.Euler(Vector3.zero) : Quaternion.Euler(0f, 180f, 0f));
+        */
 
     }
+
 
     public void OnTriggerEnter2D(Collider2D collision)
     {

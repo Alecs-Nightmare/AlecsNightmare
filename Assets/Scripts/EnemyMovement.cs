@@ -78,7 +78,7 @@ public class EnemyMovement : MonoBehaviour
     void Update()
     {
         //Debug.Log(CheckIfOnAWaypoint());
-        Debug.Log(closerWaypoint);
+        //Debug.Log(closerWaypoint);
         //if (CheckStartCountingToBackPatrol())
         //CountToBackPatrol();
         UpdateDistanceToWaypoints();
