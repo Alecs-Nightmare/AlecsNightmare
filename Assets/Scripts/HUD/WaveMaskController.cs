@@ -6,6 +6,8 @@ public class WaveMaskController : MonoBehaviour {
 
     GameManager manager;
     RectTransform transform;
+    GameObject cameraObject;
+    Camera camera;
     private Vector3 basePosition;
     private Vector3 newPosition;
     private Vector3 displacement;
@@ -18,9 +20,11 @@ public class WaveMaskController : MonoBehaviour {
     [SerializeField]
     private float waveVelocity = 2f;
     [SerializeField]
-    private float fillingScope = 2.5f;
+    private float fillingScope = 2.4f;
     [SerializeField]
     private float fillingVelocity = 100f;
+    [SerializeField]
+    private float normalizingFactor = 1.33f;
 
     // Set up references
     void Awake ()
@@ -58,6 +62,16 @@ public class WaveMaskController : MonoBehaviour {
                 if (currentHeight > 0) { manager.DamageRoutine(false); }
             }
         }
+
+        /*
+        cameraObject = GameObject.FindGameObjectWithTag("MainCamera");
+        camera = cameraObject.GetComponent<Camera>();
+        if (camera != null)
+        {
+            camera.ResetAspect();
+            fillingScope = camera.aspect * normalizingFactor;
+        }
+        */
 
         height = new Vector3(0f, fillingScope*currentHeight, 0f);
         newPosition = basePosition + waveScope * waveVelocity * displacement + height;
