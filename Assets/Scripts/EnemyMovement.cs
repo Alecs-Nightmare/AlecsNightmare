@@ -15,6 +15,14 @@ public class EnemyMovement : MonoBehaviour
     public Transform target;
     public Vector3[] localWaypoints;
 
+<<<<<<< HEAD
+    public float offset = 1f;
+    public Vector3 positionDetection;
+    public Vector3 positionUndetection;
+    public bool isWaypointActive;
+    public Vector3 InitialDistanceTraveled;
+    public Vector3 FinalDistanceTraveled;
+=======
     public float enemySpeed = 3f;
     public Vector3 aimDirection;
     public Vector3 lastPatrolMovement;
@@ -27,6 +35,7 @@ public class EnemyMovement : MonoBehaviour
     public Vector3 closerWaypoint;
 
     public bool isOnAWaypoint;
+>>>>>>> da9999affffcdbe6f25e75c48dd795e20a48c49e
 
     private Vector3 spawnPosition;
     private string whereIsThePlayer;
@@ -35,27 +44,35 @@ public class EnemyMovement : MonoBehaviour
     private GameObject[] bones;
     private GlassweatherAnimationController glAnimContr;
     private HorizontalEnemyController movementController;
+    
+    
 
     //private Vector3 scaleRight;
 
     //public Vector3[] localWaypoints;
     Vector3[] globalWaypoints;
-    
+    //Vector3 velocity;
     public float waitTime;
     int fromWaypointIndex;
     float percentBetweenWaypoints;
     float nextMoveTime;
     [Range(0, 2)]
     public float easeAmount;
+<<<<<<< HEAD
+    public Vector3 velocity;
+    //public Rigidbody2D rb;
+=======
 
     public Vector3 velocity;
 
     //following player
     Vector3 currentPos;
 
+>>>>>>> da9999affffcdbe6f25e75c48dd795e20a48c49e
     // Use this for initialization
     private void Awake()
     {
+        //rb = GetComponent<Rigidbody2D>();
         glAnimContr = GetComponent<GlassweatherAnimationController>();
         movementController = GetComponent<HorizontalEnemyController>();
         spawnPosition = this.transform.position;
@@ -77,6 +94,11 @@ public class EnemyMovement : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
+<<<<<<< HEAD
+        /*
+        if (target==null)
+            ManageEnemyPatrolMovement();
+=======
         //Debug.Log(CheckIfOnAWaypoint());
         Debug.Log(closerWaypoint);
         //if (CheckStartCountingToBackPatrol())
@@ -84,6 +106,7 @@ public class EnemyMovement : MonoBehaviour
         UpdateDistanceToWaypoints();
         CheckAimDirection();
         ManageEnemyPatrolMovement();
+>>>>>>> da9999affffcdbe6f25e75c48dd795e20a48c49e
 
 	}
     public bool CheckStartCountingToBackPatrol()
@@ -95,6 +118,19 @@ public class EnemyMovement : MonoBehaviour
         currentTimeToBackPatrol += Time.deltaTime;
         if (currentTimeToBackPatrol >= timeToBackPatrol)
         {
+<<<<<<< HEAD
+            //whereIsThePlayer = target.position.x >= transform.position.x ? "right" : "left";
+            ManageEnemyMovement();
+        }
+        */
+
+        if (followPlayer)
+            ManageEnemyMovement();
+        else
+            ManageEnemyPatrolMovement();
+
+	}
+=======
             print("GO!");
             patrolling = true;
 
@@ -103,11 +139,16 @@ public class EnemyMovement : MonoBehaviour
             
 
     }
+>>>>>>> da9999affffcdbe6f25e75c48dd795e20a48c49e
     float Ease(float x)
     {
         float a = easeAmount + 1;
         return Mathf.Pow(x, a) / (Mathf.Pow(x, a) + Mathf.Pow(1 - x, a));
     }
+<<<<<<< HEAD
+    
+    Vector3 CalculateEnemyPatrolMovement()
+=======
     public void UpdateDistanceToWaypoints()
     {
         distanceToWaypointOne = Vector3.Distance(transform.position, globalWaypoints[0]);
@@ -143,16 +184,28 @@ public class EnemyMovement : MonoBehaviour
     }
 
     Vector3 CalculateEnemyMovement()
+>>>>>>> da9999affffcdbe6f25e75c48dd795e20a48c49e
     {
-        /*
+        
         if (Time.time < nextMoveTime)
         {
             return Vector3.zero;
-
         }
         
+<<<<<<< HEAD
+        fromWaypointIndex %= globalWaypoints.Length;
+
+        int toWaypointIndex = (fromWaypointIndex + 1) % globalWaypoints.Length;
+        float distanceBetweenWaypoints = Vector3.Distance(globalWaypoints[fromWaypointIndex], globalWaypoints[toWaypointIndex]);
+        percentBetweenWaypoints += Time.deltaTime * enemySpeed / distanceBetweenWaypoints;
+        percentBetweenWaypoints = Mathf.Clamp01(percentBetweenWaypoints);
+        float easePercentBetweenWaypoints = Ease(percentBetweenWaypoints);
+        Vector3 newPos = Vector3.Lerp(globalWaypoints[fromWaypointIndex], globalWaypoints[toWaypointIndex], easePercentBetweenWaypoints);
+        if (percentBetweenWaypoints >= 1)
+=======
         */
         if (patrolling)//lerp entre checkpoint actual y checkpoint siguiente
+>>>>>>> da9999affffcdbe6f25e75c48dd795e20a48c49e
         {
             Vector3 newPos = Vector3.zero;
             fromWaypointIndex %= globalWaypoints.Length;
@@ -201,20 +254,39 @@ public class EnemyMovement : MonoBehaviour
       
 
 
+
         }
+<<<<<<< HEAD
+
+        //velocity+= (newPos - transform.position);
+        Vector3 offsetToAdd = FinalDistanceTraveled - InitialDistanceTraveled;
+        FinalDistanceTraveled = Vector3.zero;
+        InitialDistanceTraveled = Vector3.zero;
+        return newPos - transform.position + (offsetToAdd);
+=======
         return velocity;
 
 
 
 
         
+>>>>>>> da9999affffcdbe6f25e75c48dd795e20a48c49e
 
 
     }
+    
+    
+
     public void ManageEnemyPatrolMovement()
     {
+<<<<<<< HEAD
+
+        //transform.Translate(CalculateEnemyPatrolMovement());
+        movementController.Move(CalculateEnemyPatrolMovement());
+=======
         
         movementController.Move(CalculateEnemyMovement());
+>>>>>>> da9999affffcdbe6f25e75c48dd795e20a48c49e
 
     }
 
@@ -222,6 +294,11 @@ public class EnemyMovement : MonoBehaviour
     {
         if (followPlayer)
         {
+            if (velocity.x > 0)
+                print("derecha");
+            else if (velocity.x < 0)
+                print("izquierda");
+
             //animation
             glAnimContr.alertingPlayer = true;
             glAnimContr.ignoringPlayer = false;
@@ -236,6 +313,7 @@ public class EnemyMovement : MonoBehaviour
             //flip
             
         }
+        /*
         else
         {
             //animation
@@ -246,6 +324,12 @@ public class EnemyMovement : MonoBehaviour
             this.transform.position = Vector3.MoveTowards(this.transform.position, spawnPosition, (enemySpeed - 1) * Time.deltaTime);
             
         }
+<<<<<<< HEAD
+        */
+        
+        
+=======
+>>>>>>> da9999affffcdbe6f25e75c48dd795e20a48c49e
     }
 
     public float DistanceToPlayer()

@@ -18,6 +18,9 @@ public class EnterRatioInfluence : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
+
+            enemyMovement.InitialDistanceTraveled = transform.position;
+            Debug.Log("entramos en su area de influencia");
             enemyMovement.followPlayer = true;
             enemyMovement.patrolling = false;
             enemyMovement.target = collision.gameObject.transform;
@@ -28,7 +31,12 @@ public class EnterRatioInfluence : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
+<<<<<<< HEAD
+            enemyMovement.FinalDistanceTraveled = transform.position;
+            Debug.Log(this.transform.position);
+=======
             enemyMovement.currentTimeToBackPatrol = 0f;
+>>>>>>> da9999affffcdbe6f25e75c48dd795e20a48c49e
             enemyMovement.followPlayer = false;
 
 
