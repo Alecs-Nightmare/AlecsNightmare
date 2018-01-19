@@ -9,6 +9,7 @@ public class HorizontalEnemyController : RaycastController
     public LayerMask playerMask;
 
     [HideInInspector] public CollisionInfo collisions;
+    
 
     public override void Awake()
     {
@@ -21,7 +22,10 @@ public class HorizontalEnemyController : RaycastController
         base.Start();
         collisions.faceDirection = 1;
     }
-
+    public void FixedUpdate()
+    {
+        
+    }
     public void Move(Vector3 velocity)
     {
         UpdateRaycastOrigins();

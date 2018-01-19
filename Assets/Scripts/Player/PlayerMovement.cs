@@ -74,10 +74,12 @@ public class PlayerMovement : MonoBehaviour {
 
     void Update () 
     {
+        /*
         if (debugUmbrella)
             UmbrellaUnlocked = true;
         else if (!debugUmbrella)
             UmbrellaUnlocked = false;
+        */
         //Debug.Log(controller.collisions.isSoaring);
         //Debug.Log(controller.collisions.below);
         //print(UmbrellaUnlocked);
