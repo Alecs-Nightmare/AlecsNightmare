@@ -16,6 +16,15 @@ public class CameraSimpleController : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
+        if (player == null)
+        {
+            ReferencePlayer();
+        }
+	}
+
+    // LateUpdate is called once before rendering
+    private void LateUpdate ()
+    {
         if (player != null)
         {
             if (playerStats.GetState() >= 0)
@@ -27,11 +36,7 @@ public class CameraSimpleController : MonoBehaviour {
                 this.transform.position = new Vector3(player.transform.position.x, this.transform.position.y, -2f);
             }
         }
-        else
-        {
-            ReferencePlayer();
-        }
-	}
+    }
 
     private void ReferencePlayer()
     {

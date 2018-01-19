@@ -2,6 +2,7 @@
 using System.Collections.Generic;   // Much lists very fun wow -Doge
 using UnityEngine;
 using UnityEngine.SceneManagement;  // Allows to manage scences
+using UnityEngine.UI;               // Allows to manage canvas objects
 #if UNITY_EDITOR
 using UnityEditor;                  // Allows to instanciate an asset directly from Prefabs
 #endif
@@ -14,13 +15,23 @@ public class GameManager : MonoBehaviour
     public Object returnScene;                              // Reference to the scene to reset the game at
     public GameObject playerPrefab;                         // Reference to the player's prefab
     [SerializeField]
-    private int currentSanity;                              // We separate current and maxim values because it can be increased during the game
-    private int MaxSanity = 100;                            // This is the main resource
+    private GameObject lifeCounter;
+    [SerializeField]
+    private GameObject chipCounter;
+    [SerializeField]
+    private GameObject calmedIcon;
+    [SerializeField]
+    private GameObject warningIcon;
+    [SerializeField]
+    private GameObject warningFace;
     [SerializeField]
     private int lifes;                                      // Chances the player has to respawn before Game Over
     private int initLifes = 3;
     [SerializeField]
-    private int chipCounter = 0;
+    private int currentSanity;                              // We separate current and maxim values because it can be increased during the game
+    private int MaxSanity = 100;                            // This is the main resource  
+    [SerializeField]
+    private int chips = 0;
     [SerializeField]
     private int level = 0;                                  // Current level number (scene)
     [SerializeField]
@@ -92,7 +103,7 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
-        else if (!loading && gameState == -2)
+        else if (!loading && gameState == -3)
         {
             ResetManager();
             StartLevelLoadingRoutine(level);
@@ -114,7 +125,7 @@ public class GameManager : MonoBehaviour
                     break;
 
                 case -1:    // Resets the game
-                    gameState = -2;
+                    gameState = -3;
                     LoadSpecificScene(returnScene.name);
                     print("Resetting the game...");
                     break;
@@ -126,8 +137,14 @@ public class GameManager : MonoBehaviour
     void ResetManager()
     {
         lifes = initLifes;
+        lifeCounter.GetComponent<UnityEngine.UI.Text>().text = "x" + lifes.ToString();
+        chips = 0;
+        chipCounter.GetComponent<UnityEngine.UI.Text>().text = "x" + chips.ToString();
         level = 0;
         gameState = 1;
+        warningFace.SetActive(false);
+        warningIcon.SetActive(false);
+        calmedIcon.SetActive(true);
     }
 
     // Starts the next level loading coroutine
@@ -247,18 +264,27 @@ public class GameManager : MonoBehaviour
         {
             lifes--;
             print("Lifes: " + lifes);
-            if (lifes < 0)
+            if (lifes < 1)
             {
                 // --play GAME OVER SFX--
-                LoadSpecificScene(gameOverScene.name);
+
+                // IMPROVE GAME OVER ROUTINE HERE
+                //LoadSpecificScene(gameOverScene.name);
                 gameState = -1;
                 print("GAME OVER");
             }
-            else
+            /*else
             {
                 // --play death SFX--
-            }
+            }*/
         }
+
+        //lifeCounter.GetComponent<UnityEngine.UI.Text>().text = "x" + lifes.ToString();
+    }
+
+    public int GetLifes()
+    {
+        return lifes;
     }
 
     // Checks a checkpoint and updates it
@@ -282,6 +308,7 @@ public class GameManager : MonoBehaviour
     public Transform ResetPlayer()  // --still not sure who calls for this funcion upon respawning on death--
     {
         currentSanity = MaxSanity;
+        //warningFace.SetActive(false);
 
         GameObject active = checkpointList[0];
         foreach (GameObject checkpt in checkpointList)
@@ -308,14 +335,14 @@ public class GameManager : MonoBehaviour
     // Increases chip counter and adds lifes
     public void AddChips()
     {
-        chipCounter++;
-        print("Chips: " + chipCounter);
-        if (chipCounter > 100)
+        chips++;
+        while (chips > 99)
         {
-            chipCounter -= 100;
+            chips -= 100;
             AddSubsLife(true);
-            print("Chips: " + chipCounter);
         }
+        chipCounter.GetComponent<UnityEngine.UI.Text>().text = "x" + chips.ToString();
+        print("Chips: " + chips);
     }
 
     // Call to recover sanity
@@ -329,24 +356,57 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            currentSanity += MaxSanity/2;
+            currentSanity += MaxSanity / 2;
         }
 
         if (currentSanity > MaxSanity)
         {
             currentSanity = MaxSanity;
         }
+
+        /*if (currentSanity >= MaxSanity/2)
+        {
+            warningFace.SetActive(false);
+        }*/
     }
 
     // Call to substract sanity
     public void SubstractSanity(int substract)
     {
         currentSanity -= substract;
+
+        /*if (currentSanity < MaxSanity / 2)
+        {
+            warningFace.SetActive(true);
+        }*/
+
         if (currentSanity <= 0)
         {
             currentSanity = 0;
             AddSubsLife(false);
         }
+
+        lifeCounter.GetComponent<UnityEngine.UI.Text>().text = "x" + lifes.ToString();
+        print("Sanity: " + currentSanity);
+    }
+
+    public void DamageRoutine(bool hit)
+    {
+        warningFace.SetActive(hit);
+    }
+
+    public void DeathRoutine(bool death)
+    {
+        warningFace.SetActive(death);
+        warningIcon.SetActive(death);
+        calmedIcon.SetActive(!death);
+        // --INSERT DEATH SFX HERE--
+        // --CALL FADE IN BLACK HERE--
+    }
+
+    public void GameOver()
+    {
+        LoadSpecificScene(gameOverScene.name);
     }
 
 }
