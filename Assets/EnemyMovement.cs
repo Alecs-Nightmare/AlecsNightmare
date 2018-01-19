@@ -10,6 +10,13 @@ public class EnemyMovement : MonoBehaviour
     public Transform target;
     public Vector3[] localWaypoints;
 
+    public float offset = 1f;
+    public Vector3 positionDetection;
+    public Vector3 positionUndetection;
+    public bool isWaypointActive;
+    public Vector3 InitialDistanceTraveled;
+    public Vector3 FinalDistanceTraveled;
+
     private Vector3 spawnPosition;
     private string whereIsThePlayer;
     private float localScaleX;
@@ -17,22 +24,26 @@ public class EnemyMovement : MonoBehaviour
     private GameObject[] bones;
     private GlassweatherAnimationController glAnimContr;
     private HorizontalEnemyController movementController;
+    
+    
 
     //private Vector3 scaleRight;
 
     //public Vector3[] localWaypoints;
     Vector3[] globalWaypoints;
-    
+    //Vector3 velocity;
     public float waitTime;
     int fromWaypointIndex;
     float percentBetweenWaypoints;
     float nextMoveTime;
     [Range(0, 2)]
     public float easeAmount;
-
+    public Vector3 velocity;
+    //public Rigidbody2D rb;
     // Use this for initialization
     private void Awake()
     {
+        //rb = GetComponent<Rigidbody2D>();
         glAnimContr = GetComponent<GlassweatherAnimationController>();
         movementController = GetComponent<HorizontalEnemyController>();
         spawnPosition = this.transform.position;
@@ -52,29 +63,37 @@ public class EnemyMovement : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
+        /*
         if (target==null)
             ManageEnemyPatrolMovement();
 
         if (target != null)
         {
-            whereIsThePlayer = target.position.x >= transform.position.x ? "right" : "left";
+            //whereIsThePlayer = target.position.x >= transform.position.x ? "right" : "left";
             ManageEnemyMovement();
         }
+        */
+
+        if (followPlayer)
+            ManageEnemyMovement();
+        else
+            ManageEnemyPatrolMovement();
+
 	}
     float Ease(float x)
     {
         float a = easeAmount + 1;
         return Mathf.Pow(x, a) / (Mathf.Pow(x, a) + Mathf.Pow(1 - x, a));
     }
+    
     Vector3 CalculateEnemyPatrolMovement()
     {
-        /*
+        
         if (Time.time < nextMoveTime)
         {
             return Vector3.zero;
-
         }
-        */
+        
         fromWaypointIndex %= globalWaypoints.Length;
 
         int toWaypointIndex = (fromWaypointIndex + 1) % globalWaypoints.Length;
@@ -98,15 +117,25 @@ public class EnemyMovement : MonoBehaviour
 
             nextMoveTime = Time.time + waitTime;
 
+
         }
-        return newPos - transform.position;
+
+        //velocity+= (newPos - transform.position);
+        Vector3 offsetToAdd = FinalDistanceTraveled - InitialDistanceTraveled;
+        FinalDistanceTraveled = Vector3.zero;
+        InitialDistanceTraveled = Vector3.zero;
+        return newPos - transform.position + (offsetToAdd);
 
 
     }
+    
+    
+
     public void ManageEnemyPatrolMovement()
     {
-        
-        transform.Translate(CalculateEnemyPatrolMovement());
+
+        //transform.Translate(CalculateEnemyPatrolMovement());
+        movementController.Move(CalculateEnemyPatrolMovement());
 
     }
 
@@ -114,12 +143,17 @@ public class EnemyMovement : MonoBehaviour
     {
         if (followPlayer)
         {
+            if (velocity.x > 0)
+                print("derecha");
+            else if (velocity.x < 0)
+                print("izquierda");
+
             //animation
             glAnimContr.alertingPlayer = true;
             glAnimContr.ignoringPlayer = false;
 
             //movement vector
-            Vector3 velocity = (target.transform.position - transform.position).normalized;
+            velocity = (target.transform.position - transform.position).normalized;
             velocity.y = 0;
             velocity.x *= enemySpeed * Time.unscaledDeltaTime;
             enemyVelocity = velocity;
@@ -128,6 +162,7 @@ public class EnemyMovement : MonoBehaviour
             //flip
             
         }
+        /*
         else
         {
             //animation
@@ -141,6 +176,8 @@ public class EnemyMovement : MonoBehaviour
             else
                 this.transform.localScale = new Vector3(localScaleX, this.transform.localScale.y, this.transform.localScale.z);
         }
+        */
+        
         
     }
 
