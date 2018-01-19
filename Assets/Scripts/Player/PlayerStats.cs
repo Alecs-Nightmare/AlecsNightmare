@@ -56,12 +56,20 @@ public class PlayerStats : MonoBehaviour {
                 // -deactivate player's movement controller class after refactoring-
                 if (time >= deathCooldown)
                 {
-                    time = 0;
-                    ResetStats();  // -for the moment we manage this here-
-                    animator.enabled = true;
-                    playerMovement.enabled = true;
-                    print("Respawned!");
-                    // --INSERT REBIRTH SFX HERE--
+                    if (gameManager.GetLifes() > 0)
+                    {
+                        time = 0;
+                        ResetStats();  // -for the moment we manage this here-
+                        gameManager.DeathRoutine(false);
+                        animator.enabled = true;
+                        playerMovement.enabled = true;
+                        print("Respawned!");
+                        // --INSERT REBIRTH SFX HERE--
+                    }
+                    else
+                    {
+                        gameManager.GameOver();
+                    }
                 }
                 break;
 
@@ -122,7 +130,6 @@ public class PlayerStats : MonoBehaviour {
             }
 
             // IF COLLIDES WITH THE SCENARIO
-            //else if (currentState == 0 && col.gameObject.layer == 9)
             else if (col.gameObject.layer == 9)
             {
                 GetComponent<Rigidbody2D>().gravityScale = 0f;
@@ -204,9 +211,8 @@ public class PlayerStats : MonoBehaviour {
                 {
                     currentState = -1;
                     animator.enabled = false;
+                    gameManager.DeathRoutine(true);
                     Time.timeScale = 0.66f;
-                    // --INSERT DEATH SFX HERE--
-                    // --CALL FADE IN BLACK HERE--
                     print("Death!");
                 }
 
