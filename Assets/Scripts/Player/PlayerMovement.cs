@@ -241,7 +241,7 @@ public class PlayerMovement : MonoBehaviour {
                 velocity.x = 0;
                 if (input.x != wallDirX && input.x != 0)
                 {
-                    Debug.Log("HOLA");
+                    //Debug.Log("HOLA");
                     controller.collisions.almostJumping = true;
                     timeToWallUnstick -= Time.deltaTime;
                 }

@@ -50,8 +50,9 @@ public class InstantiateBackgrounds : MonoBehaviour {
         {
             numCopies = 3;
         }
-        this.gameObject.transform.position = new Vector3(this.transform.position.x + 60f, this.transform.position.y + 40, this.transform.position.z);
-	}
+        //this.gameObject.transform.position = new Vector3(this.transform.position.x + 60f, this.transform.position.y + 40, this.transform.position.z);
+        this.gameObject.transform.position = new Vector3(this.transform.position.x + 60f, this.transform.position.y, this.transform.position.z);
+    }
 	
 	// Update is called once per frame
 	void Update () {

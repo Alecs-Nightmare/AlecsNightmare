@@ -109,7 +109,7 @@ public class GameManager : MonoBehaviour
                     loading = false;
                     PauseGame(false);
                     print(SceneManager.GetActiveScene().name + " is ready!");
-                    fade.GetComponentInChildren<Fade>().FadeToBlack(false, 1.0f);
+                    //fade.GetComponentInChildren<Fade>().FadeToBlack(false, 1.0f);
                 }
             }
         }

@@ -16,6 +16,8 @@ public class EnemyStats : MonoBehaviour {
     private bool isLethal;      // Set true for enemies than one-hit kill you
     [SerializeField]
     private bool isToucheable;  // Set true for enemies that can be jumped above
+    [SerializeField]
+    private bool isDestroyable; // Set true for enemies that can be killed
     private bool dead;
     [SerializeField]
     private float deathDelay = 1f;
@@ -82,13 +84,20 @@ public class EnemyStats : MonoBehaviour {
 
     public int Hit(int damage)
     {
-        hitPoints -= damage;
-        if (hitPoints <= 0)
+        if (isDestroyable)
         {
-            GetComponent<Collider2D>().enabled = false;
-            // --deactivate AI/movement scripts here--
-            dead = true;
-            return recover;
+            hitPoints -= damage;
+            if (hitPoints <= 0)
+            {
+                GetComponent<Collider2D>().enabled = false;
+                // --deactivate AI/movement scripts here--
+                dead = true;
+                return recover;
+            }
+            else
+            {
+                return 0;
+            }
         }
         else
         {
