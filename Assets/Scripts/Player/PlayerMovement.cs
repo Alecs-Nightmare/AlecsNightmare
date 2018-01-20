@@ -112,6 +112,9 @@ public class PlayerMovement : MonoBehaviour {
 
 
             }
+
+            EnableUmbrella();
+
             input = playerInput.DirectionalInput;
 
             Attack();
@@ -138,6 +141,20 @@ public class PlayerMovement : MonoBehaviour {
             controller.Move(velocity * Time.deltaTime, input);
 
             if (playerInput.DirectionalInput.x == 0) velocity.x = 0;
+        }
+    }
+
+    public void EnableUmbrella()
+    {
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            if (UmbrellaUnlocked)
+            {
+                UmbrellaUnlocked = false;
+            }
+            else if (!UmbrellaUnlocked) { 
+                UmbrellaUnlocked = true;
+            }
         }
     }
 
@@ -245,9 +262,11 @@ public class PlayerMovement : MonoBehaviour {
                     controller.collisions.almostJumping = true;
                     timeToWallUnstick -= Time.deltaTime;
                 }
-                else
+                else if (input.x == wallDirX)
                 {
+                    controller.collisions.almostJumping = false;
                     timeToWallUnstick = wallStickTime;
+                    
                 }
             }
             else
@@ -319,6 +338,7 @@ public class PlayerMovement : MonoBehaviour {
                 {
                     //Debug.Log("soaring");
                     velocity.y = 0;
+                    canEnableUmbrella = false;
                     gravity = gravityWhilePlanning;
                     controller.collisions.isSoaring = true;
                     

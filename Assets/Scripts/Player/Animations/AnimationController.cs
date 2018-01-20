@@ -50,15 +50,15 @@ public class AnimationController : MonoBehaviour {
             //controller.collisions.isProtecting = false;
         }
         */
-        if (controller.collisions.isAttacking)
+        if (controller.collisions.isAttacking && !controller.collisions.isSoaring && !_playerMovement.WallSliding)
         {
             anim.SetInteger(AnimatorParameters.estado, (int)PlayerState.atacando);   
         }
-        else if (controller.collisions.isProtecting)
+        else if (controller.collisions.isProtecting && !controller.collisions.isSoaring && !_playerMovement.WallSliding)
         {
             anim.SetInteger(AnimatorParameters.estado, (int)PlayerState.protegiendo);
         }
-        else if (!controller.collisions.isSoaring && _playerMovement.Velocity.y < 0 && !controller.collisions.below && !controller._standingOnPlatform)
+        else if (!controller.collisions.isSoaring && _playerMovement.Velocity.y < 0 && !controller.collisions.below && !controller._standingOnPlatform && !_playerMovement.WallSliding)
         {
             anim.SetInteger(AnimatorParameters.estado, (int)PlayerState.cayendo);
         }
@@ -69,10 +69,12 @@ public class AnimationController : MonoBehaviour {
         }
         else if (_playerMovement.WallSliding && controller.collisions.almostJumping)
         {
+            print("PENE DELGADO");
             anim.SetInteger(AnimatorParameters.estado, (int)PlayerState.preparadoSalto);
         }
-        else if (_playerMovement.WallSliding)
+        else if (_playerMovement.WallSliding && !controller.collisions.almostJumping)
         {
+            print("PENE GORDO");
             anim.SetInteger(AnimatorParameters.estado, (int)PlayerState.escalando);
             if (_playerMovement.AimDirection.x != _playerMovement.WallDirX && !controller.collisions.isSoaring)
             {
