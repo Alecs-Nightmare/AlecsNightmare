@@ -42,7 +42,9 @@ public class GameManager : MonoBehaviour
     private AsyncOperation m_AsyncLoaderCoroutine;
     private bool loading;
     private int gameState;                                  // 1 --> Running / 0 --> Pause / -1 --> End / -2 --> Resetting...
-    public GameObject fade;
+    private Fade fade;
+    [SerializeField]
+    private float fadeDuration = 0.3f;
 
     // Awake is always called before any Start functions
     void Awake()
@@ -59,7 +61,9 @@ public class GameManager : MonoBehaviour
 
         // Sets this to not be destroyed when reloading scene
         DontDestroyOnLoad(this.gameObject);
-        fade = GameObject.FindGameObjectWithTag("Fade");
+
+        // Set up references
+        fade = GetComponentInChildren<Fade>();
     }
 
     // Use this for initialization
@@ -108,8 +112,8 @@ public class GameManager : MonoBehaviour
                     // Loading is complete!
                     loading = false;
                     PauseGame(false);
+                    //fade.FadeToBlack(false, fadeDuration);  // Fade from black
                     print(SceneManager.GetActiveScene().name + " is ready!");
-                    //fade.GetComponentInChildren<Fade>().FadeToBlack(false, 1.0f);
                 }
             }
         }
@@ -196,6 +200,10 @@ public class GameManager : MonoBehaviour
 #if UNITY_EDITOR
         //EditorApplication.isPaused = true;
 #endif
+
+        // Fades the canvas
+        fade.FadeToBlack(false, fadeDuration);
+
         StartCoroutine(LoadSceneAsync(name));
     }
 
@@ -319,6 +327,7 @@ public class GameManager : MonoBehaviour
     {
         currentSanity = MaxSanity;
         //warningFace.SetActive(false);
+        fade.FadeToBlack(false, fadeDuration);  // Fade from black
 
         GameObject active = checkpointList[0];
         foreach (GameObject checkpt in checkpointList)
@@ -411,7 +420,7 @@ public class GameManager : MonoBehaviour
         warningIcon.SetActive(death);
         calmedIcon.SetActive(!death);
         // --INSERT DEATH SFX HERE--
-        // --CALL FADE IN BLACK HERE--
+        //fade.FadeToBlack(true, fadeDuration); // Fade to black // ESTÁ SÚPER BUG Y PASO
     }
 
     public void GameOver()

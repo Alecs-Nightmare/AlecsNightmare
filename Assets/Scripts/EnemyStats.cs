@@ -9,16 +9,20 @@ public class EnemyStats : MonoBehaviour {
     [SerializeField]
     private int hitPoints = 100;
     [SerializeField]
-    private int recover = 25;   // Sanity to recover when defeated
+    private int recover = 25;       // Sanity to recover when defeated
     [SerializeField]
     private float bouncingFactor = 2;
     [SerializeField]
-    private bool isLethal;      // Set true for enemies than one-hit kill you
+    private bool isLethal;          // Set true for enemies than one-hit kill you
     [SerializeField]
-    private bool isToucheable;  // Set true for enemies that can be jumped above
+    private bool isToucheable;      // Set true for enemies that can be jumped above
     [SerializeField]
-    private bool isDestroyable; // Set true for enemies that can be killed
+    private bool isDestroyable;     // Set true for enemies that can be killed
+    [SerializeField]
+    private bool isVolatile;        // Set true for enemies that are destroyed when they impact with the player (projectiles)
     private bool dead;
+    [SerializeField]
+    private float liveTime = 0f;    // Time to stay for decaying enemies (set to zero or less for infinite)
     [SerializeField]
     private float deathDelay = 1f;
     private float timer = 0f;
@@ -38,7 +42,16 @@ public class EnemyStats : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
-        if (dead)
+        if (liveTime > 0)
+        {
+            liveTime -= Time.smoothDeltaTime;
+            if (liveTime <= 0)
+            {
+                dead = true;
+            }
+        }
+
+        else if (dead)
         {
             timer += Time.smoothDeltaTime;
             this.transform.localScale -= new Vector3(Time.smoothDeltaTime, Time.smoothDeltaTime, 0);
@@ -46,6 +59,7 @@ public class EnemyStats : MonoBehaviour {
             if (timer >= deathDelay)
             {
                 // --INSERT 'POP' SFX HERE--
+                // --INSERT DEATH PARTICLES HERE--
                 print(this+" has been destroyed.");
                 Object.Destroy(this.gameObject);
             }
@@ -64,6 +78,7 @@ public class EnemyStats : MonoBehaviour {
 
     public int GetAttackPower()
     {
+        if (isVolatile) { dead = true; }
         return attackPower;
     }
 
