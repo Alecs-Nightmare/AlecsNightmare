@@ -13,8 +13,6 @@ public class PlayerStats : MonoBehaviour {
     //[SerializeField]
     //private int currentSanity;      // We separate current and maxim values because it can be increased during the game
     [SerializeField]
-    private int power = 100;
-    [SerializeField]
     private int currentState;
     [SerializeField]
     private float deathCooldown = 2.66f;   // Cooldown time to respawn
@@ -26,6 +24,27 @@ public class PlayerStats : MonoBehaviour {
     private float gravity = 9.8f;
     private bool bouncing = false;
     private Vector3 respawnMargin = new Vector3(0f, 2f, 0f);
+    [SerializeField]
+    private int action = 0;         // -2 --> Soaring / -1 --> Defending / 0 --> Idle / 1 --> Charging / 2 --> Full load
+    [SerializeField]
+    private int sanityCost = 1;
+    [SerializeField]
+    private int sanityThreshold = 1;
+    [SerializeField]
+    private float tickTime = 0.33f;
+    private float tickTimer = 0f;
+    [SerializeField]
+    private float maxLoadTime = 5f;
+    [SerializeField]
+    private float loadTimer = 0f;
+    [SerializeField]
+    private int weakAttPower = 25;
+    [SerializeField]
+    private int mediumAttPower = 100;
+    [SerializeField]
+    private int strongAttPower = 300;
+    [SerializeField]
+    private int regularAttPower = 100;
 
 
     // Set up references
@@ -46,6 +65,52 @@ public class PlayerStats : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
+        // CHECK ACTION and increase timers
+        if (action != 0)
+        {
+            if (action < 2)
+            {
+                tickTimer += Time.smoothDeltaTime;
+                while (tickTimer >= tickTime)
+                {
+                    tickTimer -= tickTime;
+                    // if can be substracted more sanity
+                    if (gameManager.CheckSanity(sanityCost, sanityThreshold))
+                    {
+                        gameManager.SubstractSanity(sanityCost);
+                    }
+                    // if can't be substracted
+                    else
+                    {
+                        // CALL PLAYER MOVEMENT TO STOP THE ACTION HERE
+                        if (action < 0)
+                        {
+                            action = 0;
+                            playerMovement.StopConsumingSanity(true);
+                        }
+                        else if (action == 1)
+                        {
+                            action = 2;
+                            // --INSERT SEMI LOAD SFX HERE--
+                            print("Max possible load has been reached!");
+                        }
+                        break;
+                    }
+                }
+                if (action == 1)
+                {
+                    loadTimer += Time.smoothDeltaTime;
+                    if (loadTimer > maxLoadTime)
+                    {
+                        loadTimer = maxLoadTime;
+                        action = 2;
+                        // --INSERT MAX LOAD SFX HERE--
+                        print("Max load has been reached!");
+                    }
+                }
+            }
+        }
+
         switch (currentState)
         {
             // DEAD (waiting for respawn)
@@ -123,6 +188,7 @@ public class PlayerStats : MonoBehaviour {
                 else if (col.gameObject.tag == "Burger")
                 {
                     gameManager.RecoverSanity(-1);
+                    playerMovement.StopConsumingSanity(false);
                     // --play burger SFX--
                     print("Takes a burger!");
                 }
@@ -145,10 +211,12 @@ public class PlayerStats : MonoBehaviour {
 
     private Collider2D SelectInnerCollider()
     {
+        print("Looking for enemies after cooldown...");
         Collider2D target = null;
-        Collider2D[] withinColliders = Physics2D.OverlapPointAll(this.transform.position);  // --TESTING & ADJUST--
+        Collider2D[] withinColliders = Physics2D.OverlapCircleAll(new Vector2(this.transform.position.x, this.transform.position.y), 1f);
         foreach (Collider2D col in withinColliders)
         {
+            print(col.name);
             if (col.gameObject.tag == "Enemy")
             {
                 int attack = 0;
@@ -175,7 +243,8 @@ public class PlayerStats : MonoBehaviour {
             if (enemy.AskIfToucheable() && this.transform.position.y > col.transform.position.y + col.bounds.size.y/3)
             {
                 // Adds sanity
-                gameManager.RecoverSanity(enemy.Hit(power));
+                gameManager.RecoverSanity(enemy.Hit(regularAttPower));
+                playerMovement.StopConsumingSanity(false);
 
                 // Bounce!
                 GetComponent<Rigidbody2D>().AddRelativeForce(new Vector2(0f, repulsionForce*enemy.GetBouncingFactor()), ForceMode2D.Impulse);
@@ -241,6 +310,7 @@ public class PlayerStats : MonoBehaviour {
             else if (col.gameObject.tag == "Burger")
             {
                 gameManager.RecoverSanity(-1);
+                playerMovement.StopConsumingSanity(false);
                 // --play burger SFX--
                 print("Takes a burger!");
             }
@@ -274,6 +344,8 @@ public class PlayerStats : MonoBehaviour {
         GetComponent<Rigidbody2D>().velocity = Vector3.zero;
         GetComponent<Rigidbody2D>().gravityScale = 0f;
         currentState = 1;
+        SetAction(0);
+        playerMovement.StopConsumingSanity(false);
         GetComponent<Collider2D>().isTrigger = true;
         Time.timeScale = 1f;
     }
@@ -281,5 +353,31 @@ public class PlayerStats : MonoBehaviour {
     public int GetState()
     {
         return currentState;
+    }
+
+    // This is not the best way to handle subactions but will work for now
+    public void SetAction(int state)
+    {
+        if (state >= -2 && state <= 1)  // check if parameters are valid
+        {
+            if (action != state)        // if parameter won't update the action, ignore
+            {
+                if (state < 0)          // soaring and protecting (under zero) override attack loading
+                {
+                    tickTimer = 0;
+                    loadTimer = 0;
+                    print("Action timers have been reseted.");
+                    action = state;
+                }
+                else if (action != 2)   // if max load (2) has been reached, ignore
+                {
+                    action = state;
+                }
+            }
+        }
+        else
+        {
+            print("ERROR: invalid parameters!");
+        }
     }
 }

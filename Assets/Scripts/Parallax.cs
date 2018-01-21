@@ -15,6 +15,10 @@ public class Parallax : MonoBehaviour
     //[SerializeField]
     private Vector3 previousCamPos;
     private GameObject cam;
+    private float initY;
+    private float newY;
+    [SerializeField]
+    private Vector3 initDisplacement;
 
     /*
     void Awake()
@@ -32,7 +36,7 @@ public class Parallax : MonoBehaviour
     }
     */
 
-	void Update ()
+    private void Update()
     {
         if (cam == null)
         {
@@ -40,14 +44,23 @@ public class Parallax : MonoBehaviour
         }
         else
         {
+            newY = initY + (initY - cameraTransform.position.y) * -0.66f;
+        }
+    }
+
+    void LateUpdate ()
+    {
+        if (cam != null)
+        {
             for (int i = 0; i < backgrounds.Length; i++)
             {
                 //the movement to do this frame in opposite direction from the camera
-                float deltaMovement = (previousCamPos.x - cameraTransform.position.x) * speedFactor[i];
+                float deltaMovementX = (previousCamPos.x - cameraTransform.position.x) * speedFactor[i];
 
-                Vector3 targetPos = new Vector3(deltaMovement + backgrounds[i].transform.position.x, backgrounds[i].transform.position.y, backgrounds[i].transform.position.z);
+                Vector3 targetPos = new Vector3(deltaMovementX + backgrounds[i].transform.position.x, backgrounds[i].transform.position.y, backgrounds[i].transform.position.z);
 
-                backgrounds[i].position = targetPos;
+                //backgrounds[i].position = targetPos;
+                backgrounds[i].position = new Vector3(targetPos.x, newY, targetPos.z) + initDisplacement;
             }
             previousCamPos = cameraTransform.position;
         }
@@ -61,6 +74,7 @@ public class Parallax : MonoBehaviour
         {
             cameraTransform = cam.transform;
             previousCamPos = cameraTransform.position;
+            initY = cameraTransform.position.y;
         }
     }
 }

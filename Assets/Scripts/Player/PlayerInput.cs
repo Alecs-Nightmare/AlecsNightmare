@@ -30,8 +30,10 @@ public class PlayerInput : MonoBehaviour
 
     public bool CaptureMouseLeftClick()
     {
-        return Input.GetMouseButtonDown(0);
+        //return Input.GetMouseButtonDown(0);
+        return Input.GetMouseButton(0);
     }
+
     public bool CaptureMouseRightClick()
     {
         return Input.GetMouseButton(1);
