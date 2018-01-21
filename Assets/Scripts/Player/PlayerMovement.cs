@@ -4,8 +4,9 @@ using UnityEngine;
 
 [RequireComponent (typeof (Controller2D))]
 public class PlayerMovement : MonoBehaviour {
-    
+
     #region Member Variables
+    public bool debugMode = true;
     public Vector2 wallJumpClimb;
     public Vector2 wallJumpOff;
     public Vector2 wallLeap;
@@ -38,7 +39,9 @@ public class PlayerMovement : MonoBehaviour {
     Controller2D controller;
     SpriteRenderer spriteRenderer;
     PlayerInput playerInput;
-    int sanityPoints;   //esto es provisional
+    PlayerStats playerStats;
+    private bool able = true;
+    //int sanityPoints;   //esto es provisional
 
 
     public PlayerMovement()
@@ -66,12 +69,17 @@ public class PlayerMovement : MonoBehaviour {
     private float currentTimeP = 0f;
     private float maxTimeP = 0.5f;
 
+    // Set up references
     private void Awake()
     {
-        
-        controller = GetComponent<Controller2D>();
+        /*controller = GetComponent<Controller2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-        playerInput = GetComponent<PlayerInput>();
+        playerInput = GetComponent<PlayerInput>();*/
+
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        controller = GetComponentInParent<Controller2D>();
+        playerInput = GetComponentInParent<PlayerInput>();
+        playerStats = GetComponentInParent<PlayerStats>();
     }
 
     // Use this for initialization
@@ -82,11 +90,8 @@ public class PlayerMovement : MonoBehaviour {
 
     void Update () 
     {
-
-        
         if (active)
         {
-
             if (countingForAttacking && !countingForProtecting)
             {
                 currentTimeA += Time.deltaTime;
@@ -95,30 +100,29 @@ public class PlayerMovement : MonoBehaviour {
                     countingForAttacking = false;
                     currentTimeA = 0f;
                     controller.collisions.isAttacking = false;
+                    playerStats.SetAction(0);
                 }
             }
 
             if (countingForProtecting && !countingForAttacking)
             {
-
                 currentTimeP += Time.deltaTime;
                 if (currentTimeP >= maxTimeP)
                 {
                     countingForProtecting = false;
                     currentTimeP = 0f;
                     controller.collisions.isProtecting = false;
+                    playerStats.SetAction(0);
                 }
-
-
-
             }
 
             EnableUmbrella();
 
             input = playerInput.DirectionalInput;
 
-            Attack();
             Protect();
+            Attack();
+            //Protect();    // I gave priority to Protect() over Attack() -Fieldins
 
             wallDirX = (controller.collisions.left) ? -1 : 1;
 
@@ -146,13 +150,14 @@ public class PlayerMovement : MonoBehaviour {
 
     public void EnableUmbrella()
     {
-        if (Input.GetKeyDown(KeyCode.P))
+        if (debugMode && Input.GetKeyDown(KeyCode.P))
         {
             if (UmbrellaUnlocked)
             {
                 UmbrellaUnlocked = false;
             }
-            else if (!UmbrellaUnlocked) { 
+            else if (!UmbrellaUnlocked)
+            { 
                 UmbrellaUnlocked = true;
             }
         }
@@ -160,28 +165,24 @@ public class PlayerMovement : MonoBehaviour {
 
     public void Attack()
     {
-        if (playerInput.CaptureMouseLeftClick() && !controller.collisions.isAttacking && !controller.collisions.isProtecting &&UmbrellaUnlocked)
-        {//si no estaba atacando ni protegiendose, ataca.
+        if (playerInput.CaptureMouseLeftClick() && !controller.collisions.isAttacking && !controller.collisions.isProtecting && UmbrellaUnlocked)
+        {   //si no estaba atacando ni protegiendose, ataca.
             controller.collisions.isAttacking = true;
+            playerStats.SetAction(1);
             countingForAttacking = true;
-            Debug.Log("attacking");
-
+            //Debug.Log("attacking");
         }
-
-
     }
 
-
     public void Protect()
-    {//si no estaba protegiendose ni atacando, protegese.
-        if (playerInput.CaptureMouseRightClick() && !controller.collisions.isProtecting && !controller.collisions.isAttacking && UmbrellaUnlocked)
+    {   //si no estaba protegiendose ni atacando, protegese.
+        if (playerInput.CaptureMouseRightClick() && !controller.collisions.isProtecting && !controller.collisions.isAttacking && UmbrellaUnlocked && able)
         {
             controller.collisions.isProtecting = true;
-            Debug.Log("protecting");
+            playerStats.SetAction(-1);
             countingForProtecting = true;
-            
+            //Debug.Log("protecting");
         }
-
     }
 
     private void CheckIfUnlockedUmbrella()
@@ -222,6 +223,7 @@ public class PlayerMovement : MonoBehaviour {
                     velocity.y = wallLeap.y;
                 }
             }
+
             if (controller.collisions.below)
             {
                 velocity.y = maxJumpVelocity;
@@ -307,6 +309,7 @@ public class PlayerMovement : MonoBehaviour {
                 canEnableUmbrella = false;
 
                 controller.collisions.isSoaring = false;
+                playerStats.SetAction(0);
             }
 
             
@@ -341,7 +344,8 @@ public class PlayerMovement : MonoBehaviour {
                     canEnableUmbrella = false;
                     gravity = gravityWhilePlanning;
                     controller.collisions.isSoaring = true;
-                    
+                    playerStats.SetAction(-2);
+                    // FALTA HACER LA TRANSICIÓN PARA QUE EL ANIMATOR PASE DE DE SOARING A JUMPING !!
                 }
                 
             }
@@ -386,10 +390,23 @@ public class PlayerMovement : MonoBehaviour {
         saveGravity = gravity;
     }
 
-    //TODO revisar propiedades publicas de los sanity points
+    public Vector3 GetAimDirection()
+    {
+        return aimDirection;
+    }
 
     public void StopPlayer(bool stop)
     {
         active = !stop;
+    }
+
+    //TODO revisar propiedades publicas de los sanity points    - Revisado
+
+    public void StopConsumingSanity(bool lockResource)
+    {
+        able = !lockResource;
+        controller.collisions.isSoaring = !lockResource;
+        // --INSERT MEC MEC SFX HERE--
+        print("Can't use more sanity!");
     }
 }

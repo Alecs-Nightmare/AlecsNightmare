@@ -409,6 +409,16 @@ public class GameManager : MonoBehaviour
         print("Sanity: " + currentSanity);
     }
 
+    public bool CheckSanity(int substract, int threshold)
+    {
+        bool lives = true;
+        if (currentSanity - substract <= threshold)
+        {
+            lives = false;
+        }
+        return lives;
+    }
+
     public void DamageRoutine(bool hit)
     {
         warningFace.SetActive(hit);

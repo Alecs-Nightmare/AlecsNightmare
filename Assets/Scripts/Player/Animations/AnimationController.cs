@@ -69,12 +69,12 @@ public class AnimationController : MonoBehaviour {
         }
         else if (_playerMovement.WallSliding && controller.collisions.almostJumping)
         {
-            print("PENE DELGADO");
+            print("PENE DELGADO");  // wat
             anim.SetInteger(AnimatorParameters.estado, (int)PlayerState.preparadoSalto);
         }
         else if (_playerMovement.WallSliding && !controller.collisions.almostJumping)
         {
-            print("PENE GORDO");
+            print("PENE GORDO");    // dejad las babosas
             anim.SetInteger(AnimatorParameters.estado, (int)PlayerState.escalando);
             if (_playerMovement.AimDirection.x != _playerMovement.WallDirX && !controller.collisions.isSoaring)
             {
