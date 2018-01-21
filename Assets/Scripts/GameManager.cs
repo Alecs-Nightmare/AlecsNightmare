@@ -44,7 +44,7 @@ public class GameManager : MonoBehaviour
     private int gameState;                                  // 1 --> Running / 0 --> Pause / -1 --> End / -2 --> Resetting...
     private Fade fade;
     [SerializeField]
-    private float fadeDuration = 0.3f;
+    private float fadeDuration = 1.0f;
 
     // Awake is always called before any Start functions
     void Awake()
@@ -327,7 +327,7 @@ public class GameManager : MonoBehaviour
     {
         currentSanity = MaxSanity;
         //warningFace.SetActive(false);
-        fade.FadeToBlack(false, fadeDuration);  // Fade from black
+        //fade.FadeToBlack(false, fadeDuration);  // Fade from black
 
         GameObject active = checkpointList[0];
         foreach (GameObject checkpt in checkpointList)

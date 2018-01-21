@@ -7,7 +7,6 @@ public class SelectLevel : MonoBehaviour
 {
     public Button SubmitButton;
     public Button CancelButton;
-    public Image SeleccionaNivel;
     public float fadeDuration = 1.0f;
 
     private void Start()
@@ -22,7 +21,6 @@ public class SelectLevel : MonoBehaviour
         {
             SubmitButton.gameObject.SetActive(true);
             CancelButton.gameObject.SetActive(true);
-            SeleccionaNivel.CrossFadeAlpha(1, fadeDuration, true);
             SubmitButton.image.CrossFadeAlpha(1, fadeDuration, true);
             CancelButton.image.CrossFadeAlpha(1, fadeDuration, true);
         }
@@ -30,7 +28,6 @@ public class SelectLevel : MonoBehaviour
         {
             SubmitButton.gameObject.SetActive(false);
             CancelButton.gameObject.SetActive(false);
-            SeleccionaNivel.CrossFadeAlpha(0, fadeDuration, true);
             SubmitButton.image.CrossFadeAlpha(0, fadeDuration, true);
             CancelButton.image.CrossFadeAlpha(0, fadeDuration, true);
         }
