@@ -38,7 +38,9 @@ public class Fade : MonoBehaviour
         }
         else            // Going to transparent
         {
+            image.canvasRenderer.SetAlpha(0.01f);
             image.CrossFadeAlpha(0.0f, duration, false);
+            Debug.Log("transparent");
         }
     }
 }

@@ -52,9 +52,9 @@ public class SliderController : MonoBehaviour {
     public void DecreaseValue(float decreaseValue)
     {
         slider.value -= decreaseValue;
-        if (slider.value <= -80)
+        if (slider.value <= -30)
         {
-            slider.value = -80;
+            slider.value = -30;
         }
     }
 }

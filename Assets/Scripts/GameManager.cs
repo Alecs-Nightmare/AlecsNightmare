@@ -42,7 +42,7 @@ public class GameManager : MonoBehaviour
     private AsyncOperation m_AsyncLoaderCoroutine;
     private bool loading;
     private int gameState;                                  // 1 --> Running / 0 --> Pause / -1 --> End / -2 --> Resetting...
-    private Fade fade;
+    public Fade fade;
     [SerializeField]
     private float fadeDuration = 1.0f;
 
@@ -63,7 +63,7 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(this.gameObject);
 
         // Set up references
-        fade = GetComponentInChildren<Fade>();
+        fade = GameObject.FindGameObjectWithTag("Fade").GetComponentInChildren<Fade>();
     }
 
     // Use this for initialization
@@ -112,7 +112,7 @@ public class GameManager : MonoBehaviour
                     // Loading is complete!
                     loading = false;
                     PauseGame(false);
-                    //fade.FadeToBlack(false, fadeDuration);  // Fade from black
+                    fade.FadeToBlack(false, fadeDuration);  // Fade from black
                     print(SceneManager.GetActiveScene().name + " is ready!");
                 }
             }
@@ -202,7 +202,12 @@ public class GameManager : MonoBehaviour
 #endif
 
         // Fades the canvas
-        fade.FadeToBlack(false, fadeDuration);
+        if (fade == null)
+        {
+            fade = GameObject.FindGameObjectWithTag("Fade").GetComponentInChildren<Fade>();
+        }
+
+        //fade.FadeToBlack(false, fadeDuration);
 
         StartCoroutine(LoadSceneAsync(name));
     }
