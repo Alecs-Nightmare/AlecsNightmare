@@ -145,10 +145,12 @@ public class PlayerStats : MonoBehaviour {
 
     private Collider2D SelectInnerCollider()
     {
+        print("Looking for enemies after cooldown...");
         Collider2D target = null;
-        Collider2D[] withinColliders = Physics2D.OverlapPointAll(this.transform.position);  // --TESTING & ADJUST--
+        Collider2D[] withinColliders = Physics2D.OverlapCircleAll(new Vector2(this.transform.position.x, this.transform.position.y), 1f);
         foreach (Collider2D col in withinColliders)
         {
+            print(col.name);
             if (col.gameObject.tag == "Enemy")
             {
                 int attack = 0;
