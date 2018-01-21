@@ -122,29 +122,7 @@ public class GameManager : MonoBehaviour
             ResetManager();
             StartLevelLoadingRoutine(level);
         }
-        else if (Input.GetKeyDown("return"))    // if not loading then handle the input...
-        {
-            switch (gameState)
-            {
-                case 1:     // Pause game   --if we have an ingame option menu, we should invoke it from here--
-                    PauseGame(true);
-                    gameState = 0;
-                    print("Game paused!");
-                    break;
 
-                case 0:     // Resume game
-                    PauseGame(false);
-                    gameState = 1;
-                    print("Game resumed!");
-                    break;
-
-                case -1:    // Resets the game
-                    gameState = -3;
-                    LoadSpecificScene(returnScene.name);
-                    print("Resetting the game...");
-                    break;
-            }
-        }
     }
 
     // Resets the Game Manager attributes   --CHANGE THEM HERE TO MAKE IT PERMANENT--
