@@ -24,11 +24,22 @@ public class PlayerAudio : MonoBehaviour
         if (controller.Velocity.y > 0)
         {
             audioSource.clip = clips[0];
-
             if (!audioSource.isPlaying)
-            {
+                audioSource.Play();
+        }
+        else if (GetComponent<Controller2D>().collisions.isAttacking)
+        {
+            audioSource.clip = clips[2];
+            if (!audioSource.isPlaying)
                 audioSource.PlayOneShot(audioSource.clip);
-            }
-        }	
+        }
+        else if (GetComponent<Controller2D>().collisions.isProtecting)
+        {
+            audioSource.clip = clips[1];
+            if (!audioSource.isPlaying)
+                audioSource.PlayOneShot(audioSource.clip);
+        }
+
+
 	}
 }
