@@ -150,6 +150,7 @@ public class PlayerMovement : MonoBehaviour {
 
     public void EnableUmbrella()
     {
+#if UNITY_EDITOR
         if (debugMode && Input.GetKeyDown(KeyCode.P))
         {
             if (UmbrellaUnlocked)
@@ -161,6 +162,7 @@ public class PlayerMovement : MonoBehaviour {
                 UmbrellaUnlocked = true;
             }
         }
+#endif
     }
 
     public void Attack()
