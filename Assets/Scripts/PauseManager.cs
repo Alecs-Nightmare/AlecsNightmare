@@ -35,11 +35,13 @@ public class PauseManager : MonoBehaviour
                 {
                     isPauseActive = false;
                     ShowPausePanel(isPauseActive);
+                    Time.timeScale = 1.0f;
                 }
                 else
                 {
                     isPauseActive = true;
                     ShowPausePanel(isPauseActive);
+                    Time.timeScale = 0.0f;
                 }
             }
         }
