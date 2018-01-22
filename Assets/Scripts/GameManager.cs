@@ -112,7 +112,7 @@ public class GameManager : MonoBehaviour
                     // Loading is complete!
                     loading = false;
                     PauseGame(false);
-                    fade.FadeToBlack(false, fadeDuration);  // Fade from black
+                    fade.FadeToBlack(false, fadeDuration);  // NO FUNCIONA! (pero necesario para salir de negro)
                     print(SceneManager.GetActiveScene().name + " is ready!");
                 }
             }
@@ -122,7 +122,29 @@ public class GameManager : MonoBehaviour
             ResetManager();
             StartLevelLoadingRoutine(level);
         }
+        /*else if (Input.GetKeyDown("return"))    // if not loading then handle the input...    CHANGE "RETURN" FOR THE DESIRED CONDITION
+        {
+            switch (gameState)
+            {
+                case 1:     // Pause game   --if we have an ingame option menu, we should invoke it from here--
+                    PauseGame(true);
+                    gameState = 0;
+                    print("Game paused!");
+                    break;
 
+                case 0:     // Resume game
+                    PauseGame(false);
+                    gameState = 1;
+                    print("Game resumed!");
+                    break;
+
+                case -1:    // Resets the game
+                    gameState = -3;
+                    LoadSpecificScene(returnScene.name);
+                    print("Resetting the game...");
+                    break;
+            }
+        }*/
     }
 
     // Resets the Game Manager attributes   --CHANGE THEM HERE TO MAKE IT PERMANENT--
@@ -184,9 +206,9 @@ public class GameManager : MonoBehaviour
         {
             fade = GameObject.FindGameObjectWithTag("Fade").GetComponentInChildren<Fade>();
         }
+        //fade.FadeToBlack(false, fadeDuration);    //  NO FUNCIONA!
 
-        //fade.FadeToBlack(false, fadeDuration);
-
+        // Start scene loading coroutine
         StartCoroutine(LoadSceneAsync(name));
     }
 
@@ -238,8 +260,8 @@ public class GameManager : MonoBehaviour
         {
             Time.timeScale = 1f;
         }
-        /*
-        if (levelAgentsList != null)
+
+        /*if (levelAgentsList != null)
         {
             foreach (GameObject obj in levelAgentsList)
             {
@@ -248,8 +270,7 @@ public class GameManager : MonoBehaviour
                     obj.SetActive(!stop);
                 }
             }
-        }
-        */
+        }*/
     }
 
     // Adds (true) or substracts (false) one life
@@ -257,7 +278,6 @@ public class GameManager : MonoBehaviour
     {
         if (adds)
         {
-            // --play live up SFX--
             lifes++;
             print("Lifes: " + lifes);
         }
@@ -269,18 +289,17 @@ public class GameManager : MonoBehaviour
             {
                 // --play GAME OVER SFX--
 
-                // IMPROVE GAME OVER ROUTINE HERE
+                // (IMPROVE GAME OVER ROUTINE HERE)
                 //LoadSpecificScene(gameOverScene.name);
                 gameState = -1;
                 print("GAME OVER");
             }
-            /*else
+            else
             {
                 // --play death SFX--
-            }*/
+            }
         }
-
-        //lifeCounter.GetComponent<UnityEngine.UI.Text>().text = "x" + lifes.ToString();
+        lifeCounter.GetComponent<UnityEngine.UI.Text>().text = "x" + lifes.ToString();
     }
 
     public int GetLifes()
@@ -309,8 +328,8 @@ public class GameManager : MonoBehaviour
     public Transform ResetPlayer()  // --still not sure who calls for this funcion upon respawning on death--
     {
         currentSanity = MaxSanity;
-        //warningFace.SetActive(false);
-        //fade.FadeToBlack(false, fadeDuration);  // Fade from black
+        warningFace.SetActive(false);
+        //fade.FadeToBlack(false, fadeDuration);  // NO FUNCIONA!
 
         GameObject active = checkpointList[0];
         foreach (GameObject checkpt in checkpointList)
@@ -338,10 +357,18 @@ public class GameManager : MonoBehaviour
     public void AddChips()
     {
         chips++;
-        while (chips > 99)
+        if (chips > 99)
         {
-            chips -= 100;
-            AddSubsLife(true);
+            while (chips > 99)
+            {
+                chips -= 100;
+                AddSubsLife(true);
+                // --INSERT LIVE UP SFX HERE--
+            }
+        }
+        else
+        {
+            // --INSERT COLLECT CHIP SFX HERE--
         }
         chipCounter.GetComponent<UnityEngine.UI.Text>().text = "x" + chips.ToString();
         print("Chips: " + chips);
@@ -387,8 +414,6 @@ public class GameManager : MonoBehaviour
             currentSanity = 0;
             AddSubsLife(false);
         }
-
-        lifeCounter.GetComponent<UnityEngine.UI.Text>().text = "x" + lifes.ToString();
         print("Sanity: " + currentSanity);
     }
 
@@ -413,7 +438,7 @@ public class GameManager : MonoBehaviour
         warningIcon.SetActive(death);
         calmedIcon.SetActive(!death);
         // --INSERT DEATH SFX HERE--
-        //fade.FadeToBlack(true, fadeDuration); // Fade to black // ESTÁ SÚPER BUG Y PASO
+        //fade.FadeToBlack(true, fadeDuration); // NO FUNCIONA!
     }
 
     public void GameOver()

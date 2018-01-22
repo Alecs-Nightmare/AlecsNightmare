@@ -40,7 +40,6 @@ public class PlayerMovement : MonoBehaviour {
     SpriteRenderer spriteRenderer;
     PlayerInput playerInput;
     PlayerStats playerStats;
-    PlayerAudio playerAudio;
     private bool able = true;
     //int sanityPoints;   //esto es provisional
 
@@ -69,7 +68,7 @@ public class PlayerMovement : MonoBehaviour {
     private float maxTimeA = 0.5f;
     private float currentTimeP = 0f;
     private float maxTimeP = 0.5f;
-    
+
     // Set up references
     private void Awake()
     {
@@ -81,7 +80,6 @@ public class PlayerMovement : MonoBehaviour {
         controller = GetComponentInParent<Controller2D>();
         playerInput = GetComponentInParent<PlayerInput>();
         playerStats = GetComponentInParent<PlayerStats>();
-        playerAudio = GetComponentInParent<PlayerAudio>();
     }
 
     // Use this for initialization
@@ -176,7 +174,6 @@ public class PlayerMovement : MonoBehaviour {
             countingForAttacking = true;
             //Debug.Log("attacking");
         }
-
     }
 
     public void Protect()
@@ -187,10 +184,6 @@ public class PlayerMovement : MonoBehaviour {
             playerStats.SetAction(-1);
             countingForProtecting = true;
             //Debug.Log("protecting");
-        }
-        else if (playerInput.CaptureMouseUpRightClick())
-        {
-            playerAudio.canPlayProtectingSound = true;
         }
     }
 
@@ -302,16 +295,16 @@ public class PlayerMovement : MonoBehaviour {
         
 
 
-        if (input.x != 0)//si se mueve horizontalmente
+        if (input.x != 0)   //si se mueve horizontalmente
         {
-            aimDirection = Mathf.Sign(input.x) == 1 ? Vector3.right : Vector3.left;//constantly check which direction is the _playerMovement looking at          
+            aimDirection = Mathf.Sign(input.x) == 1 ? Vector3.right : Vector3.left; //constantly check which direction is the _playerMovement looking at          
         }
 
     }
 
     private void CheckIfCanEnableUmbrellaAgain()
     {
-        if (controller.collisions.isSoaring) //si  está planeando
+        if (controller.collisions.isSoaring)    //si  está planeando
         {
             if (controller.collisions.below || controller.collisions.left || controller.collisions.right || playerInput.CaptureJumpInputDown()) //si colisiona en cualquier dirección o se pulsa espacio
             {

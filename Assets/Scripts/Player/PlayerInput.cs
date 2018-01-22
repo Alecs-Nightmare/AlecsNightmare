@@ -6,7 +6,7 @@ public class PlayerInput : MonoBehaviour
 {
     public KeyCode SoarKey;
     public KeyCode JumpKey;
-    public PlayerAudio playerAudio;
+
 
     public Vector2 DirectionalInput { get { return new Vector2(Input.GetAxisRaw("Horizontal"), 0); } }
 
@@ -21,7 +21,6 @@ public class PlayerInput : MonoBehaviour
     public bool CaptureJumpInputDown()
     {
         return Input.GetKeyDown(JumpKey);
-
     }
 
     public bool CaptureJumpInputUp()
@@ -31,19 +30,12 @@ public class PlayerInput : MonoBehaviour
 
     public bool CaptureMouseLeftClick()
     {
-        return Input.GetMouseButtonDown(0);
+        //return Input.GetMouseButtonDown(0);
+        return Input.GetMouseButton(0);
     }
 
     public bool CaptureMouseRightClick()
     {
         return Input.GetMouseButton(1);
     }
-
-    public bool CaptureMouseUpRightClick()
-    {
-
-        return Input.GetMouseButtonUp(1);
-    }
-
-    
 }

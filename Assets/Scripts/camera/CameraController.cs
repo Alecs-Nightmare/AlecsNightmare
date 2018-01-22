@@ -25,10 +25,7 @@ public class CameraController : MonoBehaviour {
 
     bool lookAheadStopped;
 
-    private void Awake()
-    {
-        target = GameManager.instance.playerPrefab.GetComponent<Controller2D>();
-    }
+
     private void Start()
     {
         if(target!= null)

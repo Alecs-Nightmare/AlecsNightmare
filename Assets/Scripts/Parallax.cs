@@ -18,6 +18,8 @@ public class Parallax : MonoBehaviour
     private float initY;
     private float newY;
     [SerializeField]
+    private float verticalSctrollFactor = 0.66f;
+    [SerializeField]
     private Vector3 initDisplacement;
 
     /*
@@ -44,7 +46,7 @@ public class Parallax : MonoBehaviour
         }
         else
         {
-            newY = initY + (initY - cameraTransform.position.y) * -0.66f;
+            newY = initY + (initY - cameraTransform.position.y) * -verticalSctrollFactor;
         }
     }
 

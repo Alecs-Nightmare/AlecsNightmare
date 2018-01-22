@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class Fade : MonoBehaviour
 {
-    public float duration;
+    public float predefinedDuration;
 
     Image image;
     
@@ -24,9 +24,9 @@ public class Fade : MonoBehaviour
     public void FadeToBlack(bool toBlack)
     {
         if (toBlack)
-            this.GetComponent<Image>().CrossFadeAlpha(1.0f, duration, true);
+            this.GetComponent<Image>().CrossFadeAlpha(1.0f, predefinedDuration, true);
         else
-            this.GetComponent<Image>().CrossFadeAlpha(0.0f, duration, true);
+            this.GetComponent<Image>().CrossFadeAlpha(0.0f, predefinedDuration, true);
     }
 
 
