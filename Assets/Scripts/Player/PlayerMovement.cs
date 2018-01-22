@@ -40,6 +40,7 @@ public class PlayerMovement : MonoBehaviour {
     SpriteRenderer spriteRenderer;
     PlayerInput playerInput;
     PlayerStats playerStats;
+    PlayerAudio playerAudio;
     private bool able = true;
     //int sanityPoints;   //esto es provisional
 
@@ -68,7 +69,7 @@ public class PlayerMovement : MonoBehaviour {
     private float maxTimeA = 0.5f;
     private float currentTimeP = 0f;
     private float maxTimeP = 0.5f;
-
+    
     // Set up references
     private void Awake()
     {
@@ -80,6 +81,7 @@ public class PlayerMovement : MonoBehaviour {
         controller = GetComponentInParent<Controller2D>();
         playerInput = GetComponentInParent<PlayerInput>();
         playerStats = GetComponentInParent<PlayerStats>();
+        playerAudio = GetComponentInParent<PlayerAudio>();
     }
 
     // Use this for initialization
@@ -174,6 +176,7 @@ public class PlayerMovement : MonoBehaviour {
             countingForAttacking = true;
             //Debug.Log("attacking");
         }
+
     }
 
     public void Protect()
@@ -184,6 +187,10 @@ public class PlayerMovement : MonoBehaviour {
             playerStats.SetAction(-1);
             countingForProtecting = true;
             //Debug.Log("protecting");
+        }
+        else if (playerInput.CaptureMouseUpRightClick())
+        {
+            playerAudio.canPlayProtectingSound = true;
         }
     }
 
