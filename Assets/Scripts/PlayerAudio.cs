@@ -93,4 +93,11 @@ public class PlayerAudio : MonoBehaviour
         if (!audioSource.isPlaying)
             audioSource.Play();
     }
+
+    public void PlayArrastrarSound()
+    {
+        audioSource.clip = clips[3];
+        if (!audioSource.isPlaying)
+            audioSource.Play();
+    }
 }

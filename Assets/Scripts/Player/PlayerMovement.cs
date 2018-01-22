@@ -265,6 +265,7 @@ public class PlayerMovement : MonoBehaviour {
             if (controller.HitTag == "Climbable") //PARA QUE NO FRENE SI ES PLATAFORMA Q SE MEUVE
             {
                 wallSliding = true;
+                playerAudio.PlayArrastrarSound();
                 if (velocity.y < -wallSlideSpeedMax)
                 {
                     velocity.y = -wallSlideSpeedMax;
