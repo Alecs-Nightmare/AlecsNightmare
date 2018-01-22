@@ -171,6 +171,7 @@ public class PlayerMovement : MonoBehaviour {
     {
         if (playerInput.CaptureMouseLeftClick() && !controller.collisions.isAttacking && !controller.collisions.isProtecting && UmbrellaUnlocked)
         {   //si no estaba atacando ni protegiendose, ataca.
+            playerAudio.PlayAttackingSound();
             controller.collisions.isAttacking = true;
             playerStats.SetAction(1);
             countingForAttacking = true;
@@ -183,6 +184,12 @@ public class PlayerMovement : MonoBehaviour {
     {   //si no estaba protegiendose ni atacando, protegese.
         if (playerInput.CaptureMouseRightClick() && !controller.collisions.isProtecting && !controller.collisions.isAttacking && UmbrellaUnlocked && able)
         {
+            if (playerAudio.canPlayProtectingSound)
+            {
+                playerAudio.PlayProtectingSound();
+                playerAudio.canPlayProtectingSound = false;
+            }
+                
             controller.collisions.isProtecting = true;
             playerStats.SetAction(-1);
             countingForProtecting = true;
@@ -214,6 +221,7 @@ public class PlayerMovement : MonoBehaviour {
     {
         if (playerInput.CaptureJumpInputDown())
         {
+            playerAudio.PlayJumpBetweenWalls();
             if (wallSliding && controller.HitTag == "Climbable")
             {
                 if (wallDirX == input.x)
@@ -349,6 +357,7 @@ public class PlayerMovement : MonoBehaviour {
                 if (playerInput.CaptureSoarInput("down") && canEnableUmbrella) //y se pulsa espacio y puede usar el paraguas
                 {
                     //Debug.Log("soaring");
+                    playerAudio.PlaySoaringSound();
                     velocity.y = 0;
                     canEnableUmbrella = false;
                     gravity = gravityWhilePlanning;
