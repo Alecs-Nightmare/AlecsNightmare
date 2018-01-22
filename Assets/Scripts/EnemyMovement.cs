@@ -35,7 +35,7 @@ public class EnemyMovement : MonoBehaviour
     private GameObject[] bones;
     private GlassweatherAnimationController glAnimContr;
     private HorizontalEnemyController movementController;
-
+    private PlayerAudio playerAudio;
     //private Vector3 scaleRight;
 
     //public Vector3[] localWaypoints;
@@ -49,6 +49,8 @@ public class EnemyMovement : MonoBehaviour
     public float easeAmount;
 
     public Vector3 velocity;
+
+    
 
     //following player
     Vector3 currentPos;
@@ -189,7 +191,7 @@ public class EnemyMovement : MonoBehaviour
 
         else if (followPlayer)//following
         {
-
+            
             //animation
             glAnimContr.alertingPlayer = true;
             glAnimContr.ignoringPlayer = false;

@@ -15,6 +15,7 @@ public class PlayerAudio : MonoBehaviour
 
     private void Start()
     {
+
         controller = GetComponent<PlayerMovement>();
         audioSource = GetComponent<AudioSource>();
     }
