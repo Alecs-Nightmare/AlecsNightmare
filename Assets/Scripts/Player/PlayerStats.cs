@@ -67,7 +67,6 @@ public class PlayerStats : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
-        print(playerMovement.GetAimDirection());
         // CHECK ACTION and increase timers
         if (action != 0)
         {
@@ -260,7 +259,7 @@ public class PlayerStats : MonoBehaviour {
             else
             {
                 // LETHAL ENEMY
-                if (enemy.AskForLethal())   // if enemy object is lethal we shouldn't knock back!
+                if (enemy.AskForLethal() && !enemy.AskIfVolatile())   // if enemy object is a static lethal we shouldn't knock back!
                 {
                     gameManager.SubstractSanity(gameManager.GetCurrentSanity());
                     GetComponent<Rigidbody2D>().gravityScale = gravity/8;   // reduced gravity for water!
@@ -287,12 +286,23 @@ public class PlayerStats : MonoBehaviour {
                         }
                     }
 
-                    // Substracts sanity
-                    if (takesDamage) { gameManager.SubstractSanity(enemy.GetAttackPower()); }
-
                     // knock back!
-                    GetComponent<Rigidbody2D>().AddForce(repulsionForce * (new Vector2(this.transform.position.x - col.transform.position.x, 1f)), ForceMode2D.Impulse);
-                    GetComponent<Rigidbody2D>().gravityScale = gravity;
+                    if (!takesDamage && enemy.AskIfVolatile())
+                    {
+                        print("Knock back is prevented when protecting against projectiles.");
+                    }
+                    else
+                    {
+                        GetComponent<Rigidbody2D>().AddForce(repulsionForce * (new Vector2(this.transform.position.x - col.transform.position.x, 1f)), ForceMode2D.Impulse);
+                        GetComponent<Rigidbody2D>().gravityScale = gravity;
+                    }
+
+                    // Substracts sanity
+                    if (takesDamage)
+                    {
+                        if (enemy.AskForLethal()) { gameManager.SubstractSanity(gameManager.GetCurrentSanity()); }
+                        else { gameManager.SubstractSanity(enemy.GetAttackPower()); }
+                    }
                 }
 
                 // Check if Player dies

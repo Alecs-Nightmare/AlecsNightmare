@@ -43,6 +43,15 @@ public class PlayerMovement : MonoBehaviour {
     private bool able = true;
     //int sanityPoints;   //esto es provisional
 
+    Transform transform;
+    private Quaternion baseRotation;
+    private Quaternion newRotation;
+    [SerializeField]
+    private float rotationWidth = 8f;
+    [SerializeField]
+    private float rotationVelocity = 4f;
+    private float rotationTimer = 0f;
+
 
     public PlayerMovement()
     {
@@ -80,16 +89,32 @@ public class PlayerMovement : MonoBehaviour {
         controller = GetComponentInParent<Controller2D>();
         playerInput = GetComponentInParent<PlayerInput>();
         playerStats = GetComponentInParent<PlayerStats>();
+
+        transform = GetComponent<Transform>();
     }
 
     // Use this for initialization
     void Start ()
     {
         InitializeMembers();
+        baseRotation = transform.rotation;
     }
 
     void Update () 
     {
+        // Slightly rotate when soaring 
+        if (controller.collisions.isSoaring)
+        {
+            rotationTimer += rotationVelocity * Time.smoothDeltaTime;
+            while (rotationTimer >= 360) { rotationTimer -= 360; }
+            newRotation = Quaternion.Euler(0f, 0f, rotationWidth * Mathf.Sin(rotationTimer));
+        }
+        else    // reset rotation
+        {
+            rotationTimer = 0f;
+            newRotation = baseRotation;
+        }
+
         if (active)
         {
             if (countingForAttacking && !countingForProtecting)
@@ -146,6 +171,12 @@ public class PlayerMovement : MonoBehaviour {
 
             if (playerInput.DirectionalInput.x == 0) velocity.x = 0;
         }
+    }
+
+    // LateUpdate is called once before rendering
+    private void LateUpdate()
+    {
+        transform.rotation = newRotation;
     }
 
     public void EnableUmbrella()

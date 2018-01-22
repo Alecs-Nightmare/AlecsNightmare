@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Anima2D;
 
 public class EnemyStats : MonoBehaviour {
 
@@ -28,11 +29,12 @@ public class EnemyStats : MonoBehaviour {
     [SerializeField]
     private float deathDelay = 1f;
     private float timer = 0f;
+    SpriteMeshInstance[] sprites;
 
     // Set up references
     void Awake()
     {
-
+        sprites = GetComponentsInChildren<SpriteMeshInstance>();    // NO LAS REFERENCIA Y NO PUEDO PERDER MÁS TIEMPO CON ESTO
     }
 
     // Use this for initialization
@@ -56,14 +58,31 @@ public class EnemyStats : MonoBehaviour {
         else if (dead)
         {
             timer += Time.smoothDeltaTime;
-            this.transform.localScale -= new Vector3(Time.smoothDeltaTime, Time.smoothDeltaTime, 0);
-            this.transform.Rotate(new Vector3(0f, 0f, 50f) * timer);
-            if (timer >= deathDelay)
+            if (itFades)
             {
-                // --INSERT 'POP' SFX HERE--
-                // --INSERT DEATH PARTICLES HERE--
-                print(this+" has been destroyed.");
-                Object.Destroy(this.gameObject);
+                foreach (SpriteMeshInstance sprite in sprites)
+                {
+                    //sprite.color = new Color(0f, 0f, 0f, 0f);
+                }
+                if (timer >= deathDelay)
+                {
+                    // --INSERT DISAPPEARING SFX HERE--
+                    // --INSERT DISAPPEARING PARTICLES HERE--
+                    print(this + " has disappeared.");
+                    Object.Destroy(this.gameObject);
+                }
+            }
+            else
+            {
+                this.transform.localScale -= new Vector3(Time.smoothDeltaTime, Time.smoothDeltaTime, 0);
+                this.transform.Rotate(new Vector3(0f, 0f, 50f) * timer);
+                if (timer >= deathDelay)
+                {
+                    // --INSERT 'POP' SFX HERE--
+                    // --INSERT DEATH PARTICLES HERE--
+                    print(this + " has been destroyed.");
+                    Object.Destroy(this.gameObject);
+                }
             }
         }
 	}
@@ -80,7 +99,7 @@ public class EnemyStats : MonoBehaviour {
 
     public int GetAttackPower()
     {
-        if (isVolatile) { dead = true; }
+        if (isVolatile || itFades) { dead = true; }
         return attackPower;
     }
 
