@@ -38,6 +38,8 @@ public class PlayerStats : MonoBehaviour {
     [SerializeField]
     private float loadTimer = 0f;
     [SerializeField]
+    private float specialAttDistance = 1;
+    [SerializeField]
     private int weakAttPower = 25;
     [SerializeField]
     private int mediumAttPower = 100;
@@ -65,6 +67,7 @@ public class PlayerStats : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
+        print(playerMovement.GetAimDirection());
         // CHECK ACTION and increase timers
         if (action != 0)
         {
@@ -182,14 +185,12 @@ public class PlayerStats : MonoBehaviour {
                 if (col.gameObject.tag == "Chips")
                 {
                     gameManager.AddChips();
-                    // --play chips SFX--
                     print("Takes a chip!");
                 }
                 else if (col.gameObject.tag == "Burger")
                 {
                     gameManager.RecoverSanity(-1);
                     playerMovement.StopConsumingSanity(false);
-                    // --play burger SFX--
                     print("Takes a burger!");
                 }
                 col.gameObject.SetActive(false);
@@ -224,7 +225,8 @@ public class PlayerStats : MonoBehaviour {
                 if (enemy.AskForLethal())
                 {
                     return col;
-                } else if (enemy.GetAttackPower() >= attack)
+                }
+                else if (enemy.GetAttackPower() >= attack)
                 {
                     target = col;
                 }
@@ -267,8 +269,26 @@ public class PlayerStats : MonoBehaviour {
                 // NON LETHAL ENEMY
                 else
                 {
+                    // Check if protecting
+                    bool takesDamage = true;
+                    if (action == -1)
+                    {
+                        if (playerMovement.GetAimDirection().x > 0 && this.transform.position.x < col.transform.position.x)
+                        {
+                            takesDamage = false;
+                            // --INSERT BLOCKING SFX HERE--
+                            print("Blocks " + col.name + "!");
+                        }
+                        else if (playerMovement.GetAimDirection().x < 0 && this.transform.position.x > col.transform.position.x)
+                        {
+                            takesDamage = false;
+                            // --INSERT BLOCKING SFX HERE--
+                            print("Blocks " + col.name + "!");
+                        }
+                    }
+
                     // Substracts sanity
-                    gameManager.SubstractSanity(enemy.GetAttackPower());
+                    if (takesDamage) { gameManager.SubstractSanity(enemy.GetAttackPower()); }
 
                     // knock back!
                     GetComponent<Rigidbody2D>().AddForce(repulsionForce * (new Vector2(this.transform.position.x - col.transform.position.x, 1f)), ForceMode2D.Impulse);
@@ -304,14 +324,12 @@ public class PlayerStats : MonoBehaviour {
             if (col.gameObject.tag == "Chips")
             {
                 gameManager.AddChips();
-                // --play chips SFX--
                 print("Takes a chip!");
             }
             else if (col.gameObject.tag == "Burger")
             {
                 gameManager.RecoverSanity(-1);
                 playerMovement.StopConsumingSanity(false);
-                // --play burger SFX--
                 print("Takes a burger!");
             }
             col.gameObject.SetActive(false);

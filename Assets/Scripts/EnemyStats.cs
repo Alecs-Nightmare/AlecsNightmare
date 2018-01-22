@@ -22,6 +22,8 @@ public class EnemyStats : MonoBehaviour {
     private bool isVolatile;        // Set true for enemies that are destroyed when they impact with the player (projectiles)
     private bool dead;
     [SerializeField]
+    private bool itFades = false;
+    [SerializeField]
     private float liveTime = 0f;    // Time to stay for decaying enemies (set to zero or less for infinite)
     [SerializeField]
     private float deathDelay = 1f;
@@ -90,6 +92,16 @@ public class EnemyStats : MonoBehaviour {
     public bool AskForLethal()
     {
         return isLethal;
+    }
+
+    public bool AskIfVolatile()
+    {
+        return isVolatile;
+    }
+
+    public bool AskIfFades()
+    {
+        return itFades;
     }
 
     public float GetBouncingFactor()

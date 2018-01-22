@@ -390,6 +390,9 @@ public class PlayerMovement : MonoBehaviour {
         maxJumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;
         minJumpVelocity = Mathf.Sqrt(2 * Mathf.Abs(gravity) * minJumpHeight);
         saveGravity = gravity;
+
+        controller.collisions.isSoaring = false;
+        playerStats.SetAction(0);
     }
 
     public Vector3 GetAimDirection()
@@ -407,8 +410,11 @@ public class PlayerMovement : MonoBehaviour {
     public void StopConsumingSanity(bool lockResource)
     {
         able = !lockResource;
-        controller.collisions.isSoaring = !lockResource;
-        // --INSERT MEC MEC SFX HERE--
-        print("Can't use more sanity!");
+        if (lockResource)
+        {
+            controller.collisions.isSoaring = false;
+            // --INSERT MEC MEC SFX HERE--
+            print("Can't use more sanity!");
+        }
     }
 }
