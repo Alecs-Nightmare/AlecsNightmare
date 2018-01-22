@@ -38,8 +38,6 @@ public class PlayerStats : MonoBehaviour {
     [SerializeField]
     private float loadTimer = 0f;
     [SerializeField]
-    private float specialAttDistance = 1;
-    [SerializeField]
     private int weakAttPower = 25;
     [SerializeField]
     private int mediumAttPower = 100;
@@ -184,12 +182,14 @@ public class PlayerStats : MonoBehaviour {
                 if (col.gameObject.tag == "Chips")
                 {
                     gameManager.AddChips();
+                    // --play chips SFX--
                     print("Takes a chip!");
                 }
                 else if (col.gameObject.tag == "Burger")
                 {
                     gameManager.RecoverSanity(-1);
                     playerMovement.StopConsumingSanity(false);
+                    // --play burger SFX--
                     print("Takes a burger!");
                 }
                 col.gameObject.SetActive(false);
@@ -224,8 +224,7 @@ public class PlayerStats : MonoBehaviour {
                 if (enemy.AskForLethal())
                 {
                     return col;
-                }
-                else if (enemy.GetAttackPower() >= attack)
+                } else if (enemy.GetAttackPower() >= attack)
                 {
                     target = col;
                 }
@@ -259,7 +258,7 @@ public class PlayerStats : MonoBehaviour {
             else
             {
                 // LETHAL ENEMY
-                if (enemy.AskForLethal() && !enemy.AskIfVolatile())   // if enemy object is a static lethal we shouldn't knock back!
+                if (enemy.AskForLethal())   // if enemy object is lethal we shouldn't knock back!
                 {
                     gameManager.SubstractSanity(gameManager.GetCurrentSanity());
                     GetComponent<Rigidbody2D>().gravityScale = gravity/8;   // reduced gravity for water!
@@ -268,41 +267,12 @@ public class PlayerStats : MonoBehaviour {
                 // NON LETHAL ENEMY
                 else
                 {
-                    // Check if protecting
-                    bool takesDamage = true;
-                    if (action == -1)
-                    {
-                        if (playerMovement.GetAimDirection().x > 0 && this.transform.position.x < col.transform.position.x)
-                        {
-                            takesDamage = false;
-                            // --INSERT BLOCKING SFX HERE--
-                            print("Blocks " + col.name + "!");
-                        }
-                        else if (playerMovement.GetAimDirection().x < 0 && this.transform.position.x > col.transform.position.x)
-                        {
-                            takesDamage = false;
-                            // --INSERT BLOCKING SFX HERE--
-                            print("Blocks " + col.name + "!");
-                        }
-                    }
+                    // Substracts sanity
+                    gameManager.SubstractSanity(enemy.GetAttackPower());
 
                     // knock back!
-                    if (!takesDamage && enemy.AskIfVolatile())
-                    {
-                        print("Knock back is prevented when protecting against projectiles.");
-                    }
-                    else
-                    {
-                        GetComponent<Rigidbody2D>().AddForce(repulsionForce * (new Vector2(this.transform.position.x - col.transform.position.x, 1f)), ForceMode2D.Impulse);
-                        GetComponent<Rigidbody2D>().gravityScale = gravity;
-                    }
-
-                    // Substracts sanity
-                    if (takesDamage)
-                    {
-                        if (enemy.AskForLethal()) { gameManager.SubstractSanity(gameManager.GetCurrentSanity()); }
-                        else { gameManager.SubstractSanity(enemy.GetAttackPower()); }
-                    }
+                    GetComponent<Rigidbody2D>().AddForce(repulsionForce * (new Vector2(this.transform.position.x - col.transform.position.x, 1f)), ForceMode2D.Impulse);
+                    GetComponent<Rigidbody2D>().gravityScale = gravity;
                 }
 
                 // Check if Player dies
@@ -334,12 +304,14 @@ public class PlayerStats : MonoBehaviour {
             if (col.gameObject.tag == "Chips")
             {
                 gameManager.AddChips();
+                // --play chips SFX--
                 print("Takes a chip!");
             }
             else if (col.gameObject.tag == "Burger")
             {
                 gameManager.RecoverSanity(-1);
                 playerMovement.StopConsumingSanity(false);
+                // --play burger SFX--
                 print("Takes a burger!");
             }
             col.gameObject.SetActive(false);

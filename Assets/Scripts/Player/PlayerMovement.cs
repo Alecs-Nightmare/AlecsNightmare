@@ -40,17 +40,9 @@ public class PlayerMovement : MonoBehaviour {
     SpriteRenderer spriteRenderer;
     PlayerInput playerInput;
     PlayerStats playerStats;
+    PlayerAudio playerAudio;
     private bool able = true;
     //int sanityPoints;   //esto es provisional
-
-    Transform transform;
-    private Quaternion baseRotation;
-    private Quaternion newRotation;
-    [SerializeField]
-    private float rotationWidth = 8f;
-    [SerializeField]
-    private float rotationVelocity = 4f;
-    private float rotationTimer = 0f;
 
 
     public PlayerMovement()
@@ -77,7 +69,7 @@ public class PlayerMovement : MonoBehaviour {
     private float maxTimeA = 0.5f;
     private float currentTimeP = 0f;
     private float maxTimeP = 0.5f;
-
+    
     // Set up references
     private void Awake()
     {
@@ -89,32 +81,17 @@ public class PlayerMovement : MonoBehaviour {
         controller = GetComponentInParent<Controller2D>();
         playerInput = GetComponentInParent<PlayerInput>();
         playerStats = GetComponentInParent<PlayerStats>();
-
-        transform = GetComponent<Transform>();
+        playerAudio = GetComponentInParent<PlayerAudio>();
     }
 
     // Use this for initialization
     void Start ()
     {
         InitializeMembers();
-        baseRotation = transform.rotation;
     }
 
     void Update () 
     {
-        // Slightly rotate when soaring 
-        if (controller.collisions.isSoaring)
-        {
-            rotationTimer += rotationVelocity * Time.smoothDeltaTime;
-            while (rotationTimer >= 360) { rotationTimer -= 360; }
-            newRotation = Quaternion.Euler(0f, 0f, rotationWidth * Mathf.Sin(rotationTimer));
-        }
-        else    // reset rotation
-        {
-            rotationTimer = 0f;
-            newRotation = baseRotation;
-        }
-
         if (active)
         {
             if (countingForAttacking && !countingForProtecting)
@@ -173,12 +150,6 @@ public class PlayerMovement : MonoBehaviour {
         }
     }
 
-    // LateUpdate is called once before rendering
-    private void LateUpdate()
-    {
-        transform.rotation = newRotation;
-    }
-
     public void EnableUmbrella()
     {
 #if UNITY_EDITOR
@@ -200,21 +171,33 @@ public class PlayerMovement : MonoBehaviour {
     {
         if (playerInput.CaptureMouseLeftClick() && !controller.collisions.isAttacking && !controller.collisions.isProtecting && UmbrellaUnlocked)
         {   //si no estaba atacando ni protegiendose, ataca.
+            playerAudio.PlayAttackingSound();
             controller.collisions.isAttacking = true;
             playerStats.SetAction(1);
             countingForAttacking = true;
             //Debug.Log("attacking");
         }
+
     }
 
     public void Protect()
     {   //si no estaba protegiendose ni atacando, protegese.
         if (playerInput.CaptureMouseRightClick() && !controller.collisions.isProtecting && !controller.collisions.isAttacking && UmbrellaUnlocked && able)
         {
+            if (playerAudio.canPlayProtectingSound)
+            {
+                playerAudio.PlayProtectingSound();
+                playerAudio.canPlayProtectingSound = false;
+            }
+                
             controller.collisions.isProtecting = true;
             playerStats.SetAction(-1);
             countingForProtecting = true;
             //Debug.Log("protecting");
+        }
+        else if (playerInput.CaptureMouseUpRightClick())
+        {
+            playerAudio.canPlayProtectingSound = true;
         }
     }
 
@@ -238,6 +221,7 @@ public class PlayerMovement : MonoBehaviour {
     {
         if (playerInput.CaptureJumpInputDown())
         {
+            playerAudio.PlayJumpBetweenWalls();
             if (wallSliding && controller.HitTag == "Climbable")
             {
                 if (wallDirX == input.x)
@@ -326,16 +310,16 @@ public class PlayerMovement : MonoBehaviour {
         
 
 
-        if (input.x != 0)   //si se mueve horizontalmente
+        if (input.x != 0)//si se mueve horizontalmente
         {
-            aimDirection = Mathf.Sign(input.x) == 1 ? Vector3.right : Vector3.left; //constantly check which direction is the _playerMovement looking at          
+            aimDirection = Mathf.Sign(input.x) == 1 ? Vector3.right : Vector3.left;//constantly check which direction is the _playerMovement looking at          
         }
 
     }
 
     private void CheckIfCanEnableUmbrellaAgain()
     {
-        if (controller.collisions.isSoaring)    //si  está planeando
+        if (controller.collisions.isSoaring) //si  está planeando
         {
             if (controller.collisions.below || controller.collisions.left || controller.collisions.right || playerInput.CaptureJumpInputDown()) //si colisiona en cualquier dirección o se pulsa espacio
             {
@@ -373,6 +357,7 @@ public class PlayerMovement : MonoBehaviour {
                 if (playerInput.CaptureSoarInput("down") && canEnableUmbrella) //y se pulsa espacio y puede usar el paraguas
                 {
                     //Debug.Log("soaring");
+                    playerAudio.PlaySoaringSound();
                     velocity.y = 0;
                     canEnableUmbrella = false;
                     gravity = gravityWhilePlanning;
@@ -421,9 +406,6 @@ public class PlayerMovement : MonoBehaviour {
         maxJumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;
         minJumpVelocity = Mathf.Sqrt(2 * Mathf.Abs(gravity) * minJumpHeight);
         saveGravity = gravity;
-
-        controller.collisions.isSoaring = false;
-        playerStats.SetAction(0);
     }
 
     public Vector3 GetAimDirection()
@@ -441,11 +423,8 @@ public class PlayerMovement : MonoBehaviour {
     public void StopConsumingSanity(bool lockResource)
     {
         able = !lockResource;
-        if (lockResource)
-        {
-            controller.collisions.isSoaring = false;
-            // --INSERT MEC MEC SFX HERE--
-            print("Can't use more sanity!");
-        }
+        controller.collisions.isSoaring = !lockResource;
+        // --INSERT MEC MEC SFX HERE--
+        print("Can't use more sanity!");
     }
 }
