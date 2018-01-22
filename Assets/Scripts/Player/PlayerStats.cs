@@ -38,15 +38,20 @@ public class PlayerStats : MonoBehaviour {
     [SerializeField]
     private float loadTimer = 0f;
     [SerializeField]
-    private float specialAttDistance = 1;
+    private float specialAttVelocity = 1f;
     [SerializeField]
-    private int weakAttPower = 25;
+    private int weakAttPower = 0;
     [SerializeField]
     private int mediumAttPower = 100;
     [SerializeField]
-    private int strongAttPower = 300;
+    private int strongAttPower = 100;
     [SerializeField]
     private int regularAttPower = 100;
+    [SerializeField]
+    private GameObject magicMissile;
+    //private Parti
+    [SerializeField]
+    private GameObject blockingParticles;
 
 
     // Set up references

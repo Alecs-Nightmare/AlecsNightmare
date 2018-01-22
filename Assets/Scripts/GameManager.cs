@@ -46,6 +46,9 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private float fadeDuration = 1.0f;
 
+    private GameObject chipSoundObj;
+    private AudioSource chipSFX;
+
     // Awake is always called before any Start functions
     void Awake()
     {
@@ -64,6 +67,8 @@ public class GameManager : MonoBehaviour
 
         // Set up references
         fade = GameObject.FindGameObjectWithTag("Fade").GetComponentInChildren<Fade>();
+        chipSoundObj = GameObject.Find("ChipSFX");
+        chipSFX = chipSoundObj.GetComponent<AudioSource>();
     }
 
     // Use this for initialization
@@ -77,6 +82,7 @@ public class GameManager : MonoBehaviour
     // Update is called every frame
     void Update()
     {
+        print(chipSFX);
         if (loading)
         {
             if (m_AsyncLoaderCoroutine != null)
@@ -369,6 +375,7 @@ public class GameManager : MonoBehaviour
         else
         {
             // --INSERT COLLECT CHIP SFX HERE--
+            chipSFX.Play();
         }
         chipCounter.GetComponent<UnityEngine.UI.Text>().text = "x" + chips.ToString();
         print("Chips: " + chips);
